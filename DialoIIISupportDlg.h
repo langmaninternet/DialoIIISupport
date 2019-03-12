@@ -55,4 +55,5 @@ public:
 
 	virtual void WinHelp(DWORD dwData, UINT nCmd = HELP_CONTEXT);
 
+	afx_msg void OnHelp();
 };

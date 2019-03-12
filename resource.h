@@ -44,7 +44,11 @@
 #define IDC_LEFTMOUSETEXTMS             1034
 #define IDC_RIGHTMOUSETEXT              1035
 #define IDC_RIGHTMOUSETEXTMS            1036
-#define IDC_RADIO2                      1038
+#define IDC_CTRL5TEXT                   1039
+#define IDC_CTRL6TEXT                   1040
+#define IDC_CTRL7TEXT                   1041
+#define IDC_CTRL5TEXT4                  1042
+#define IDC_CTRLESC                     1042
 
 // Next default values for new objects
 // 
@@ -52,7 +56,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        132
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1039
+#define _APS_NEXT_CONTROL_VALUE         1040
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
