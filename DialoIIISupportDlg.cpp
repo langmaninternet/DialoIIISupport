@@ -324,6 +324,7 @@ extern "C" __declspec(dllexport) LRESULT CALLBACK HookProc(int nCode, WPARAM wPa
 				rightMouseCooldown = 99999;
 				break;
 			case VK_ESCAPE:
+			case VK_SPACE:
 				flagOnCtrl = false;
 				flagOnCtrl5 = false;
 				flagOnCtrl6 = false;
@@ -814,14 +815,19 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 					int yFill = (int)round(840.0 * d3Scale);
 					int			xIventoryArray[60] = { 0 };
 					int			yIventoryArray[60] = { 0 };
+					double		xLeftPage = 583 * d3Scale;
+					double		yLeftPage = 840 * d3Scale;
+					double		xRightPage = 852 * d3Scale;
+					double		yRightPage = 840 * d3Scale;
+
 					if (xIventoryArray[0] == 0 && yIventoryArray[0] == 0)
 					{
 						double		xInventory = (d3Width - (1920.0 - 1423.0) * d3Scale);
-						double		yInventory = (583 * d3Scale);
-						double		wIventory = (373.0 * d3Scale);
-						double		hIventory = (296.0 * d3Scale);
+						double		yInventory = 583 * d3Scale;
+						double		wIventory = 500.0 * d3Scale;
+						double		hIventory = 296.0 * d3Scale;
 						double		wSlot = wIventory / 10.0;
-						double		hSlot = hIventory / 10.0;
+						double		hSlot = hIventory / 6.0;
 						for (int icolumn = 0; icolumn < 10; icolumn++)
 						{
 							for (int irow = 0; irow < 6; irow++)
@@ -847,6 +853,14 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 							if (flagOnCtrl5) SetD3Mouse(xTransmute, yTransmute);
 							if (flagOnCtrl5) SendD3LeftMouseClick();
 							if (flagOnCtrl5) Sleep(50);
+
+							if (flagOnCtrl5) SetD3Mouse(xLeftPage, yLeftPage);
+							if (flagOnCtrl5) SendD3LeftMouseClick();
+							if (flagOnCtrl5) Sleep(50);
+
+							if (flagOnCtrl5) SetD3Mouse(xRightPage, yRightPage);
+							if (flagOnCtrl5) SendD3LeftMouseClick();
+							if (flagOnCtrl5) Sleep(50);
 						}
 						flagOnCtrl5 = false;
 					}
@@ -859,13 +873,25 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 					{
 						for (int iitem = 0; iitem < 30; iitem += 2)
 						{
-							SetD3Mouse(xIventoryArray[iitem], yIventoryArray[iitem]);
-							SendD3RightMouseClick();
-							Sleep(50);
+							if (flagOnCtrl6) SetD3Mouse(xIventoryArray[iitem], yIventoryArray[iitem]);
+							if (flagOnCtrl6) SendD3RightMouseClick();
+							if (flagOnCtrl6) Sleep(50);
 
-							SetD3Mouse(xTransmute, yTransmute);
-							SendD3LeftMouseClick();
-							Sleep(50);
+							if (flagOnCtrl6) SetD3Mouse(xFill, yFill);
+							if (flagOnCtrl6) SendD3LeftMouseClick();
+							if (flagOnCtrl6) Sleep(50);
+
+							if (flagOnCtrl6) SetD3Mouse(xTransmute, yTransmute);
+							if (flagOnCtrl6) SendD3LeftMouseClick();
+							if (flagOnCtrl6) Sleep(50);
+
+							if (flagOnCtrl6) SetD3Mouse(xLeftPage, yLeftPage);
+							if (flagOnCtrl6) SendD3LeftMouseClick();
+							if (flagOnCtrl6) Sleep(50);
+
+							if (flagOnCtrl6) SetD3Mouse(xRightPage, yRightPage);
+							if (flagOnCtrl6) SendD3LeftMouseClick();
+							if (flagOnCtrl6) Sleep(50);
 						}
 						flagOnCtrl6 = false;
 					}
