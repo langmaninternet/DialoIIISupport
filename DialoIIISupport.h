@@ -16,25 +16,6 @@
 //
 
 
-struct DialoIIISupportConfig
-{
-	int		leftMouseTime;
-	int		rightMouseTime;
-	int		skillSlot01Time;
-	int		skillSlot02Time;
-	int		skillSlot03Time;
-	int		skillSlot04Time;
-	int		healingTime;
-
-	int		skill01Enable;
-	int		skill02Enable;
-	int		skill03Enable;
-	int		skill04Enable;
-
-	int		autoSpace;
-};
-
-extern DialoIIISupportConfig d3Config;
 
 class CDialoIIISupportApp : public CWinApp
 {

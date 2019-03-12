@@ -76,12 +76,18 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <OutDir>Build\$(Configuration)32Bit\</OutDir>
+    <IntDir>Build\$(Configuration)32Bit\$(ProjectName)\</IntDir>
+    <TargetName>$(ProjectName)$(Configuration)32Bit</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <OutDir>Build\$(Configuration)32Bit\</OutDir>
+    <IntDir>Build\$(Configuration)32Bit\$(ProjectName)\</IntDir>
+    <TargetName>$(ProjectName)$(Configuration)32Bit</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
