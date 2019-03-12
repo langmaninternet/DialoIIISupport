@@ -218,47 +218,47 @@ bool		ValidToSendD3Click(void)
 						}
 					}
 
-					//		else
-					//		{
-					//			double xScale = (d3Rect.right - d3Rect.left) / 1920.0;
-					//			double yScale = (d3Rect.bottom - d3Rect.top) / 1080.0;
-					//			//chat button
-					//			if (PointInRect(point, d3Rect.left + xScale * 10, d3Rect.left + xScale * 80, d3Rect.top + yScale * 980, d3Rect.top + yScale * 1044))
-					//			{
-					//				return false;
-					//			}
-					//		
-					//			//Skill, Inventory,...
-					//			if (PointInRect(point, d3Rect.left + xScale * 1089, d3Rect.left + xScale * 1284, d3Rect.top + yScale * 995, d3Rect.top + yScale * 1062))
-					//			{
-					//				return false;
-					//			}
-					//		
-					//			//Friend Button
-					//			if (PointInRect(point, d3Rect.left + xScale * 1764, d3Rect.left + xScale * 1904, d3Rect.top + yScale * 979, d3Rect.top + yScale * 1044))
-					//			{
-					//				return false;
-					//			}
-					//		
-					//			//Small chat box
-					//			if (PointInRect(point, d3Rect.left + xScale * 32, d3Rect.left + xScale * 346, d3Rect.top + yScale * 738, d3Rect.top + yScale * 877))
-					//			{
-					//				return false;
-					//			}
-					//		
-					//			//Objectives Object
-					//			if (PointInRect(point, d3Rect.left + xScale * 1862, d3Rect.left + xScale * 1893, d3Rect.top + yScale * 367, d3Rect.top + yScale * 391))
-					//			{
-					//				return false;
-					//			}
-					//		
-					//			//Main-Player
-					//			if (PointInRect(point, d3Rect.left + xScale * 28, d3Rect.left + xScale * 93, d3Rect.top + yScale * 47, d3Rect.top + yScale * 149))
-					//			{
-					//				return false;
-					//			}
-					//		
-					//		}
+					else
+					{
+						double xScale = (d3Rect.bottom - d3Rect.top) / 1080.0;
+						double yScale = (d3Rect.bottom - d3Rect.top) / 1080.0;
+						//chat button
+						if (PointInRect(point, d3Rect.left + xScale * 10, d3Rect.left + xScale * 80, d3Rect.top + yScale * 980, d3Rect.top + yScale * 1044))
+						{
+							return false;
+						}
+
+						//Skill, Inventory,...
+						if (PointInRect(point, d3Rect.left + xScale * 1089, d3Rect.left + xScale * 1284, d3Rect.top + yScale * 995, d3Rect.top + yScale * 1062))
+						{
+							return false;
+						}
+
+						//Friend Button
+						if (PointInRect(point, d3Rect.left + xScale * 1764, d3Rect.left + xScale * 1904, d3Rect.top + yScale * 979, d3Rect.top + yScale * 1044))
+						{
+							return false;
+						}
+
+						//Small chat box
+						if (PointInRect(point, d3Rect.left + xScale * 32, d3Rect.left + xScale * 346, d3Rect.top + yScale * 738, d3Rect.top + yScale * 877))
+						{
+							return false;
+						}
+
+						//Objectives Object
+						if (PointInRect(point, d3Rect.left + xScale * 1862, d3Rect.left + xScale * 1893, d3Rect.top + yScale * 367, d3Rect.top + yScale * 391))
+						{
+							return false;
+						}
+
+						//Main-Player
+						if (PointInRect(point, d3Rect.left + xScale * 28, d3Rect.left + xScale * 93, d3Rect.top + yScale * 47, d3Rect.top + yScale * 149))
+						{
+							return false;
+						}
+
+					}
 					return true;
 				}
 			}
