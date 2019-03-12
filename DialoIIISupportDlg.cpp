@@ -61,6 +61,11 @@ const int	timerDelay = 100/*ms*/;
 bool		flagOnF1 = false;
 bool		flagOnF2 = false;
 bool		flagOnF3 = false;
+bool		flagOnCtrl = false;
+bool		flagOnCtrl5 = false;
+bool		flagOnCtrl6 = false;
+bool		flagOnCtrl7 = false;
+
 int			leftMouseCooldown;
 int			rightMouseCooldown;
 int			skillSlot01Cooldown;
@@ -147,46 +152,49 @@ bool		ValidToSendD3Click(void)
 				GetCursorPos(&point);
 				if (PointInRect(point, d3Rect.left, d3Rect.right, d3Rect.top, d3Rect.bottom))
 				{
+					double xScale = (d3Rect.right - d3Rect.left) / 1920.0;
+					double yScale = (d3Rect.bottom - d3Rect.top) / 1080.0;
 					if (d3Rect.right - d3Rect.left == 1920 && d3Rect.bottom - d3Rect.top == 1080)
 					{
 						//chat button
-						if (PointInRect(point, d3Rect.left + 10, d3Rect.left + 80, d3Rect.top + 980, d3Rect.top + 1044))
+						if (PointInRect(point, d3Rect.left + xScale * 10, d3Rect.left + xScale * 80, d3Rect.top + yScale * 980, d3Rect.top + yScale * 1044))
 						{
 							return false;
 						}
 
-						//Skill Inventory,...
-						if (PointInRect(point, d3Rect.left + 1089, d3Rect.left + 1284, d3Rect.top + 995, d3Rect.top + 1062))
+						//Skill, Inventory,...
+						if (PointInRect(point, d3Rect.left + xScale * 1089, d3Rect.left + xScale * 1284, d3Rect.top + yScale * 995, d3Rect.top + yScale * 1062))
 						{
 							return false;
 						}
 
-						//Friend
-						if (PointInRect(point, d3Rect.left + 1764, d3Rect.left + 1904, d3Rect.top + 979, d3Rect.top + 1044))
+						//Friend Button
+						if (PointInRect(point, d3Rect.left + xScale * 1764, d3Rect.left + xScale * 1904, d3Rect.top + yScale * 979, d3Rect.top + yScale * 1044))
 						{
 							return false;
 						}
 
 						//Small chat box
-						if (PointInRect(point, d3Rect.left + 32, d3Rect.left + 346, d3Rect.top + 738, d3Rect.top + 877))
+						if (PointInRect(point, d3Rect.left + xScale * 32, d3Rect.left + xScale * 346, d3Rect.top + yScale * 738, d3Rect.top + yScale * 877))
 						{
 							return false;
 						}
 
 						//Objectives Object
-						if (PointInRect(point, d3Rect.left + 1862, d3Rect.left + 1893, d3Rect.top + 367, d3Rect.top + 391))
+						if (PointInRect(point, d3Rect.left + xScale * 1862, d3Rect.left + xScale * 1893, d3Rect.top + yScale * 367, d3Rect.top + yScale * 391))
 						{
 							return false;
 						}
 
-						//Player
-						if (PointInRect(point, d3Rect.left + 28, d3Rect.left + 93, d3Rect.top + 47, d3Rect.top + 149))
+						//Main-Player
+						if (PointInRect(point, d3Rect.left + xScale * 28, d3Rect.left + xScale * 93, d3Rect.top + yScale * 47, d3Rect.top + yScale * 149))
 						{
 							return false;
 						}
 
 
 					}
+
 					return true;
 				}
 			}
@@ -203,21 +211,75 @@ HHOOK hGlobalHook;
 #pragma data_seg()
 extern "C" __declspec(dllexport) LRESULT CALLBACK HookProc(int nCode, WPARAM wParam, LPARAM lParam)
 {
-	if (nCode >= 0 && nCode == HC_ACTION && wParam == WM_KEYDOWN)
+	if (nCode >= 0 && nCode == HC_ACTION)
 	{
 		LPKBDLLHOOKSTRUCT a = (LPKBDLLHOOKSTRUCT)(void*)lParam;
-		switch (a->vkCode)
+		if (wParam == WM_KEYUP)
 		{
-		case VK_F1:
-			flagOnF1 = !flagOnF1;
-			break;
-		case VK_F2:
-			flagOnF2 = !flagOnF2;
-			break;
-		case VK_F3:
-			flagOnF3 = !flagOnF3;
-			break;
+			switch (a->vkCode)
+			{
+			case VK_LCONTROL:
+			case VK_RCONTROL:
+				flagOnCtrl = false;
+				break;
+			}
 		}
+		else if (wParam == WM_KEYDOWN)
+		{
+			switch (a->vkCode)
+			{
+			case VK_F1:
+				flagOnF1 = !flagOnF1;
+				flagOnCtrl = false;
+				flagOnCtrl5 = false;
+				flagOnCtrl6 = false;
+				flagOnCtrl7 = false;
+				break;
+			case VK_F2:
+				flagOnF2 = !flagOnF2;
+				flagOnCtrl = false;
+				flagOnCtrl5 = false;
+				flagOnCtrl6 = false;
+				flagOnCtrl7 = false;
+				break;
+			case VK_F3:
+				flagOnF3 = !flagOnF3;
+				flagOnCtrl = false;
+				flagOnCtrl5 = false;
+				flagOnCtrl6 = false;
+				flagOnCtrl7 = false;
+				break;
+			case VK_ESCAPE:
+				flagOnCtrl = false;
+				flagOnCtrl5 = false;
+				flagOnCtrl6 = false;
+				flagOnCtrl7 = false;
+				break;
+			case 0x35/*'5'*/:
+				flagOnF1 = false;
+				flagOnF2 = false;
+				flagOnF3 = false;
+				flagOnCtrl5 = true;
+				break;
+			case 0x36/*'6'*/:
+				flagOnF1 = false;
+				flagOnF2 = false;
+				flagOnF3 = false;
+				flagOnCtrl6 = true;
+				break;
+			case 0x37/*'7'*/:
+				flagOnF1 = false;
+				flagOnF2 = false;
+				flagOnF3 = false;
+				flagOnCtrl5 = true;
+				break;
+			case VK_LCONTROL:
+			case VK_RCONTROL:
+				flagOnCtrl = true;
+				break;
+			}
+		}
+
 	}
 	return CallNextHookEx(hGlobalHook, nCode, wParam, lParam);
 }
@@ -597,9 +659,6 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 			GetDlgItem(IDC_LEFTMOUSETEXTMS)->EnableWindow(TRUE);
 			GetDlgItem(IDC_LEFTMOUSETIME)->EnableWindow(TRUE);
 		}
-
-
-
 		if (flagOnF3)
 		{
 			GetDlgItem(IDC_RIGHTMOUSETEXT)->SetWindowText(L"Right Mouse (Hotkey F2): \r\n	Running");
@@ -623,6 +682,10 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 			GetDlgItem(IDC_RIGHTMOUSETEXTMS)->EnableWindow(TRUE);
 			GetDlgItem(IDC_RIGHTMOUSETIME)->EnableWindow(TRUE);
 		}
+
+
+
+
 	}
 }
 void CDialoIIISupportDlg::OnKillfocusLeftmousetime()
