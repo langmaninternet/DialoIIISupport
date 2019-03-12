@@ -36,20 +36,20 @@ DialoIIISupportConfig d3Config;
 wchar_t savePath[3000] = { 0 };
 void ValidateD3Config(void)
 {
-	d3Config.leftMouseTime = int(round(d3Config.leftMouseTime / 100.0) * 100);
-	d3Config.rightMouseTime = int(round(d3Config.rightMouseTime / 100.0) * 100);
-	d3Config.skillSlot01Time = int(round(d3Config.skillSlot01Time / 100.0) * 100);
-	d3Config.skillSlot02Time = int(round(d3Config.skillSlot02Time / 100.0) * 100);
-	d3Config.skillSlot03Time = int(round(d3Config.skillSlot03Time / 100.0) * 100);
-	d3Config.skillSlot04Time = int(round(d3Config.skillSlot04Time / 100.0) * 100);
-	d3Config.healingTime = int(round(d3Config.healingTime / 100.0) * 100);
-	if (d3Config.leftMouseTime < 100) d3Config.leftMouseTime = 100;
-	if (d3Config.rightMouseTime < 100) d3Config.rightMouseTime = 100;
-	if (d3Config.skillSlot01Time < 100) d3Config.skillSlot01Time = 100;
-	if (d3Config.skillSlot02Time < 100) d3Config.skillSlot02Time = 100;
-	if (d3Config.skillSlot03Time < 100) d3Config.skillSlot03Time = 100;
-	if (d3Config.skillSlot04Time < 100) d3Config.skillSlot04Time = 100;
-	if (d3Config.healingTime < 100) d3Config.healingTime = 100;
+	d3Config.leftMouseTime = int(round(d3Config.leftMouseTime / 50.0) * 50);
+	d3Config.rightMouseTime = int(round(d3Config.rightMouseTime / 50.0) * 50);
+	d3Config.skillSlot01Time = int(round(d3Config.skillSlot01Time / 50.0) * 50);
+	d3Config.skillSlot02Time = int(round(d3Config.skillSlot02Time / 50.0) * 50);
+	d3Config.skillSlot03Time = int(round(d3Config.skillSlot03Time / 50.0) * 50);
+	d3Config.skillSlot04Time = int(round(d3Config.skillSlot04Time / 50.0) * 50);
+	d3Config.healingTime = int(round(d3Config.healingTime / 50.0) * 50);
+	if (d3Config.leftMouseTime < 50) d3Config.leftMouseTime = 50;
+	if (d3Config.rightMouseTime < 50) d3Config.rightMouseTime = 50;
+	if (d3Config.skillSlot01Time < 50) d3Config.skillSlot01Time = 50;
+	if (d3Config.skillSlot02Time < 50) d3Config.skillSlot02Time = 50;
+	if (d3Config.skillSlot03Time < 50) d3Config.skillSlot03Time = 50;
+	if (d3Config.skillSlot04Time < 50) d3Config.skillSlot04Time = 50;
+	if (d3Config.healingTime < 50) d3Config.healingTime = 50;
 	if (d3Config.skill01Enable != 0) d3Config.skill01Enable = 1;
 	if (d3Config.skill02Enable != 0) d3Config.skill02Enable = 1;
 	if (d3Config.skill03Enable != 0) d3Config.skill03Enable = 1;
@@ -57,7 +57,7 @@ void ValidateD3Config(void)
 	if (d3Config.healingEnable != 0) d3Config.healingEnable = 1;
 	if (d3Config.autoSpaceEnable != 0) d3Config.autoSpaceEnable = 1;
 }
-const int	timerDelay = 100/*ms*/;
+const int	timerDelay = 50/*ms*/;
 bool		flagOnF1 = false;
 bool		flagOnF2 = false;
 bool		flagOnF3 = false;
@@ -103,9 +103,9 @@ void		SendD3Key(int keyCode)
 	if (d3Wnd)
 	{
 		SendMessage(d3Wnd, WM_KEYDOWN, keyCode, 0);
-		Sleep(25);
+		Sleep(5);
 		SendMessage(d3Wnd, WM_KEYUP, keyCode, 0);
-		Sleep(25);
+		Sleep(5);
 	}
 }
 void		SetD3Mouse(int x, int y)
@@ -132,9 +132,9 @@ void		SendD3LeftMouseClick()
 		LPARAM lParam = (point.x - d3Rect.left) | ((point.y - d3Rect.top) << 16);
 
 		SendMessage(d3Wnd, WM_LBUTTONDOWN, MK_LBUTTON, lParam);
-		Sleep(25);
+		Sleep(5);
 		SendMessage(d3Wnd, WM_LBUTTONUP, 0, lParam);
-		Sleep(25);
+		Sleep(5);
 	}
 }
 void		SendD3RightMouseClick()
@@ -151,9 +151,9 @@ void		SendD3RightMouseClick()
 		LPARAM lParam = (point.x - d3Rect.left) | ((point.y - d3Rect.top) << 16);
 
 		SendMessage(d3Wnd, WM_RBUTTONDOWN, MK_RBUTTON, lParam);
-		Sleep(25);
+		Sleep(5);
 		SendMessage(d3Wnd, WM_RBUTTONUP, 0, lParam);
-		Sleep(25);
+		Sleep(5);
 	}
 }
 bool		PointInRect(POINT point, int rLeft, int rRight, int rTop, int rBottom)
@@ -301,6 +301,7 @@ extern "C" __declspec(dllexport) LRESULT CALLBACK HookProc(int nCode, WPARAM wPa
 				flagOnCtrl5 = false;
 				flagOnCtrl6 = false;
 				flagOnCtrl7 = false;
+				leftMouseCooldown = 99999;
 				break;
 			case VK_F2:
 				flagOnF2 = !flagOnF2;
@@ -308,6 +309,11 @@ extern "C" __declspec(dllexport) LRESULT CALLBACK HookProc(int nCode, WPARAM wPa
 				flagOnCtrl5 = false;
 				flagOnCtrl6 = false;
 				flagOnCtrl7 = false;
+				skillSlot01Cooldown = 99999;
+				skillSlot02Cooldown = 99999;
+				skillSlot03Cooldown = 99999;
+				skillSlot04Cooldown = 99999;
+				healingCooldown = 99999;
 				break;
 			case VK_F3:
 				flagOnF3 = !flagOnF3;
@@ -315,6 +321,7 @@ extern "C" __declspec(dllexport) LRESULT CALLBACK HookProc(int nCode, WPARAM wPa
 				flagOnCtrl5 = false;
 				flagOnCtrl6 = false;
 				flagOnCtrl7 = false;
+				rightMouseCooldown = 99999;
 				break;
 			case VK_ESCAPE:
 				flagOnCtrl = false;
@@ -906,8 +913,8 @@ void CDialoIIISupportDlg::OnKillfocusLeftmousetime()
 	GetDlgItem(IDC_LEFTMOUSETIME)->GetWindowTextW(bufferText, 999);
 	int newValue = 0;
 	swscanf(bufferText, L"%d", &newValue);
-	newValue = int(round(newValue / 100.0) * 100);
-	if (newValue < 100) newValue = 100;
+	newValue = int(round(newValue / 50.0) * 50);
+	if (newValue < 50) newValue = 50;
 	swprintf(bufferText, L"%d", newValue);
 	GetDlgItem(IDC_LEFTMOUSETIME)->SetWindowTextW(bufferText);
 	if (newValue != d3Config.leftMouseTime)
