@@ -805,22 +805,21 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 					GetDlgItem(IDC_CTRL7TEXT)->EnableWindow(FALSE);
 					double		d3Width = d3Rect.right - d3Rect.left;
 					double		d3Height = d3Rect.bottom - d3Rect.top;
-					double		d3WidthScale = d3Width / 1920.0;
-					double		d3HeightScale = d3Height / 1080.0;
-					int xSalvage = (int)round(123.0 * d3WidthScale);
-					int ySalvage = (int)round(293.0 * d3HeightScale);
-					int xTransmute = (int)round(230.0 * d3WidthScale);
-					int yTransmute = (int)round(830.0 * d3HeightScale);
-					int xFill = (int)round(720.0 * d3WidthScale);
-					int yFill = (int)round(840.0 * d3HeightScale);
+					double		d3Scale = d3Height / 1080.0;
+					int xSalvage = (int)round(123.0 * d3Scale);
+					int ySalvage = (int)round(293.0 * d3Scale);
+					int xTransmute = (int)round(230.0 * d3Scale);
+					int yTransmute = (int)round(830.0 * d3Scale);
+					int xFill = (int)round(720.0 * d3Scale);
+					int yFill = (int)round(840.0 * d3Scale);
 					int			xIventoryArray[60] = { 0 };
 					int			yIventoryArray[60] = { 0 };
 					if (xIventoryArray[0] == 0 && yIventoryArray[0] == 0)
 					{
-						double		xInventory = (d3Width - (1920.0 - 1423.0) * d3WidthScale);
-						double		yInventory = (583 * d3HeightScale);
-						double		wIventory = (373.0 * d3WidthScale);
-						double		hIventory = (296.0 * d3HeightScale);
+						double		xInventory = (d3Width - (1920.0 - 1423.0) * d3Scale);
+						double		yInventory = (583 * d3Scale);
+						double		wIventory = (373.0 * d3Scale);
+						double		hIventory = (296.0 * d3Scale);
 						double		wSlot = wIventory / 10.0;
 						double		hSlot = hIventory / 10.0;
 						for (int icolumn = 0; icolumn < 10; icolumn++)
