@@ -74,7 +74,6 @@ int			skillSlot02Cooldown;
 int			skillSlot03Cooldown;
 int			skillSlot04Cooldown;
 int			healingCooldown;
-
 HHOOK		hGlobalHook;
 /************************************************************************/
 /*                                                                      */
@@ -111,17 +110,31 @@ void		SendD3Key(int keyCode)
 }
 void		SetD3Mouse(int x, int y)
 {
-
+	HWND d3Wnd = GetD3Windows();
+	if (d3Wnd)
+	{
+		RECT d3Rect = { 0 };
+		GetWindowRect(d3Wnd, &d3Rect);
+		SetCursorPos(d3Rect.left + x, d3Rect.top + y);
+	}
 }
 void		SendD3LeftMouseClick()
 {
 	HWND d3Wnd = GetD3Windows();
 	if (d3Wnd)
 	{
-		SendMessage(d3Wnd, WM_LBUTTONDOWN, 0, 0);
-		Sleep(5);
-		SendMessage(d3Wnd, WM_LBUTTONUP, 0, 0);
-		Sleep(5);
+		POINT point = { 0 };
+		GetCursorPos(&point);
+
+		RECT d3Rect = { 0 };
+		GetWindowRect(d3Wnd, &d3Rect);
+
+		LPARAM lParam = (point.x - d3Rect.left) | ((point.y - d3Rect.top) << 16);
+
+		SendMessage(d3Wnd, WM_LBUTTONDOWN, MK_LBUTTON, lParam);
+		Sleep(25);
+		SendMessage(d3Wnd, WM_LBUTTONUP, 0, lParam);
+		Sleep(25);
 	}
 }
 void		SendD3RightMouseClick()
@@ -129,10 +142,18 @@ void		SendD3RightMouseClick()
 	HWND d3Wnd = GetD3Windows();
 	if (d3Wnd)
 	{
-		SendMessage(d3Wnd, WM_RBUTTONDOWN, 0, 0);
-		Sleep(5);
-		SendMessage(d3Wnd, WM_RBUTTONUP, 0, 0);
-		Sleep(5);
+		POINT point = { 0 };
+		GetCursorPos(&point);
+
+		RECT d3Rect = { 0 };
+		GetWindowRect(d3Wnd, &d3Rect);
+
+		LPARAM lParam = (point.x - d3Rect.left) | ((point.y - d3Rect.top) << 16);
+
+		SendMessage(d3Wnd, WM_RBUTTONDOWN, MK_RBUTTON, lParam);
+		Sleep(25);
+		SendMessage(d3Wnd, WM_RBUTTONUP, 0, lParam);
+		Sleep(25);
 	}
 }
 bool		PointInRect(POINT point, int rLeft, int rRight, int rTop, int rBottom)
@@ -252,6 +273,7 @@ bool		ValidToSendD3Click(void)
 extern "C" __declspec(dllexport) LRESULT CALLBACK HookProc(int nCode, WPARAM wParam, LPARAM lParam)
 {
 	static bool flagOnCtrl = false;
+	bool		flagNeedMoreHook = true;
 	if (nCode >= 0 && nCode == HC_ACTION)
 	{
 		LPKBDLLHOOKSTRUCT keyParam = (LPKBDLLHOOKSTRUCT)(void*)lParam;
@@ -263,6 +285,9 @@ extern "C" __declspec(dllexport) LRESULT CALLBACK HookProc(int nCode, WPARAM wPa
 			case VK_RCONTROL:
 				flagOnCtrl = false;
 				break;
+			case VK_F1:
+				flagNeedMoreHook = false;
+				break;
 			}
 		}
 		else if (wParam == WM_KEYDOWN)
@@ -270,6 +295,7 @@ extern "C" __declspec(dllexport) LRESULT CALLBACK HookProc(int nCode, WPARAM wPa
 			switch (keyParam->vkCode)
 			{
 			case VK_F1:
+				flagNeedMoreHook = false;
 				flagOnF1 = !flagOnF1;
 				flagOnCtrl = false;
 				flagOnCtrl5 = false;
@@ -335,6 +361,10 @@ extern "C" __declspec(dllexport) LRESULT CALLBACK HookProc(int nCode, WPARAM wPa
 				break;
 			}
 		}
+	}
+	if (flagNeedMoreHook == false)
+	{
+		return 1;
 	}
 	return CallNextHookEx(hGlobalHook, nCode, wParam, lParam);
 }
@@ -572,14 +602,18 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 		{
 			flagOnProcess = true;
 			const WCHAR * bufferActive = L"Found";
-			HWND d3Window = GetD3Windows();
+			HWND d3Wnd = GetD3Windows();
 			RECT d3Rect = { 0 };
-			if (d3Window == 0)
+			if (d3Wnd == 0)
 			{
 				bufferActive = L"";
 				flagOnF1 = false;
 				flagOnF2 = false;
 				flagOnF3 = false;
+			}
+			else
+			{
+				::GetWindowRect(d3Wnd, &d3Rect);
 			}
 			POINT point = { 0 };
 			GetCursorPos(&point);
@@ -615,7 +649,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 				GetDlgItem(IDC_HEALINGCHECK)->EnableWindow(FALSE);
 				GetDlgItem(IDC_SPACECHECK)->EnableWindow(FALSE);
 				GetDlgItem(IDC_F2BIGFRAME)->SetWindowTextW(L"Skill (Hotkey F2) - Running");
-				if (d3Window != 0)
+				if (d3Wnd != 0)
 				{
 					bool flagSendSpace = false;
 					if (d3Config.skill01Enable)
@@ -711,7 +745,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 				GetDlgItem(IDC_LEFTMOUSETEXT)->EnableWindow(FALSE);
 				GetDlgItem(IDC_LEFTMOUSETEXTMS)->EnableWindow(FALSE);
 				GetDlgItem(IDC_LEFTMOUSETIME)->EnableWindow(FALSE);
-				if (d3Window != 0)
+				if (d3Wnd != 0)
 				{
 					leftMouseCooldown += timerDelay;
 					if (leftMouseCooldown >= d3Config.leftMouseTime)
@@ -734,7 +768,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 				GetDlgItem(IDC_RIGHTMOUSETEXT)->EnableWindow(FALSE);
 				GetDlgItem(IDC_RIGHTMOUSETEXTMS)->EnableWindow(FALSE);
 				GetDlgItem(IDC_RIGHTMOUSETIME)->EnableWindow(FALSE);
-				if (d3Window != 0)
+				if (d3Wnd != 0)
 				{
 					rightMouseCooldown += timerDelay;
 					if (rightMouseCooldown >= d3Config.leftMouseTime)
@@ -755,92 +789,105 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 			/************************************************************************/
 			/*                                                                      */
 			/************************************************************************/
-			if (d3Window != 0 && (flagOnCtrl5 || flagOnCtrl6 || flagOnCtrl7))
+			if (d3Wnd != 0 && IsD3WindowActive())
 			{
-				GetDlgItem(IDC_CTRL5TEXT)->EnableWindow(FALSE);
-				GetDlgItem(IDC_CTRL6TEXT)->EnableWindow(FALSE);
-				GetDlgItem(IDC_CTRL7TEXT)->EnableWindow(FALSE);
-				double		d3Width = d3Rect.right - d3Rect.left;
-				double		d3Height = d3Rect.bottom - d3Rect.top;
-				int xSalvage = (int)round(123.0 * d3Width / 1920.0);
-				int ySalvage = (int)round(293.0 * d3Height / 1080.0);
-				int xTransmute = (int)round(176.0 * d3Width / 1920.0);
-				int yTransmute = (int)round(830.0 * d3Height / 1080.0);
-				int			xIventoryArray[60] = { 0 };
-				int			yIventoryArray[60] = { 0 };
-				if (xIventoryArray[0] == 0 && yIventoryArray[0] == 0)
+				if ((flagOnCtrl5 || flagOnCtrl6 || flagOnCtrl7))
 				{
-					double		xInventory = (d3Width - (1920.0 - 1537.0) * d3Width / 1920.0);
-					double		yInventory = (561 * d3Height / 1080.0);
-					double		wIventory = (373.0 * d3Width / 1920.0);
-					double		hIventory = (296.0 * d3Height / 1080.0);
-					double		wSlot = wIventory / 10.0;
-					double		hSlot = hIventory / 10.0;
-					double		wHalfSlot = wSlot / 2.0;
-					double		hHalfSlot = hSlot / 2.0;
-					for (int icolumn = 0; icolumn < 10; icolumn++)
+					GetDlgItem(IDC_CTRL5TEXT)->EnableWindow(FALSE);
+					GetDlgItem(IDC_CTRL6TEXT)->EnableWindow(FALSE);
+					GetDlgItem(IDC_CTRL7TEXT)->EnableWindow(FALSE);
+					double		d3Width = d3Rect.right - d3Rect.left;
+					double		d3Height = d3Rect.bottom - d3Rect.top;
+					double		d3WidthScale = d3Width / 1920.0;
+					double		d3HeightScale = d3Height / 1080.0;
+
+					int xSalvage = (int)round(123.0 * d3WidthScale);
+					int ySalvage = (int)round(293.0 * d3HeightScale);
+					int xTransmute = (int)round(176.0 * d3WidthScale);
+					int yTransmute = (int)round(830.0 * d3HeightScale);
+					int xFill = (int)round(534.0 * d3WidthScale);
+					int yFill = (int)round(841.0 * d3HeightScale);
+					int			xIventoryArray[60] = { 0 };
+					int			yIventoryArray[60] = { 0 };
+					if (xIventoryArray[0] == 0 && yIventoryArray[0] == 0)
 					{
-						for (int irow = 0; irow < 6; irow++)
+						double		xInventory = (d3Width - (1920.0 - 1537.0) * d3WidthScale);
+						double		yInventory = (561 * d3HeightScale);
+						double		wIventory = (373.0 * d3WidthScale);
+						double		hIventory = (296.0 * d3HeightScale);
+						double		wSlot = wIventory / 10.0;
+						double		hSlot = hIventory / 10.0;
+						double		wHalfSlot = wSlot / 2.0;
+						double		hHalfSlot = hSlot / 2.0;
+						for (int icolumn = 0; icolumn < 10; icolumn++)
 						{
-							xIventoryArray[icolumn * 6 + irow] = (int)round(xInventory + wHalfSlot + wSlot * icolumn);
-							yIventoryArray[icolumn * 6 + irow] = (int)round(yInventory + hHalfSlot + hSlot * irow);
+							for (int irow = 0; irow < 6; irow++)
+							{
+								xIventoryArray[icolumn * 6 + irow] = (int)round(xInventory + wHalfSlot + wSlot * icolumn);
+								yIventoryArray[icolumn * 6 + irow] = (int)round(yInventory + hHalfSlot + hSlot * irow);
+							}
 						}
 					}
-				}
 
-				if (flagOnCtrl5)
-				{
-					for (int iitem = 0; iitem < 60; iitem++)
+					if (flagOnCtrl5)
 					{
-						SetD3Mouse(xIventoryArray[iitem], yIventoryArray[iitem]);
-						SendD3RightMouseClick();
-						Sleep(50);
+						for (int iitem = 0; iitem < 60; iitem++)
+						{
+							if (flagOnCtrl5) SetD3Mouse(xIventoryArray[iitem], yIventoryArray[iitem]);
+							if (flagOnCtrl5) SendD3RightMouseClick();
+							if (flagOnCtrl5) Sleep(50);
 
-						SetD3Mouse(xTransmute, yTransmute);
-						SendD3LeftMouseClick();
-						Sleep(50);
+							if (flagOnCtrl5) SetD3Mouse(xTransmute, yTransmute);
+							if (flagOnCtrl5) SendD3LeftMouseClick();
+							if (flagOnCtrl5) Sleep(50);
+						}
+						flagOnCtrl5 = false;
 					}
-					flagOnCtrl5 = false;
-				}
 
 
-				/************************************************************************/
-				/*                                                                      */
-				/************************************************************************/
-				if (flagOnCtrl6)
-				{
-					for (int iitem = 0; iitem < 30; iitem += 2)
+					/************************************************************************/
+					/*                                                                      */
+					/************************************************************************/
+					if (flagOnCtrl6)
 					{
-						SetD3Mouse(xIventoryArray[iitem], yIventoryArray[iitem]);
-						SendD3RightMouseClick();
-						Sleep(50);
+						for (int iitem = 0; iitem < 30; iitem += 2)
+						{
+							SetD3Mouse(xIventoryArray[iitem], yIventoryArray[iitem]);
+							SendD3RightMouseClick();
+							Sleep(50);
 
-						SetD3Mouse(xTransmute, yTransmute);
-						SendD3LeftMouseClick();
-						Sleep(50);
+							SetD3Mouse(xTransmute, yTransmute);
+							SendD3LeftMouseClick();
+							Sleep(50);
+						}
+						flagOnCtrl6 = false;
 					}
-					flagOnCtrl6 = false;
-				}
 
 
 
-				/************************************************************************/
-				/*                                                                      */
-				/************************************************************************/
-				if (flagOnCtrl7)
-				{
-					for (int iitem = 0; iitem < 60; iitem++)
+					/************************************************************************/
+					/*                                                                      */
+					/************************************************************************/
+					if (flagOnCtrl7)
 					{
-						//SetD3Mouse(xIventoryArray[iitem], yIventoryArray[iitem]);
+						for (int iitem = 0; iitem < 60; iitem++)
+						{
+							//SetD3Mouse(xIventoryArray[iitem], yIventoryArray[iitem]);
 
+						}
+						flagOnCtrl7 = false;
 					}
-					flagOnCtrl7 = false;
+					GetDlgItem(IDC_CTRL5TEXT)->EnableWindow(TRUE);
+					GetDlgItem(IDC_CTRL6TEXT)->EnableWindow(TRUE);
+					GetDlgItem(IDC_CTRL7TEXT)->EnableWindow(TRUE);
 				}
-				GetDlgItem(IDC_CTRL5TEXT)->EnableWindow(TRUE);
-				GetDlgItem(IDC_CTRL6TEXT)->EnableWindow(TRUE);
-				GetDlgItem(IDC_CTRL7TEXT)->EnableWindow(TRUE);
 			}
-
+			else
+			{
+				flagOnCtrl5 = false;
+				flagOnCtrl6 = false;
+				flagOnCtrl7 = false;
+			}
 
 
 
