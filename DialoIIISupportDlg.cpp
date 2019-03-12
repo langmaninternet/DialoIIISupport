@@ -800,31 +800,28 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 					double		d3Height = d3Rect.bottom - d3Rect.top;
 					double		d3WidthScale = d3Width / 1920.0;
 					double		d3HeightScale = d3Height / 1080.0;
-
 					int xSalvage = (int)round(123.0 * d3WidthScale);
 					int ySalvage = (int)round(293.0 * d3HeightScale);
-					int xTransmute = (int)round(176.0 * d3WidthScale);
+					int xTransmute = (int)round(230.0 * d3WidthScale);
 					int yTransmute = (int)round(830.0 * d3HeightScale);
-					int xFill = (int)round(534.0 * d3WidthScale);
-					int yFill = (int)round(841.0 * d3HeightScale);
+					int xFill = (int)round(720.0 * d3WidthScale);
+					int yFill = (int)round(840.0 * d3HeightScale);
 					int			xIventoryArray[60] = { 0 };
 					int			yIventoryArray[60] = { 0 };
 					if (xIventoryArray[0] == 0 && yIventoryArray[0] == 0)
 					{
-						double		xInventory = (d3Width - (1920.0 - 1537.0) * d3WidthScale);
-						double		yInventory = (561 * d3HeightScale);
+						double		xInventory = (d3Width - (1920.0 - 1423.0) * d3WidthScale);
+						double		yInventory = (583 * d3HeightScale);
 						double		wIventory = (373.0 * d3WidthScale);
 						double		hIventory = (296.0 * d3HeightScale);
 						double		wSlot = wIventory / 10.0;
 						double		hSlot = hIventory / 10.0;
-						double		wHalfSlot = wSlot / 2.0;
-						double		hHalfSlot = hSlot / 2.0;
 						for (int icolumn = 0; icolumn < 10; icolumn++)
 						{
 							for (int irow = 0; irow < 6; irow++)
 							{
-								xIventoryArray[icolumn * 6 + irow] = (int)round(xInventory + wHalfSlot + wSlot * icolumn);
-								yIventoryArray[icolumn * 6 + irow] = (int)round(yInventory + hHalfSlot + hSlot * irow);
+								xIventoryArray[icolumn * 6 + irow] = (int)round(xInventory + wSlot * icolumn);
+								yIventoryArray[icolumn * 6 + irow] = (int)round(yInventory + hSlot * irow);
 							}
 						}
 					}
@@ -835,6 +832,10 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 						{
 							if (flagOnCtrl5) SetD3Mouse(xIventoryArray[iitem], yIventoryArray[iitem]);
 							if (flagOnCtrl5) SendD3RightMouseClick();
+							if (flagOnCtrl5) Sleep(50);
+
+							if (flagOnCtrl5) SetD3Mouse(xFill, yFill);
+							if (flagOnCtrl5) SendD3LeftMouseClick();
 							if (flagOnCtrl5) Sleep(50);
 
 							if (flagOnCtrl5) SetD3Mouse(xTransmute, yTransmute);
