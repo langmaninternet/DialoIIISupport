@@ -69,5 +69,5 @@ Xong sử dụng:
 
 Screenshot
 ------------
-![](FinalRelease/Screen.png)
+![](FinalRelease/Screen02.png)
 ![](FinalRelease/Cube.png)
