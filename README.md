@@ -7,7 +7,9 @@ https://github.com/langmaninternet/DialoIIISupport/archive/master.zip
 
 
 If you get error with mfc140u.dll : 
-Visual C++ Redistributable for Visual Studio 2012 32bit
+
+Install Visual C++ Redistributable for Visual Studio 2012
+
 https://www.microsoft.com/en-us/download/details.aspx?id=30679&fbclid=IwAR0DsMEWwVYluvVouNHdDudTMmbP-m8jmveyvamITz5IOJRdvojaYRi0gvo
 
 
