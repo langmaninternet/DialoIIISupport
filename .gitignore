@@ -22,7 +22,6 @@ bld/
 [Oo]bj/
 [Ll]og/
 *.bin
-*.exe
 Build/
 
 

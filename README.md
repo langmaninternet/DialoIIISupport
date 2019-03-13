@@ -3,7 +3,7 @@ An open-source Dialo III Support tool
 
 Link download
 ------------
-https://github.com/langmaninternet/DialoIIISupport/blob/master/FinalRelease/DialoIIISupport.zip
+https://github.com/langmaninternet/DialoIIISupport/blob/master/FinalRelease/
 
 
 Source code
