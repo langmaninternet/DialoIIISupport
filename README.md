@@ -77,4 +77,4 @@ Xong sử dụng:
 Screenshot
 ------------
 ![](FinalRelease/Screen02.png)
-![](FinalRelease/Cube.png)
+![](FinalRelease/Cube02.png)
