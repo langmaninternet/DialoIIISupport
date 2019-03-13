@@ -19,7 +19,7 @@ F1 to auto left mouse click
 
 F2 to auto skill 1 2 3 4 an healing Q
 
-F1 to auto right mouse click
+F3 to auto right mouse click
 
 
 
