@@ -11,7 +11,9 @@ Source code
 https://github.com/langmaninternet/DialoIIISupport
 
 
-Features
+
+
+Features : Auto use skill over time
 ------------
 + Auto use skill over time. 
 
@@ -24,8 +26,8 @@ F3 to auto right mouse click
 
 
 
-
-+ Cube converter
+Features : Cube converter
+------------
 
 Craft 30/60 rare item, go to Cube, open page 3. Press CTRL + 5 for 1 slot items,  CTRL + 6 for 2 slot items .
 
@@ -34,6 +36,8 @@ CTRL + 7 to drop all item in Inventory to ground
 CTRL + 9 if you want to clear the Inventory at the Blacksmith
 
 ESC or SPACE to Stop 
+
+
 
 
 
