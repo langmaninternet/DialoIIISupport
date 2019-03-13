@@ -11,6 +11,7 @@
 #define IDC_EDIT2                       1007
 #define IDC_RIGHTMOUSETIME              1007
 #define IDC_EDIT3                       1009
+#define IDC_PROFILENAME                 1009
 #define IDC_CHECK8                      1010
 #define IDC_SPACECHECK                  1010
 #define IDC_SKILL01TIME                 1011
@@ -49,8 +50,17 @@
 #define IDC_CTRL7TEXT                   1041
 #define IDC_CTRL5TEXT4                  1042
 #define IDC_CTRLESC                     1042
-#define IDC_CTRL7TEXT2                  1043
 #define IDC_CTRL9TEXT                   1043
+#define IDC_PROFILE01                   1045
+#define IDC_PROFILE03                   1046
+#define IDC_PROFILE08                   1047
+#define IDC_PROFILE02                   1048
+#define IDC_PROFILE05                   1049
+#define IDC_PROFILE06                   1050
+#define IDC_PROFILE04                   1051
+#define IDC_PROFILE09                   1052
+#define IDC_PROFILE07                   1053
+#define IDC_PROFILE10                   1054
 
 // Next default values for new objects
 // 
@@ -58,7 +68,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        132
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1040
+#define _APS_NEXT_CONTROL_VALUE         1046
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

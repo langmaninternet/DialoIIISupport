@@ -15,9 +15,15 @@ Features
 ------------
 + Auto use skill over time. 
 
-Send key and mouse click directly to Diablo III process
+F1 to auto left mouse click
 
-Delay is randomly
+F2 to auto skill 1 2 3 4 an healing Q
+
+F1 to auto right mouse click
+
+
+
+
 
 + Cube converter
 
@@ -30,15 +36,19 @@ CTRL + 9 if you want to clear the Inventory at the Blacksmith
 ESC or SPACE to Stop 
 
 
-Tính năng
+
+Tự động bấm skill theo thời gian
 ------------
-+ Tự động bấm skill theo thời gian. 
 
-Không bị chồng lấp khi sử dụng skill nên không bị leak mất skill nào
+Bật tool, vào game, bấm F1 để bật/tắt tự động bấm chuột trái
 
-Send key trực tiếp tới Diablo, không bị rối loạn khi ở màn hình hoặc các cửa số khác
+Bật tool, vào game, bấm F2 để bật/tắt tự động sử dụng skill ( dùng những skill mà bạn đã chọn Enable trong khung Skill của tool) 
 
-+ Hỗ trợ craft đồ từ cube
+Bật tool, vào game, bấm F3 để bật/tắt tự động bấm chuột phải
+
+
+Hỗ trợ craft đồ từ cube
+------------
 Craft 60 đồ vàng 1 lỗ (rare item) hoặc 30 đồ vàng 2 lỗ (rare item), xong ra cube, mở page 3 lên. 
 
 Xong sử dụng:

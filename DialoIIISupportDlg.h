@@ -56,4 +56,16 @@ public:
 	virtual void WinHelp(DWORD dwData, UINT nCmd = HELP_CONTEXT);
 
 	afx_msg void OnHelp();
+	afx_msg void OnKillfocusProfilename();
+	afx_msg void OnBnClickedProfile();
+	afx_msg void OnBnClickedProfile01();
+	afx_msg void OnBnClickedProfile02();
+	afx_msg void OnBnClickedProfile03();
+	afx_msg void OnBnClickedProfile04();
+	afx_msg void OnBnClickedProfile05();
+	afx_msg void OnBnClickedProfile06();
+	afx_msg void OnBnClickedProfile07();
+	afx_msg void OnBnClickedProfile08();
+	afx_msg void OnBnClickedProfile09();
+	afx_msg void OnBnClickedProfile10();
 };

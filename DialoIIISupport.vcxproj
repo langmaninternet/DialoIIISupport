@@ -78,7 +78,7 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>Build\$(Configuration)32Bit\</OutDir>
     <IntDir>Build\$(Configuration)32Bit\$(ProjectName)\</IntDir>
-    <TargetName>$(ProjectName)$(Configuration)32Bit</TargetName>
+    <TargetName>$(ProjectName)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -87,7 +87,7 @@
     <LinkIncremental>false</LinkIncremental>
     <OutDir>Build\$(Configuration)32Bit\</OutDir>
     <IntDir>Build\$(Configuration)32Bit\$(ProjectName)\</IntDir>
-    <TargetName>$(ProjectName)$(Configuration)32Bit</TargetName>
+    <TargetName>$(ProjectName)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
