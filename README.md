@@ -14,7 +14,9 @@ https://github.com/langmaninternet/DialoIIISupport
 Features
 ------------
 + Auto use skill over time. 
+
 Send key and mouse click directly to Diablo III process
+
 Delay is randomly
 
 + Cube converter
