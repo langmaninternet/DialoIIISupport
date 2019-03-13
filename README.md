@@ -1,7 +1,7 @@
 # Dialo III Support tool
 An open-source Dialo III Support tool
 
-Link download
+Link download (Source code + Tool)
 ------------
 https://github.com/langmaninternet/DialoIIISupport/archive/master.zip
 
