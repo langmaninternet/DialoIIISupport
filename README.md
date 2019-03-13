@@ -15,7 +15,6 @@ https://github.com/langmaninternet/DialoIIISupport
 
 Features : Auto use skill over time
 ------------
-+ Auto use skill over time. 
 
 F1 to auto left mouse click
 
@@ -29,7 +28,11 @@ F3 to auto right mouse click
 Features : Cube converter
 ------------
 
-Craft 30/60 rare item, go to Cube, open page 3. Press CTRL + 5 for 1 slot items,  CTRL + 6 for 2 slot items .
+Craft 30/60 rare item, go to Cube, open page 3. 
+
+Press CTRL + 5 for 1 slot items,  
+
+CTRL + 6 for 2 slot items .
 
 CTRL + 7 to drop all item in Inventory to ground
 
