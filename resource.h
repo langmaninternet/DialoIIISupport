@@ -49,6 +49,8 @@
 #define IDC_CTRL7TEXT                   1041
 #define IDC_CTRL5TEXT4                  1042
 #define IDC_CTRLESC                     1042
+#define IDC_CTRL7TEXT2                  1043
+#define IDC_CTRL9TEXT                   1043
 
 // Next default values for new objects
 // 
