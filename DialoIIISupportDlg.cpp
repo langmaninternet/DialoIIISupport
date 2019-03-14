@@ -827,7 +827,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 						{
 							if (flagValidForSendSpace)
 							{
-								SendD3Key(VK_SPACE);
+								if (d3Config.autoSpaceEnable) SendD3Key(VK_SPACE);
 								flagValidForSendSpace = false;
 							}
 							SendD3Key(d3Config.keySKill01);
@@ -841,7 +841,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 						{
 							if (flagValidForSendSpace)
 							{
-								SendD3Key(VK_SPACE);
+								if (d3Config.autoSpaceEnable) SendD3Key(VK_SPACE);
 								flagValidForSendSpace = false;
 							}
 							SendD3Key(d3Config.keySKill02);
@@ -855,7 +855,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 						{
 							if (flagValidForSendSpace)
 							{
-								SendD3Key(VK_SPACE);
+								if (d3Config.autoSpaceEnable) SendD3Key(VK_SPACE);
 								flagValidForSendSpace = false;
 							}
 							SendD3Key(d3Config.keySKill03);
@@ -869,7 +869,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 						{
 							if (flagValidForSendSpace)
 							{
-								SendD3Key(VK_SPACE);
+								if (d3Config.autoSpaceEnable) SendD3Key(VK_SPACE);
 								flagValidForSendSpace = false;
 							}
 							SendD3Key(d3Config.keySKill04);
@@ -883,7 +883,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 						{
 							if (flagValidForSendSpace)
 							{
-								SendD3Key(VK_SPACE);
+								if (d3Config.autoSpaceEnable) SendD3Key(VK_SPACE);
 								flagValidForSendSpace = false;
 							}
 							SendD3Key(d3Config.keyHealing);
