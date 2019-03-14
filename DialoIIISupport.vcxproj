@@ -85,7 +85,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>Build\$(Configuration)32Bit\</OutDir>
+    <OutDir>FinalRelease\</OutDir>
     <IntDir>Build\$(Configuration)32Bit\$(ProjectName)\</IntDir>
     <TargetName>$(ProjectName)</TargetName>
   </PropertyGroup>

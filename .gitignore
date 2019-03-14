@@ -23,6 +23,11 @@ bld/
 [Ll]og/
 *.bin
 Build/
+DialoIIISupport.exp
+DialoIIISupport.iobj
+DialoIIISupport.ipdb
+DialoIIISupport.lib
+DialoIIISupport.pdb
 
 
 #QuangBT ---------------------------------------------------------------------------------------------------------
