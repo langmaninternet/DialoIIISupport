@@ -47,6 +47,13 @@ struct DialoIIISupportConfig
 	int		profileskill04Enable[maxProfileNumber + 1];
 	int		profilehealingEnable[maxProfileNumber + 1];
 	int		profileautoSpaceEnable[maxProfileNumber + 1];
+
+
+	wchar_t	keySKill01;
+	wchar_t	keySKill02;
+	wchar_t	keySKill03;
+	wchar_t	keySKill04;
+	wchar_t keySpace;
 };
 DialoIIISupportConfig d3Config;
 wchar_t savePath[3000] = { 0 };
@@ -101,6 +108,40 @@ void ValidateD3Config(void)
 		if (d3Config.profilehealingEnable[iprofile] != 0) d3Config.profilehealingEnable[iprofile] = 1;
 		if (d3Config.profileautoSpaceEnable[iprofile] != 0) d3Config.profileautoSpaceEnable[iprofile] = 1;
 	}
+
+
+	if ((d3Config.keySKill01 >= 'A' && d3Config.keySKill01 <= 'Z')
+		|| (d3Config.keySKill01 >= '0' && d3Config.keySKill01 <= '9')
+		|| d3Config.keySKill01 == ' ')
+	{
+		d3Config.keySKill01 = '1';
+	}
+	if ((d3Config.keySKill02 >= 'A' && d3Config.keySKill02 <= 'Z')
+		|| (d3Config.keySKill02 >= '0' && d3Config.keySKill02 <= '9')
+		|| d3Config.keySKill02 == ' ')
+	{
+		d3Config.keySKill02 = '2';
+	}
+	if ((d3Config.keySKill03 >= 'A' && d3Config.keySKill03 <= 'Z')
+		|| (d3Config.keySKill03 >= '0' && d3Config.keySKill03 <= '9')
+		|| d3Config.keySKill03 == ' ')
+	{
+		d3Config.keySKill03 = '3';
+	}
+	if ((d3Config.keySKill04 >= 'A' && d3Config.keySKill04 <= 'Z')
+		|| (d3Config.keySKill04 >= '0' && d3Config.keySKill04 <= '9')
+		|| d3Config.keySKill04 == ' ')
+	{
+		d3Config.keySKill04 = '4';
+	}
+	if ((d3Config.keySpace >= 'A' && d3Config.keySpace <= 'Z')
+		|| (d3Config.keySpace >= '0' && d3Config.keySpace <= '9')
+		|| d3Config.keySpace == ' ')
+	{
+		d3Config.keySpace = ' ';
+	}
+
+
 }
 const int	timerDelay = 50/*ms*/;
 bool		flagOnF1 = false;
@@ -1505,3 +1546,5 @@ void CDialoIIISupportDlg::OnBnClickedProfile10()
 	d3Config.currentProfile = 9;
 	OnBnClickedProfile();
 }
+
+
