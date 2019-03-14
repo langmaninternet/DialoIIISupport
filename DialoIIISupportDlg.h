@@ -68,4 +68,9 @@ public:
 	afx_msg void OnBnClickedProfile08();
 	afx_msg void OnBnClickedProfile09();
 	afx_msg void OnBnClickedProfile10();
+	afx_msg void OnKillfocusSkillkey01();
+	afx_msg void OnKillfocusSkillkey02();
+	afx_msg void OnKillfocusSkillkey03();
+	afx_msg void OnKillfocusSkillkey04();
+	afx_msg void OnKillfocusHealingkey();
 };

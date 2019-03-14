@@ -53,6 +53,7 @@ struct DialoIIISupportConfig
 	wchar_t	keySKill02;
 	wchar_t	keySKill03;
 	wchar_t	keySKill04;
+	wchar_t	keyHealing;
 	wchar_t keySpace;
 };
 DialoIIISupportConfig d3Config;
@@ -110,33 +111,39 @@ void ValidateD3Config(void)
 	}
 
 
-	if ((d3Config.keySKill01 >= 'A' && d3Config.keySKill01 <= 'Z')
+	if (!((d3Config.keySKill01 >= 'A' && d3Config.keySKill01 <= 'Z')
 		|| (d3Config.keySKill01 >= '0' && d3Config.keySKill01 <= '9')
-		|| d3Config.keySKill01 == ' ')
+		|| d3Config.keySKill01 == ' '))
 	{
 		d3Config.keySKill01 = '1';
 	}
-	if ((d3Config.keySKill02 >= 'A' && d3Config.keySKill02 <= 'Z')
+	if (!((d3Config.keySKill02 >= 'A' && d3Config.keySKill02 <= 'Z')
 		|| (d3Config.keySKill02 >= '0' && d3Config.keySKill02 <= '9')
-		|| d3Config.keySKill02 == ' ')
+		|| d3Config.keySKill02 == ' '))
 	{
 		d3Config.keySKill02 = '2';
 	}
-	if ((d3Config.keySKill03 >= 'A' && d3Config.keySKill03 <= 'Z')
+	if (!((d3Config.keySKill03 >= 'A' && d3Config.keySKill03 <= 'Z')
 		|| (d3Config.keySKill03 >= '0' && d3Config.keySKill03 <= '9')
-		|| d3Config.keySKill03 == ' ')
+		|| d3Config.keySKill03 == ' '))
 	{
 		d3Config.keySKill03 = '3';
 	}
-	if ((d3Config.keySKill04 >= 'A' && d3Config.keySKill04 <= 'Z')
+	if (!((d3Config.keySKill04 >= 'A' && d3Config.keySKill04 <= 'Z')
 		|| (d3Config.keySKill04 >= '0' && d3Config.keySKill04 <= '9')
-		|| d3Config.keySKill04 == ' ')
+		|| d3Config.keySKill04 == ' '))
 	{
 		d3Config.keySKill04 = '4';
 	}
-	if ((d3Config.keySpace >= 'A' && d3Config.keySpace <= 'Z')
+	if (!((d3Config.keyHealing >= 'A' && d3Config.keyHealing <= 'Z')
+		|| (d3Config.keyHealing >= '0' && d3Config.keyHealing <= '9')
+		|| d3Config.keyHealing == ' '))
+	{
+		d3Config.keyHealing = 'Q';
+	}
+	if (!((d3Config.keySpace >= 'A' && d3Config.keySpace <= 'Z')
 		|| (d3Config.keySpace >= '0' && d3Config.keySpace <= '9')
-		|| d3Config.keySpace == ' ')
+		|| d3Config.keySpace == ' '))
 	{
 		d3Config.keySpace = ' ';
 	}
@@ -530,6 +537,11 @@ BEGIN_MESSAGE_MAP(CDialoIIISupportDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_PROFILE08, &CDialoIIISupportDlg::OnBnClickedProfile08)
 	ON_BN_CLICKED(IDC_PROFILE09, &CDialoIIISupportDlg::OnBnClickedProfile09)
 	ON_BN_CLICKED(IDC_PROFILE10, &CDialoIIISupportDlg::OnBnClickedProfile10)
+	ON_EN_KILLFOCUS(IDC_SKILLKEY01, &CDialoIIISupportDlg::OnKillfocusSkillkey01)
+	ON_EN_KILLFOCUS(IDC_SKILLKEY02, &CDialoIIISupportDlg::OnKillfocusSkillkey02)
+	ON_EN_KILLFOCUS(IDC_SKILLKEY03, &CDialoIIISupportDlg::OnKillfocusSkillkey03)
+	ON_EN_KILLFOCUS(IDC_SKILLKEY04, &CDialoIIISupportDlg::OnKillfocusSkillkey04)
+	ON_EN_KILLFOCUS(IDC_HEALINGKEY, &CDialoIIISupportDlg::OnKillfocusHealingkey)
 END_MESSAGE_MAP()
 
 
@@ -650,6 +662,23 @@ BOOL CDialoIIISupportDlg::OnInitDialog()
 	((CButton*)GetDlgItem(IDC_SKILL04CHECK))->SetCheck(d3Config.skill04Enable);
 	((CButton*)GetDlgItem(IDC_HEALINGCHECK))->SetCheck(d3Config.healingEnable);
 	((CButton*)GetDlgItem(IDC_SPACECHECK))->SetCheck(d3Config.healingEnable);
+
+
+	swprintf_s(buffer, L"%lc", d3Config.keySKill01);
+	GetDlgItem(IDC_SKILLKEY01)->SetWindowText(buffer);
+
+	swprintf_s(buffer, L"%lc", d3Config.keySKill02);
+	GetDlgItem(IDC_SKILLKEY02)->SetWindowText(buffer);
+
+	swprintf_s(buffer, L"%lc", d3Config.keySKill03);
+	GetDlgItem(IDC_SKILLKEY03)->SetWindowText(buffer);
+
+	swprintf_s(buffer, L"%lc", d3Config.keySKill04);
+	GetDlgItem(IDC_SKILLKEY04)->SetWindowText(buffer);
+
+	swprintf_s(buffer, L"%lc", d3Config.keyHealing);
+	GetDlgItem(IDC_HEALINGKEY)->SetWindowText(buffer);
+
 
 
 	for (int iprofile = 0; iprofile < maxProfileNumber; iprofile++)
@@ -801,7 +830,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 								SendD3Key(VK_SPACE);
 								flagValidForSendSpace = false;
 							}
-							SendD3Key(0x31);
+							SendD3Key(d3Config.keySKill01);
 							skillSlot01Cooldown = 0;
 						}
 					}
@@ -815,7 +844,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 								SendD3Key(VK_SPACE);
 								flagValidForSendSpace = false;
 							}
-							SendD3Key(0x32);
+							SendD3Key(d3Config.keySKill02);
 							skillSlot02Cooldown = 0;
 						}
 					}
@@ -829,7 +858,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 								SendD3Key(VK_SPACE);
 								flagValidForSendSpace = false;
 							}
-							SendD3Key(0x33);
+							SendD3Key(d3Config.keySKill03);
 							skillSlot03Cooldown = 0;
 						}
 					}
@@ -843,7 +872,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 								SendD3Key(VK_SPACE);
 								flagValidForSendSpace = false;
 							}
-							SendD3Key(0x34);
+							SendD3Key(d3Config.keySKill04);
 							skillSlot04Cooldown = 0;
 						}
 					}
@@ -857,7 +886,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 								SendD3Key(VK_SPACE);
 								flagValidForSendSpace = false;
 							}
-							SendD3Key(0x51);
+							SendD3Key(d3Config.keyHealing);
 							healingCooldown = 0;
 						}
 					}
@@ -1264,6 +1293,185 @@ void CDialoIIISupportDlg::OnKillfocusHealingtime()
 		}
 	}
 }
+void CDialoIIISupportDlg::OnKillfocusSkillkey01()
+{
+	int changeID = IDC_SKILLKEY01;
+	wchar_t bufferText[1000] = { 0 };
+	GetDlgItem(changeID)->GetWindowTextW(bufferText, 999);
+	int newValue = bufferText[0];
+	if (newValue >= 'a' && newValue <= 'z') newValue = 'A' + newValue - 'a';
+	if ((newValue >= 'A' && newValue <= 'Z')
+		|| (newValue >= '0' && newValue <= '9')
+		|| newValue == ' ')
+	{
+
+
+		if (newValue != d3Config.keySKill01)
+		{
+			d3Config.keySKill01 = newValue;
+
+			CFile saveFile;
+			if (saveFile.Open(savePath, CFile::modeCreate | CFile::modeWrite))
+			{
+				saveFile.Write(&d3Config, sizeof(d3Config));
+				saveFile.Close();
+			}
+		}
+	}
+	else
+	{
+		static int flagAlreadyWarning = 0;
+		if (flagAlreadyWarning == 0)
+		{
+			MessageBoxW(L"Only allow : ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
+			flagAlreadyWarning = 1;
+		}
+	}
+	swprintf_s(bufferText, L"%lc", d3Config.keySKill01);
+	GetDlgItem(changeID)->SetWindowText(bufferText);
+}
+void CDialoIIISupportDlg::OnKillfocusSkillkey02()
+{
+	int changeID = IDC_SKILLKEY02;
+	wchar_t bufferText[1000] = { 0 };
+	GetDlgItem(changeID)->GetWindowTextW(bufferText, 999);
+	int newValue = bufferText[0];
+	if (newValue >= 'a' && newValue <= 'z') newValue = 'A' + newValue - 'a';
+	if ((newValue >= 'A' && newValue <= 'Z')
+		|| (newValue >= '0' && newValue <= '9')
+		|| newValue == ' ')
+	{
+
+		if (newValue != d3Config.keySKill02)
+		{
+			d3Config.keySKill02 = newValue;
+
+			CFile saveFile;
+			if (saveFile.Open(savePath, CFile::modeCreate | CFile::modeWrite))
+			{
+				saveFile.Write(&d3Config, sizeof(d3Config));
+				saveFile.Close();
+			}
+		}
+	}
+	else
+	{
+		static int flagAlreadyWarning = 0;
+		if (flagAlreadyWarning == 0)
+		{
+			MessageBoxW(L"Only allow : ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
+			flagAlreadyWarning = 1;
+		}
+	}
+	swprintf_s(bufferText, L"%lc", d3Config.keySKill02);
+	GetDlgItem(changeID)->SetWindowText(bufferText);
+}
+void CDialoIIISupportDlg::OnKillfocusSkillkey03()
+{
+	int changeID = IDC_SKILLKEY03;
+	wchar_t bufferText[1000] = { 0 };
+	GetDlgItem(changeID)->GetWindowTextW(bufferText, 999);
+	int newValue = bufferText[0];
+	if (newValue >= 'a' && newValue <= 'z') newValue = 'A' + newValue - 'a';
+	if ((newValue >= 'A' && newValue <= 'Z')
+		|| (newValue >= '0' && newValue <= '9')
+		|| newValue == ' ')
+	{
+
+		if (newValue != d3Config.keySKill03)
+		{
+			d3Config.keySKill03 = newValue;
+
+			CFile saveFile;
+			if (saveFile.Open(savePath, CFile::modeCreate | CFile::modeWrite))
+			{
+				saveFile.Write(&d3Config, sizeof(d3Config));
+				saveFile.Close();
+			}
+		}
+	}
+	else
+	{
+		static int flagAlreadyWarning = 0;
+		if (flagAlreadyWarning == 0)
+		{
+			MessageBoxW(L"Only allow : ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
+			flagAlreadyWarning = 1;
+		}
+	}
+	swprintf_s(bufferText, L"%lc", d3Config.keySKill03);
+	GetDlgItem(changeID)->SetWindowText(bufferText);
+}
+void CDialoIIISupportDlg::OnKillfocusSkillkey04()
+{
+	int changeID = IDC_SKILLKEY04;
+	wchar_t bufferText[1000] = { 0 };
+	GetDlgItem(changeID)->GetWindowTextW(bufferText, 999);
+	int newValue = bufferText[0];
+	if (newValue >= 'a' && newValue <= 'z') newValue = 'A' + newValue - 'a';
+	if ((newValue >= 'A' && newValue <= 'Z')
+		|| (newValue >= '0' && newValue <= '9')
+		|| newValue == ' ')
+	{
+
+		if (newValue != d3Config.keySKill04)
+		{
+			d3Config.keySKill04 = newValue;
+
+			CFile saveFile;
+			if (saveFile.Open(savePath, CFile::modeCreate | CFile::modeWrite))
+			{
+				saveFile.Write(&d3Config, sizeof(d3Config));
+				saveFile.Close();
+			}
+		}
+	}
+	else
+	{
+		static int flagAlreadyWarning = 0;
+		if (flagAlreadyWarning == 0)
+		{
+			MessageBoxW(L"Only allow : ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
+			flagAlreadyWarning = 1;
+		}
+	}
+	swprintf_s(bufferText, L"%lc", d3Config.keySKill04);
+	GetDlgItem(changeID)->SetWindowText(bufferText);
+}
+void CDialoIIISupportDlg::OnKillfocusHealingkey()
+{
+	int changeID = IDC_HEALINGKEY;
+	wchar_t bufferText[1000] = { 0 };
+	GetDlgItem(changeID)->GetWindowTextW(bufferText, 999);
+	int newValue = bufferText[0];
+	if (newValue >= 'a' && newValue <= 'z') newValue = 'A' + newValue - 'a';
+	if ((newValue >= 'A' && newValue <= 'Z')
+		|| (newValue >= '0' && newValue <= '9')
+		|| newValue == ' ')
+	{
+		if (newValue != d3Config.keyHealing)
+		{
+			d3Config.keyHealing = newValue;
+			CFile saveFile;
+			if (saveFile.Open(savePath, CFile::modeCreate | CFile::modeWrite))
+			{
+				saveFile.Write(&d3Config, sizeof(d3Config));
+				saveFile.Close();
+			}
+		}
+	}
+	else
+	{
+		static int flagAlreadyWarning = 0;
+		if (flagAlreadyWarning == 0)
+		{
+			MessageBoxW(L"Only allow : ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
+			flagAlreadyWarning = 1;
+		}
+	}
+	swprintf_s(bufferText, L"%lc", d3Config.keyHealing);
+	GetDlgItem(changeID)->SetWindowText(bufferText);
+}
 void CDialoIIISupportDlg::OnClickedSkill01check()
 {
 	d3Config.skill01Enable = !d3Config.skill01Enable;
@@ -1404,8 +1612,6 @@ void CDialoIIISupportDlg::OnKillfocusProfilename()
 	currentProfileName += L"*";
 	GetDlgItem(profileID[d3Config.currentProfile])->SetWindowTextW(currentProfileName);
 }
-
-
 void CDialoIIISupportDlg::OnBnClickedProfile()
 {
 	d3Config.leftMouseTime = d3Config.profileleftMouseTime[d3Config.currentProfile];
