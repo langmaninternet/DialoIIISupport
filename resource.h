@@ -35,11 +35,14 @@
 #define IDC_LEFTMOUSETEXTMS             1034
 #define IDC_RIGHTMOUSETEXT              1035
 #define IDC_RIGHTMOUSETEXTMS            1036
+#define IDC_SKILL01TEXT2                1037
+#define IDC_SKILL02TEXT2                1038
 #define IDC_CTRL5TEXT                   1039
 #define IDC_CTRL6TEXT                   1040
 #define IDC_CTRL7TEXT                   1041
 #define IDC_CTRLESC                     1042
 #define IDC_CTRL9TEXT                   1043
+#define IDC_SKILL03TEXT2                1044
 #define IDC_PROFILE01                   1045
 #define IDC_PROFILE03                   1046
 #define IDC_PROFILE08                   1047
@@ -50,6 +53,10 @@
 #define IDC_PROFILE09                   1052
 #define IDC_PROFILE07                   1053
 #define IDC_PROFILE10                   1054
+#define IDC_SKILL04TEXT2                1055
+#define IDC_SKILL01TIME2                1056
+#define IDC_SKILL01TIME3                1057
+#define IDC_SKILL01TIME4                1058
 #define IDC_SKILLKEY01                  1059
 #define IDC_SKILLKEY02                  1060
 #define IDC_SKILLKEY03                  1061
@@ -58,6 +65,7 @@
 #define IDC_HEALLINGKEY                 1063
 #define IDC_HEALINGKEY                  1063
 #define IDC_SKILLKEY6                   1064
+#define IDC_SKILL01TIME5                1064
 #define IDC_LIST1                       1065
 #define IDC_COMBO1                      1066
 
