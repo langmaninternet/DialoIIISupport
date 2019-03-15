@@ -1124,9 +1124,8 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 						{
 							if (flagOnCtrl9) SetD3Mouse(xIventoryArray[iitem], yIventoryArray[iitem]);
 							if (flagOnCtrl9) SendD3LeftMouseClick();
-							if (flagOnCtrl9) Sleep(100 + (rand() % 10));
-							if (flagOnCtrl9) SendD3Key(VK_RETURN);
 							if (flagOnCtrl9) Sleep(50 + (rand() % 5));
+							if (flagOnCtrl9) SendD3Key(VK_RETURN);
 						}
 						flagOnCtrl9 = false;
 					}
