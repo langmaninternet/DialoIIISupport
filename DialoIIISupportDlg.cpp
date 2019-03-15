@@ -1034,7 +1034,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 							if (flagOnCtrl5) SendD3LeftMouseClick();
 							if (flagOnCtrl5) Sleep(50 + (rand() % 5));
 
-							Sleep(200 + (rand() % 10));
+							Sleep(50 + (rand() % 5));
 
 							if (flagOnCtrl5) SetD3Mouse(xLeftPage, yLeftPage);
 							if (flagOnCtrl5) SendD3LeftMouseClick();
@@ -1067,7 +1067,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 							if (flagOnCtrl6) SendD3LeftMouseClick();
 							if (flagOnCtrl6) Sleep(50 + (rand() % 5));
 
-							Sleep(200 + (rand() % 10));
+							Sleep(50 + (rand() % 5));
 
 							if (flagOnCtrl6) SetD3Mouse(xLeftPage, yLeftPage);
 							if (flagOnCtrl6) SendD3LeftMouseClick();
