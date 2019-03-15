@@ -1034,7 +1034,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 							if (flagOnCtrl5) SendD3LeftMouseClick();
 							if (flagOnCtrl5) Sleep(50 + (rand() % 5));
 
-							Sleep(50 + (rand() % 5));
+							Sleep(250 + (rand() % 10));
 
 							if (flagOnCtrl5) SetD3Mouse(xLeftPage, yLeftPage);
 							if (flagOnCtrl5) SendD3LeftMouseClick();
@@ -1067,7 +1067,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 							if (flagOnCtrl6) SendD3LeftMouseClick();
 							if (flagOnCtrl6) Sleep(50 + (rand() % 5));
 
-							Sleep(50 + (rand() % 5));
+							Sleep(250 + (rand() % 10));
 
 							if (flagOnCtrl6) SetD3Mouse(xLeftPage, yLeftPage);
 							if (flagOnCtrl6) SendD3LeftMouseClick();
@@ -1124,8 +1124,9 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 						{
 							if (flagOnCtrl9) SetD3Mouse(xIventoryArray[iitem], yIventoryArray[iitem]);
 							if (flagOnCtrl9) SendD3LeftMouseClick();
-							if (flagOnCtrl9) Sleep(50 + (rand() % 5));
+							if (flagOnCtrl9) Sleep(100 + (rand() % 10));
 							if (flagOnCtrl9) SendD3Key(VK_RETURN);
+							if (flagOnCtrl9) Sleep(50 + (rand() % 5));
 						}
 						flagOnCtrl9 = false;
 					}
