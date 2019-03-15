@@ -989,8 +989,8 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 					int xSalTab01 = 517 * d3Scale;
 					int ySalTab01 = 223 * d3Scale;
 
-					int xSalTab01 = 517 * d3Scale;
-					int ySalTab01 = 620 * d3Scale;
+					int xSalTab02 = 517 * d3Scale;
+					int ySalTab02 = 620 * d3Scale;
 
 
 
@@ -1113,8 +1113,9 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 					{
 						if (flagOnCtrl9) SetD3Mouse(xSalTab01, ySalTab01);
 						if (flagOnCtrl9) SendD3LeftMouseClick();
-						if (flagOnCtrl9) SetD3Mouse(xSalTab01, ySalTab01);
+						if (flagOnCtrl9) SetD3Mouse(xSalTab02, ySalTab02);
 						if (flagOnCtrl9) SendD3LeftMouseClick();
+
 
 						if (flagOnCtrl9) SetD3Mouse(xSalvage, ySalvage);
 						if (flagOnCtrl9) SendD3LeftMouseClick();
