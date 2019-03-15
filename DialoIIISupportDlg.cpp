@@ -990,7 +990,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 					int ySalTab01 = 223 * d3Scale;
 
 					int xSalTab02 = 517 * d3Scale;
-					int ySalTab02 = 620 * d3Scale;
+					int ySalTab02 = 500 * d3Scale;
 
 
 
