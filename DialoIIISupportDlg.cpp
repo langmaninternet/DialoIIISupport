@@ -986,6 +986,14 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 					double		yRightPage = 840 * d3Scale;
 
 
+					int xSalTab01 = 517 * d3Scale;
+					int ySalTab01 = 223 * d3Scale;
+
+					int xSalTab01 = 517 * d3Scale;
+					int ySalTab01 = 620 * d3Scale;
+
+
+
 					if (xIventoryArray[0] == 0 && yIventoryArray[0] == 0)
 					{
 						double		xInventory = (d3Width - (1920.0 - 1423.0) * d3Scale);
@@ -1103,8 +1111,11 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 					/************************************************************************/
 					if (flagOnCtrl9)
 					{
-						if (flagOnCtrl9) SetD3Mouse(517, 223);
-						if (flagOnCtrl9) SetD3Mouse(517, 620);
+						if (flagOnCtrl9) SetD3Mouse(xSalTab01, ySalTab01);
+						if (flagOnCtrl9) SendD3LeftMouseClick();
+						if (flagOnCtrl9) SetD3Mouse(xSalTab01, ySalTab01);
+						if (flagOnCtrl9) SendD3LeftMouseClick();
+
 						if (flagOnCtrl9) SetD3Mouse(xSalvage, ySalvage);
 						if (flagOnCtrl9) SendD3LeftMouseClick();
 						if (flagOnCtrl9) Sleep(50 + (rand() % 5));
