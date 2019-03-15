@@ -1103,6 +1103,8 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 					/************************************************************************/
 					if (flagOnCtrl9)
 					{
+						if (flagOnCtrl9) SetD3Mouse(517, 223);
+						if (flagOnCtrl9) SetD3Mouse(517, 620);
 						if (flagOnCtrl9) SetD3Mouse(xSalvage, ySalvage);
 						if (flagOnCtrl9) SendD3LeftMouseClick();
 						if (flagOnCtrl9) Sleep(50 + (rand() % 5));
