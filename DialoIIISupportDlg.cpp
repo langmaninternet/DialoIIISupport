@@ -980,19 +980,23 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 
 					int			xIventoryArray[60] = { 0 };
 					int			yIventoryArray[60] = { 0 };
-					double		xLeftPage = 583 * d3Scale;
-					double		yLeftPage = 840 * d3Scale;
-					double		xRightPage = 852 * d3Scale;
-					double		yRightPage = 840 * d3Scale;
+					double		xCubeLeftPage = 583 * d3Scale;
+					double		yCubeLeftPage = 840 * d3Scale;
+					double		xCubeRightPage = 852 * d3Scale;
+					double		yCubeRightPage = 840 * d3Scale;
 
 
-					int xSalTab01 = 517 * d3Scale;
-					int ySalTab01 = 223 * d3Scale;
+					int xForgeWeaponTable = 517 * d3Scale;
+					int yForgeWeaponTable = 223 * d3Scale;
 
-					int xSalTab02 = 517 * d3Scale;
-					int ySalTab02 = 500 * d3Scale;
+					int xSalvageTable = 517 * d3Scale;
+					int ySalvageTable = 500 * d3Scale;
 
+					int xRepairTable = 517 * d3Scale;
+					int yRepairTable = 620 * d3Scale;
 
+					int xRepairButton = 264 * d3Scale;
+					int yRepairButton = 594 * d3Scale;
 
 					if (xIventoryArray[0] == 0 && yIventoryArray[0] == 0)
 					{
@@ -1036,11 +1040,11 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 
 							Sleep(250 + (rand() % 10));
 
-							if (flagOnCtrl5) SetD3Mouse(xLeftPage, yLeftPage);
+							if (flagOnCtrl5) SetD3Mouse(xCubeLeftPage, yCubeLeftPage);
 							if (flagOnCtrl5) SendD3LeftMouseClick();
 							if (flagOnCtrl5) Sleep(50 + (rand() % 5));
 
-							if (flagOnCtrl5) SetD3Mouse(xRightPage, yRightPage);
+							if (flagOnCtrl5) SetD3Mouse(xCubeRightPage, yCubeRightPage);
 							if (flagOnCtrl5) SendD3LeftMouseClick();
 							if (flagOnCtrl5) Sleep(50 + (rand() % 5));
 						}
@@ -1069,11 +1073,11 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 
 							Sleep(250 + (rand() % 10));
 
-							if (flagOnCtrl6) SetD3Mouse(xLeftPage, yLeftPage);
+							if (flagOnCtrl6) SetD3Mouse(xCubeLeftPage, yCubeLeftPage);
 							if (flagOnCtrl6) SendD3LeftMouseClick();
 							if (flagOnCtrl6) Sleep(50 + (rand() % 5));
 
-							if (flagOnCtrl6) SetD3Mouse(xRightPage, yRightPage);
+							if (flagOnCtrl6) SetD3Mouse(xCubeRightPage, yCubeRightPage);
 							if (flagOnCtrl6) SendD3LeftMouseClick();
 							if (flagOnCtrl6) Sleep(50 + (rand() % 5));
 
@@ -1111,11 +1115,10 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 					/************************************************************************/
 					if (flagOnCtrl9)
 					{
-						if (flagOnCtrl9) SetD3Mouse(xSalTab01, ySalTab01);
+						if (flagOnCtrl9) SetD3Mouse(xForgeWeaponTable, yForgeWeaponTable);
 						if (flagOnCtrl9) SendD3LeftMouseClick();
-						if (flagOnCtrl9) SetD3Mouse(xSalTab02, ySalTab02);
+						if (flagOnCtrl9) SetD3Mouse(xSalvageTable, ySalvageTable);
 						if (flagOnCtrl9) SendD3LeftMouseClick();
-
 
 						if (flagOnCtrl9) SetD3Mouse(xSalvage, ySalvage);
 						if (flagOnCtrl9) SendD3LeftMouseClick();
@@ -1127,6 +1130,13 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 							if (flagOnCtrl9) Sleep(50 + (rand() % 5));
 							if (flagOnCtrl9) SendD3Key(VK_RETURN);
 						}
+
+						if (flagOnCtrl9) SetD3Mouse(xRepairTable, yRepairTable);
+						if (flagOnCtrl9) SendD3LeftMouseClick();
+
+						if (flagOnCtrl9) SetD3Mouse(xRepairButton, yRepairButton);
+						if (flagOnCtrl9) SendD3LeftMouseClick();
+
 						flagOnCtrl9 = false;
 					}
 
