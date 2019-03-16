@@ -661,7 +661,7 @@ BOOL CDialoIIISupportDlg::OnInitDialog()
 	((CButton*)GetDlgItem(IDC_SKILL03CHECK))->SetCheck(d3Config.skill03Enable);
 	((CButton*)GetDlgItem(IDC_SKILL04CHECK))->SetCheck(d3Config.skill04Enable);
 	((CButton*)GetDlgItem(IDC_HEALINGCHECK))->SetCheck(d3Config.healingEnable);
-	((CButton*)GetDlgItem(IDC_SPACECHECK))->SetCheck(d3Config.healingEnable);
+	((CButton*)GetDlgItem(IDC_SPACECHECK))->SetCheck(d3Config.autoSpaceEnable);
 
 
 	swprintf_s(buffer, L"%lc", d3Config.keySKill01);
@@ -1700,7 +1700,7 @@ void CDialoIIISupportDlg::OnBnClickedProfile()
 	((CButton*)GetDlgItem(IDC_SKILL03CHECK))->SetCheck(d3Config.skill03Enable);
 	((CButton*)GetDlgItem(IDC_SKILL04CHECK))->SetCheck(d3Config.skill04Enable);
 	((CButton*)GetDlgItem(IDC_HEALINGCHECK))->SetCheck(d3Config.healingEnable);
-	((CButton*)GetDlgItem(IDC_SPACECHECK))->SetCheck(d3Config.healingEnable);
+	((CButton*)GetDlgItem(IDC_SPACECHECK))->SetCheck(d3Config.autoSpaceEnable);
 
 
 
