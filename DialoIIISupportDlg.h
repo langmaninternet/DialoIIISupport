@@ -31,7 +31,7 @@ protected:
 	afx_msg HCURSOR OnQueryDragIcon();
 
 	UINT_PTR myTimerID;
-	afx_msg void OnTimer(UINT_PTR nIdEvent);
+	
 	
 
 
@@ -39,24 +39,26 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 public:
-	afx_msg void OnKillfocusLeftmousetime();
-	afx_msg void OnKillfocusRightmousetime();
-	afx_msg void OnKillfocusSkill01time();
-	afx_msg void OnKillfocusSkill02time();
-	afx_msg void OnKillfocusSkill03time();
-	afx_msg void OnKillfocusSkill04time();
-	afx_msg void OnKillfocusHealingtime();
-	afx_msg void OnClickedSkill01check();
-	afx_msg void OnClickedSkill02check();
-	afx_msg void OnClickedSkill03check();
-	afx_msg void OnClickedSkill04check();
-	afx_msg void OnClickedHealingcheck();
-	afx_msg void OnClickedSpacecheck();
-
 	virtual void WinHelp(DWORD dwData, UINT nCmd = HELP_CONTEXT);
-
 	afx_msg void OnHelp();
-	afx_msg void OnKillfocusProfilename();
+
+
+	afx_msg void OnTimer(UINT_PTR nIdEvent);
+	afx_msg void OnSaveConfig();
+	afx_msg void OnKillFocusLeftMouseTime();
+	afx_msg void OnKillFocusRightMouseTime();
+	afx_msg void OnKillFocusSkill01Time();
+	afx_msg void OnKillFocusSkill02Time();
+	afx_msg void OnKillFocusSkill03Time();
+	afx_msg void OnKillFocusSkill04Time();
+	afx_msg void OnKillFocusHealingTime();
+	afx_msg void OnClickedSkill01Check();
+	afx_msg void OnClickedSkill02Check();
+	afx_msg void OnClickedSkill03Check();
+	afx_msg void OnClickedSkill04Check();
+	afx_msg void OnClickedHealingCheck();
+	afx_msg void OnClickedSpaceCheck();
+	afx_msg void OnKillFocusProfileName();
 	afx_msg void OnBnClickedProfile();
 	afx_msg void OnBnClickedProfile01();
 	afx_msg void OnBnClickedProfile02();
@@ -68,10 +70,12 @@ public:
 	afx_msg void OnBnClickedProfile08();
 	afx_msg void OnBnClickedProfile09();
 	afx_msg void OnBnClickedProfile10();
-	afx_msg void OnKillfocusSkillkey01();
-	afx_msg void OnKillfocusSkillkey02();
-	afx_msg void OnKillfocusSkillkey03();
-	afx_msg void OnKillfocusSkillkey04();
-	afx_msg void OnKillfocusHealingkey();
+	afx_msg void OnKillFocusSkillKey(int changeID, wchar_t & keySkill);
+	afx_msg void OnKillFocusSkillKey01();
+	afx_msg void OnKillFocusSkillKey02();
+	afx_msg void OnKillFocusSkillKey03();
+	afx_msg void OnKillFocusSkillKey04();
+	afx_msg void OnKillfocusHealingKey();
 	afx_msg void OnBnClickedHelp();
+	afx_msg void OnBnClickedWizArchoncheck();
 };

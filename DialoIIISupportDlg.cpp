@@ -12,10 +12,23 @@
 #endif
 
 /************************************************************************/
-/*                                                                      */
+/* Struct                                                               */
 /************************************************************************/
-const int maxProfileNumber = 10;
-const int maxProfileNameLength = 15;
+const int	maxProfileNumber = 10;
+const int	maxProfileNameLength = 15;
+const int	profileID[maxProfileNumber] =
+{
+IDC_PROFILE01,
+IDC_PROFILE02,
+IDC_PROFILE03,
+IDC_PROFILE04,
+IDC_PROFILE05,
+IDC_PROFILE06,
+IDC_PROFILE07,
+IDC_PROFILE08,
+IDC_PROFILE09,
+IDC_PROFILE10,
+};
 struct DialoIIISupportConfig
 {
 	int		leftMouseTime;
@@ -56,9 +69,39 @@ struct DialoIIISupportConfig
 	wchar_t	keyHealing;
 	wchar_t keySpace;
 };
-DialoIIISupportConfig d3Config;
-wchar_t savePath[3000] = { 0 };
-void ValidateD3Config(void)
+
+
+
+/************************************************************************/
+/* Variable                                                             */
+/************************************************************************/
+DialoIIISupportConfig	d3Config;
+wchar_t					configSavePath[3000] = { 0 };
+
+const int				timerDelay = 50/*ms*/;
+bool					flagOnF1 = false;
+bool					flagOnF2 = false;
+bool					flagOnF3 = false;
+bool					flagOnCtrl5 = false;
+bool					flagOnCtrl6 = false;
+bool					flagOnCtrl7 = false;
+bool					flagOnCtrl9 = false;
+bool					flagOnProcess = false;
+int						leftMouseCooldown;
+int						rightMouseCooldown;
+int						skillSlot01Cooldown;
+int						skillSlot02Cooldown;
+int						skillSlot03Cooldown;
+int						skillSlot04Cooldown;
+int						healingCooldown;
+HHOOK					hGlobalHook;
+
+
+
+/************************************************************************/
+/* Process Function                                                     */
+/************************************************************************/
+void		ValidateD3Config(void)
 {
 	d3Config.leftMouseTime = int(round(d3Config.leftMouseTime / 50.0) * 50);
 	d3Config.rightMouseTime = int(round(d3Config.rightMouseTime / 50.0) * 50);
@@ -147,32 +190,7 @@ void ValidateD3Config(void)
 	{
 		d3Config.keySpace = ' ';
 	}
-
-
 }
-const int	timerDelay = 50/*ms*/;
-bool		flagOnF1 = false;
-bool		flagOnF2 = false;
-bool		flagOnF3 = false;
-
-bool		flagOnCtrl5 = false;
-bool		flagOnCtrl6 = false;
-bool		flagOnCtrl7 = false;
-bool		flagOnCtrl9 = false;
-bool		flagOnProcess = false;
-
-int			leftMouseCooldown;
-int			rightMouseCooldown;
-int			skillSlot01Cooldown;
-int			skillSlot02Cooldown;
-int			skillSlot03Cooldown;
-int			skillSlot04Cooldown;
-int			healingCooldown;
-HHOOK		hGlobalHook;
-/************************************************************************/
-/*                                                                      */
-/************************************************************************/
-#include <Windows.h>
 bool		IsD3WindowActive(void)
 {
 	HWND		currentHWD = GetForegroundWindow();
@@ -366,9 +384,53 @@ bool		ValidToSendD3Click(void)
 	}
 	return false;
 }
+void		ArchonStarPactSingle(const wchar_t meteorKey, const wchar_t channelingKey, const wchar_t archonKey, const wchar_t forceStandKey)
+{
+	const int repeatLparam = 0x00000063;
+	const int holdLparam = 0x40000000;
+	HWND d3Wnd = FindWindowW(L"D3 Main Window Class", L"Diablo III");
+	if (d3Wnd)
+	{
+		//Force-Stand
+		SendMessage(d3Wnd, WM_KEYDOWN, forceStandKey, repeatLparam);
+		Sleep(10);
+
+
+		//01. Cast meteor
+		SendMessage(d3Wnd, WM_KEYDOWN, meteorKey, 0);
+		Sleep(10);
+		SendMessage(d3Wnd, WM_KEYUP, meteorKey, 0);
+		Sleep(10);
+		SendMessage(d3Wnd, WM_KEYDOWN, forceStandKey, holdLparam);
+
+
+		//start Channeling 
+		SendMessage(d3Wnd, WM_KEYDOWN, channelingKey, repeatLparam);
+		Sleep(20);
+		for (int iloop = 0; iloop < 20; iloop++)
+		{
+			SendMessage(d3Wnd, WM_KEYDOWN, channelingKey, holdLparam);
+			Sleep(20);
+		}
+
+		//04. Archon
+		SendMessage(d3Wnd, WM_KEYDOWN, archonKey, 0);
+		Sleep(10);
+		SendMessage(d3Wnd, WM_KEYUP, archonKey, 0);
+		Sleep(10);
+		SendMessage(d3Wnd, WM_KEYDOWN, channelingKey, holdLparam);
+
+
+		//End Channeling 
+		Sleep(500);
+		SendMessage(d3Wnd, WM_KEYUP, channelingKey, 0);
+		SendMessage(d3Wnd, WM_KEYUP, forceStandKey, 0);
+	}
+
+}
 
 /************************************************************************/
-/*                                                                      */
+/* Hook                                                                 */
 /************************************************************************/
 extern "C" __declspec(dllexport) LRESULT CALLBACK HookProc(int nCode, WPARAM wParam, LPARAM lParam)
 {
@@ -500,15 +562,14 @@ extern "C" __declspec(dllexport) LRESULT CALLBACK HookProc(int nCode, WPARAM wPa
 
 
 
-
-
-// CDialoIIISupportDlg dialog
+/************************************************************************/
+/* MFC                                                                  */
+/************************************************************************/
 CDialoIIISupportDlg::CDialoIIISupportDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOIIISUPPORT_DIALOG, pParent)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
-
 void CDialoIIISupportDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
@@ -518,21 +579,21 @@ BEGIN_MESSAGE_MAP(CDialoIIISupportDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_WM_TIMER()
-	ON_EN_KILLFOCUS(IDC_LEFTMOUSETIME, &CDialoIIISupportDlg::OnKillfocusLeftmousetime)
-	ON_EN_KILLFOCUS(IDC_RIGHTMOUSETIME, &CDialoIIISupportDlg::OnKillfocusRightmousetime)
-	ON_EN_KILLFOCUS(IDC_SKILL01TIME, &CDialoIIISupportDlg::OnKillfocusSkill01time)
-	ON_EN_KILLFOCUS(IDC_SKILL02TIME, &CDialoIIISupportDlg::OnKillfocusSkill02time)
-	ON_EN_KILLFOCUS(IDC_SKILL03TIME, &CDialoIIISupportDlg::OnKillfocusSkill03time)
-	ON_EN_KILLFOCUS(IDC_SKILL04TIME, &CDialoIIISupportDlg::OnKillfocusSkill04time)
-	ON_EN_KILLFOCUS(IDC_HEALINGTIME, &CDialoIIISupportDlg::OnKillfocusHealingtime)
-	ON_BN_CLICKED(IDC_SKILL01CHECK, &CDialoIIISupportDlg::OnClickedSkill01check)
-	ON_BN_CLICKED(IDC_SKILL02CHECK, &CDialoIIISupportDlg::OnClickedSkill02check)
-	ON_BN_CLICKED(IDC_SKILL03CHECK, &CDialoIIISupportDlg::OnClickedSkill03check)
-	ON_BN_CLICKED(IDC_SKILL04CHECK, &CDialoIIISupportDlg::OnClickedSkill04check)
-	ON_BN_CLICKED(IDC_HEALINGCHECK, &CDialoIIISupportDlg::OnClickedHealingcheck)
-	ON_BN_CLICKED(IDC_SPACECHECK, &CDialoIIISupportDlg::OnClickedSpacecheck)
+	ON_EN_KILLFOCUS(IDC_LEFTMOUSETIME, &CDialoIIISupportDlg::OnKillFocusLeftMouseTime)
+	ON_EN_KILLFOCUS(IDC_RIGHTMOUSETIME, &CDialoIIISupportDlg::OnKillFocusRightMouseTime)
+	ON_EN_KILLFOCUS(IDC_SKILL01TIME, &CDialoIIISupportDlg::OnKillFocusSkill01Time)
+	ON_EN_KILLFOCUS(IDC_SKILL02TIME, &CDialoIIISupportDlg::OnKillFocusSkill02Time)
+	ON_EN_KILLFOCUS(IDC_SKILL03TIME, &CDialoIIISupportDlg::OnKillFocusSkill03Time)
+	ON_EN_KILLFOCUS(IDC_SKILL04TIME, &CDialoIIISupportDlg::OnKillFocusSkill04Time)
+	ON_EN_KILLFOCUS(IDC_HEALINGTIME, &CDialoIIISupportDlg::OnKillFocusHealingTime)
+	ON_BN_CLICKED(IDC_SKILL01CHECK, &CDialoIIISupportDlg::OnClickedSkill01Check)
+	ON_BN_CLICKED(IDC_SKILL02CHECK, &CDialoIIISupportDlg::OnClickedSkill02Check)
+	ON_BN_CLICKED(IDC_SKILL03CHECK, &CDialoIIISupportDlg::OnClickedSkill03Check)
+	ON_BN_CLICKED(IDC_SKILL04CHECK, &CDialoIIISupportDlg::OnClickedSkill04Check)
+	ON_BN_CLICKED(IDC_HEALINGCHECK, &CDialoIIISupportDlg::OnClickedHealingCheck)
+	ON_BN_CLICKED(IDC_SPACECHECK, &CDialoIIISupportDlg::OnClickedSpaceCheck)
 	ON_COMMAND(ID_HELP, &CDialoIIISupportDlg::OnHelp)
-	ON_EN_KILLFOCUS(IDC_PROFILENAME, &CDialoIIISupportDlg::OnKillfocusProfilename)
+	ON_EN_KILLFOCUS(IDC_PROFILENAME, &CDialoIIISupportDlg::OnKillFocusProfileName)
 	ON_BN_CLICKED(IDC_PROFILE01, &CDialoIIISupportDlg::OnBnClickedProfile01)
 	ON_BN_CLICKED(IDC_PROFILE02, &CDialoIIISupportDlg::OnBnClickedProfile02)
 	ON_BN_CLICKED(IDC_PROFILE03, &CDialoIIISupportDlg::OnBnClickedProfile03)
@@ -543,31 +604,14 @@ BEGIN_MESSAGE_MAP(CDialoIIISupportDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_PROFILE08, &CDialoIIISupportDlg::OnBnClickedProfile08)
 	ON_BN_CLICKED(IDC_PROFILE09, &CDialoIIISupportDlg::OnBnClickedProfile09)
 	ON_BN_CLICKED(IDC_PROFILE10, &CDialoIIISupportDlg::OnBnClickedProfile10)
-	ON_EN_KILLFOCUS(IDC_SKILLKEY01, &CDialoIIISupportDlg::OnKillfocusSkillkey01)
-	ON_EN_KILLFOCUS(IDC_SKILLKEY02, &CDialoIIISupportDlg::OnKillfocusSkillkey02)
-	ON_EN_KILLFOCUS(IDC_SKILLKEY03, &CDialoIIISupportDlg::OnKillfocusSkillkey03)
-	ON_EN_KILLFOCUS(IDC_SKILLKEY04, &CDialoIIISupportDlg::OnKillfocusSkillkey04)
-	ON_EN_KILLFOCUS(IDC_HEALINGKEY, &CDialoIIISupportDlg::OnKillfocusHealingkey)
+	ON_EN_KILLFOCUS(IDC_SKILLKEY01, &CDialoIIISupportDlg::OnKillFocusSkillKey01)
+	ON_EN_KILLFOCUS(IDC_SKILLKEY02, &CDialoIIISupportDlg::OnKillFocusSkillKey02)
+	ON_EN_KILLFOCUS(IDC_SKILLKEY03, &CDialoIIISupportDlg::OnKillFocusSkillKey03)
+	ON_EN_KILLFOCUS(IDC_SKILLKEY04, &CDialoIIISupportDlg::OnKillFocusSkillKey04)
+	ON_EN_KILLFOCUS(IDC_HEALINGKEY, &CDialoIIISupportDlg::OnKillfocusHealingKey)
 	ON_BN_CLICKED(IDC_HELP, &CDialoIIISupportDlg::OnBnClickedHelp)
+	ON_BN_CLICKED(IDC_WIZARCHONCHECK, &CDialoIIISupportDlg::OnBnClickedWizArchoncheck)
 END_MESSAGE_MAP()
-
-
-// CDialoIIISupportDlg message handlers
-
-int profileID[maxProfileNumber] =
-{
-IDC_PROFILE01,
-IDC_PROFILE02,
-IDC_PROFILE03,
-IDC_PROFILE04,
-IDC_PROFILE05,
-IDC_PROFILE06,
-IDC_PROFILE07,
-IDC_PROFILE08,
-IDC_PROFILE09,
-IDC_PROFILE10,
-};
-
 
 BOOL CDialoIIISupportDlg::OnInitDialog()
 {
@@ -607,21 +651,16 @@ BOOL CDialoIIISupportDlg::OnInitDialog()
 	// TODO: Add extra initialization here
 	myTimerID = CDialogEx::SetTimer(1, timerDelay, NULL);
 
-	if (savePath[0] == 0)
+	if (configSavePath[0] == 0)
 	{
 		wchar_t appdataPath[2000] = { 0 };
 		GetEnvironmentVariable(L"AppData", appdataPath, 1999);
 		wchar_t bufferDir[2000] = { 0 };
 		swprintf_s(bufferDir, L"%ls\\DialoIIISupport\\", appdataPath);
 		CreateDirectoryW(bufferDir, 0);
-		swprintf_s(savePath, L"%ls\\DialoIIISupport\\DialoIIISupport.dat", appdataPath);
+		swprintf_s(configSavePath, L"%ls\\DialoIIISupport\\DialoIIISupport.dat", appdataPath);
 	}
-	CFile saveFile;
-	if (saveFile.Open(savePath, CFile::modeRead))
-	{
-		saveFile.Read(&d3Config, sizeof(d3Config));
-		saveFile.Close();
-	}
+	OnSaveConfig();
 	ValidateD3Config();
 	wchar_t buffer[1000] = { 0 };
 
@@ -702,14 +741,6 @@ BOOL CDialoIIISupportDlg::OnInitDialog()
 	hGlobalHook = SetWindowsHookEx(WH_KEYBOARD_LL, HookProc, GetModuleHandle(NULL), 0);
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
-
-
-
-
-// If you add a minimize button to your dialog, you will need the code below
-//  to draw the icon.  For MFC applications using the document/view model,
-//  this is automatically done for you by the framework.
-
 void CDialoIIISupportDlg::OnPaint()
 {
 	if (IsIconic())
@@ -734,9 +765,6 @@ void CDialoIIISupportDlg::OnPaint()
 		CDialogEx::OnPaint();
 	}
 }
-
-// The system calls this function to obtain the cursor to display while the user drags
-//  the minimized window.
 HCURSOR CDialoIIISupportDlg::OnQueryDragIcon()
 {
 	return static_cast<HCURSOR>(m_hIcon);
@@ -765,10 +793,9 @@ void CDialoIIISupportDlg::OnHelp()
 
 
 
-
-
-
-
+/************************************************************************/
+/*                                                                      */
+/************************************************************************/
 void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 {
 	if (myTimerID == nIdEvent)
@@ -1172,7 +1199,16 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 		}
 	}
 }
-void CDialoIIISupportDlg::OnKillfocusLeftmousetime()
+void CDialoIIISupportDlg::OnSaveConfig()
+{
+	CFile saveFile;
+	if (saveFile.Open(configSavePath, CFile::modeCreate | CFile::modeWrite))
+	{
+		saveFile.Write(&d3Config, sizeof(d3Config));
+		saveFile.Close();
+	}
+}
+void CDialoIIISupportDlg::OnKillFocusLeftMouseTime()
 {
 	wchar_t bufferText[1000] = { 0 };
 	GetDlgItem(IDC_LEFTMOUSETIME)->GetWindowTextW(bufferText, 999);
@@ -1185,15 +1221,10 @@ void CDialoIIISupportDlg::OnKillfocusLeftmousetime()
 	if (newValue != d3Config.leftMouseTime)
 	{
 		d3Config.leftMouseTime = newValue;
-		CFile saveFile;
-		if (saveFile.Open(savePath, CFile::modeCreate | CFile::modeWrite))
-		{
-			saveFile.Write(&d3Config, sizeof(d3Config));
-			saveFile.Close();
-		}
+		OnSaveConfig();
 	}
 }
-void CDialoIIISupportDlg::OnKillfocusRightmousetime()
+void CDialoIIISupportDlg::OnKillFocusRightMouseTime()
 {
 	wchar_t bufferText[1000] = { 0 };
 	GetDlgItem(IDC_RIGHTMOUSETIME)->GetWindowTextW(bufferText, 999);
@@ -1206,15 +1237,10 @@ void CDialoIIISupportDlg::OnKillfocusRightmousetime()
 	if (newValue != d3Config.rightMouseTime)
 	{
 		d3Config.rightMouseTime = newValue;
-		CFile saveFile;
-		if (saveFile.Open(savePath, CFile::modeCreate | CFile::modeWrite))
-		{
-			saveFile.Write(&d3Config, sizeof(d3Config));
-			saveFile.Close();
-		}
+		OnSaveConfig();
 	}
 }
-void CDialoIIISupportDlg::OnKillfocusSkill01time()
+void CDialoIIISupportDlg::OnKillFocusSkill01Time()
 {
 	wchar_t bufferText[1000] = { 0 };
 	GetDlgItem(IDC_SKILL01TIME)->GetWindowTextW(bufferText, 999);
@@ -1228,15 +1254,10 @@ void CDialoIIISupportDlg::OnKillfocusSkill01time()
 	{
 		d3Config.skillSlot01Time = newValue;
 		d3Config.profileskillSlot01Time[d3Config.currentProfile] = newValue;
-		CFile saveFile;
-		if (saveFile.Open(savePath, CFile::modeCreate | CFile::modeWrite))
-		{
-			saveFile.Write(&d3Config, sizeof(d3Config));
-			saveFile.Close();
-		}
+		OnSaveConfig();
 	}
 }
-void CDialoIIISupportDlg::OnKillfocusSkill02time()
+void CDialoIIISupportDlg::OnKillFocusSkill02Time()
 {
 	wchar_t bufferText[1000] = { 0 };
 	GetDlgItem(IDC_SKILL02TIME)->GetWindowTextW(bufferText, 999);
@@ -1250,15 +1271,10 @@ void CDialoIIISupportDlg::OnKillfocusSkill02time()
 	{
 		d3Config.skillSlot02Time = newValue;
 		d3Config.profileskillSlot02Time[d3Config.currentProfile] = newValue;
-		CFile saveFile;
-		if (saveFile.Open(savePath, CFile::modeCreate | CFile::modeWrite))
-		{
-			saveFile.Write(&d3Config, sizeof(d3Config));
-			saveFile.Close();
-		}
+		OnSaveConfig();
 	}
 }
-void CDialoIIISupportDlg::OnKillfocusSkill03time()
+void CDialoIIISupportDlg::OnKillFocusSkill03Time()
 {
 	wchar_t bufferText[1000] = { 0 };
 	GetDlgItem(IDC_SKILL03TIME)->GetWindowTextW(bufferText, 999);
@@ -1272,15 +1288,10 @@ void CDialoIIISupportDlg::OnKillfocusSkill03time()
 	{
 		d3Config.skillSlot03Time = newValue;
 		d3Config.profileskillSlot03Time[d3Config.currentProfile] = newValue;
-		CFile saveFile;
-		if (saveFile.Open(savePath, CFile::modeCreate | CFile::modeWrite))
-		{
-			saveFile.Write(&d3Config, sizeof(d3Config));
-			saveFile.Close();
-		}
+		OnSaveConfig();
 	}
 }
-void CDialoIIISupportDlg::OnKillfocusSkill04time()
+void CDialoIIISupportDlg::OnKillFocusSkill04Time()
 {
 	wchar_t bufferText[1000] = { 0 };
 	GetDlgItem(IDC_SKILL04TIME)->GetWindowTextW(bufferText, 999);
@@ -1294,15 +1305,10 @@ void CDialoIIISupportDlg::OnKillfocusSkill04time()
 	{
 		d3Config.skillSlot04Time = newValue;
 		d3Config.profileskillSlot04Time[d3Config.currentProfile] = newValue;
-		CFile saveFile;
-		if (saveFile.Open(savePath, CFile::modeCreate | CFile::modeWrite))
-		{
-			saveFile.Write(&d3Config, sizeof(d3Config));
-			saveFile.Close();
-		}
+		OnSaveConfig();
 	}
 }
-void CDialoIIISupportDlg::OnKillfocusHealingtime()
+void CDialoIIISupportDlg::OnKillFocusHealingTime()
 {
 	wchar_t bufferText[1000] = { 0 };
 	GetDlgItem(IDC_HEALINGTIME)->GetWindowTextW(bufferText, 999);
@@ -1316,17 +1322,11 @@ void CDialoIIISupportDlg::OnKillfocusHealingtime()
 	{
 		d3Config.healingTime = newValue;
 		d3Config.profilehealingTime[d3Config.currentProfile] = newValue;
-		CFile saveFile;
-		if (saveFile.Open(savePath, CFile::modeCreate | CFile::modeWrite))
-		{
-			saveFile.Write(&d3Config, sizeof(d3Config));
-			saveFile.Close();
-		}
+		OnSaveConfig();
 	}
 }
-void CDialoIIISupportDlg::OnKillfocusSkillkey01()
+void CDialoIIISupportDlg::OnKillFocusSkillKey(int changeID, wchar_t & keySkill)
 {
-	int changeID = IDC_SKILLKEY01;
 	wchar_t bufferText[1000] = { 0 };
 	GetDlgItem(changeID)->GetWindowTextW(bufferText, 999);
 	int newValue = bufferText[0];
@@ -1335,18 +1335,10 @@ void CDialoIIISupportDlg::OnKillfocusSkillkey01()
 		|| (newValue >= '0' && newValue <= '9')
 		|| newValue == ' ')
 	{
-
-
-		if (newValue != d3Config.keySKill01)
+		if (newValue != keySkill)
 		{
-			d3Config.keySKill01 = newValue;
-
-			CFile saveFile;
-			if (saveFile.Open(savePath, CFile::modeCreate | CFile::modeWrite))
-			{
-				saveFile.Write(&d3Config, sizeof(d3Config));
-				saveFile.Close();
-			}
+			keySkill = newValue;
+			OnSaveConfig();
 		}
 	}
 	else
@@ -1358,118 +1350,26 @@ void CDialoIIISupportDlg::OnKillfocusSkillkey01()
 			flagAlreadyWarning = 1;
 		}
 	}
-	swprintf_s(bufferText, L"%lc", d3Config.keySKill01);
+	swprintf_s(bufferText, L"%lc", keySkill);
 	GetDlgItem(changeID)->SetWindowText(bufferText);
 }
-void CDialoIIISupportDlg::OnKillfocusSkillkey02()
+void CDialoIIISupportDlg::OnKillFocusSkillKey01()
 {
-	int changeID = IDC_SKILLKEY02;
-	wchar_t bufferText[1000] = { 0 };
-	GetDlgItem(changeID)->GetWindowTextW(bufferText, 999);
-	int newValue = bufferText[0];
-	if (newValue >= 'a' && newValue <= 'z') newValue = 'A' + newValue - 'a';
-	if ((newValue >= 'A' && newValue <= 'Z')
-		|| (newValue >= '0' && newValue <= '9')
-		|| newValue == ' ')
-	{
-
-		if (newValue != d3Config.keySKill02)
-		{
-			d3Config.keySKill02 = newValue;
-
-			CFile saveFile;
-			if (saveFile.Open(savePath, CFile::modeCreate | CFile::modeWrite))
-			{
-				saveFile.Write(&d3Config, sizeof(d3Config));
-				saveFile.Close();
-			}
-		}
-	}
-	else
-	{
-		static int flagAlreadyWarning = 0;
-		if (flagAlreadyWarning == 0)
-		{
-			MessageBoxW(L"Only allow : ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
-			flagAlreadyWarning = 1;
-		}
-	}
-	swprintf_s(bufferText, L"%lc", d3Config.keySKill02);
-	GetDlgItem(changeID)->SetWindowText(bufferText);
+	OnKillFocusSkillKey(IDC_SKILLKEY01, d3Config.keySKill01);
 }
-void CDialoIIISupportDlg::OnKillfocusSkillkey03()
+void CDialoIIISupportDlg::OnKillFocusSkillKey02()
 {
-	int changeID = IDC_SKILLKEY03;
-	wchar_t bufferText[1000] = { 0 };
-	GetDlgItem(changeID)->GetWindowTextW(bufferText, 999);
-	int newValue = bufferText[0];
-	if (newValue >= 'a' && newValue <= 'z') newValue = 'A' + newValue - 'a';
-	if ((newValue >= 'A' && newValue <= 'Z')
-		|| (newValue >= '0' && newValue <= '9')
-		|| newValue == ' ')
-	{
-
-		if (newValue != d3Config.keySKill03)
-		{
-			d3Config.keySKill03 = newValue;
-
-			CFile saveFile;
-			if (saveFile.Open(savePath, CFile::modeCreate | CFile::modeWrite))
-			{
-				saveFile.Write(&d3Config, sizeof(d3Config));
-				saveFile.Close();
-			}
-		}
-	}
-	else
-	{
-		static int flagAlreadyWarning = 0;
-		if (flagAlreadyWarning == 0)
-		{
-			MessageBoxW(L"Only allow : ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
-			flagAlreadyWarning = 1;
-		}
-	}
-	swprintf_s(bufferText, L"%lc", d3Config.keySKill03);
-	GetDlgItem(changeID)->SetWindowText(bufferText);
+	OnKillFocusSkillKey(IDC_SKILLKEY02, d3Config.keySKill02);
 }
-void CDialoIIISupportDlg::OnKillfocusSkillkey04()
+void CDialoIIISupportDlg::OnKillFocusSkillKey03()
 {
-	int changeID = IDC_SKILLKEY04;
-	wchar_t bufferText[1000] = { 0 };
-	GetDlgItem(changeID)->GetWindowTextW(bufferText, 999);
-	int newValue = bufferText[0];
-	if (newValue >= 'a' && newValue <= 'z') newValue = 'A' + newValue - 'a';
-	if ((newValue >= 'A' && newValue <= 'Z')
-		|| (newValue >= '0' && newValue <= '9')
-		|| newValue == ' ')
-	{
-
-		if (newValue != d3Config.keySKill04)
-		{
-			d3Config.keySKill04 = newValue;
-
-			CFile saveFile;
-			if (saveFile.Open(savePath, CFile::modeCreate | CFile::modeWrite))
-			{
-				saveFile.Write(&d3Config, sizeof(d3Config));
-				saveFile.Close();
-			}
-		}
-	}
-	else
-	{
-		static int flagAlreadyWarning = 0;
-		if (flagAlreadyWarning == 0)
-		{
-			MessageBoxW(L"Only allow : ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
-			flagAlreadyWarning = 1;
-		}
-	}
-	swprintf_s(bufferText, L"%lc", d3Config.keySKill04);
-	GetDlgItem(changeID)->SetWindowText(bufferText);
+	OnKillFocusSkillKey(IDC_SKILLKEY03, d3Config.keySKill03);
 }
-void CDialoIIISupportDlg::OnKillfocusHealingkey()
+void CDialoIIISupportDlg::OnKillFocusSkillKey04()
+{
+	OnKillFocusSkillKey(IDC_SKILLKEY04, d3Config.keySKill04);
+}
+void CDialoIIISupportDlg::OnKillfocusHealingKey()
 {
 	int changeID = IDC_HEALINGKEY;
 	wchar_t bufferText[1000] = { 0 };
@@ -1483,12 +1383,7 @@ void CDialoIIISupportDlg::OnKillfocusHealingkey()
 		if (newValue != d3Config.keyHealing)
 		{
 			d3Config.keyHealing = newValue;
-			CFile saveFile;
-			if (saveFile.Open(savePath, CFile::modeCreate | CFile::modeWrite))
-			{
-				saveFile.Write(&d3Config, sizeof(d3Config));
-				saveFile.Close();
-			}
+			OnSaveConfig();
 		}
 	}
 	else
@@ -1503,7 +1398,7 @@ void CDialoIIISupportDlg::OnKillfocusHealingkey()
 	swprintf_s(bufferText, L"%lc", d3Config.keyHealing);
 	GetDlgItem(changeID)->SetWindowText(bufferText);
 }
-void CDialoIIISupportDlg::OnClickedSkill01check()
+void CDialoIIISupportDlg::OnClickedSkill01Check()
 {
 	d3Config.skill01Enable = !d3Config.skill01Enable;
 	d3Config.profileskill01Enable[d3Config.currentProfile] = d3Config.skill01Enable;
@@ -1511,21 +1406,9 @@ void CDialoIIISupportDlg::OnClickedSkill01check()
 	GetDlgItem(IDC_SKILL01TIME)->EnableWindow(d3Config.skill01Enable);
 	GetDlgItem(IDC_SKILL01TEXT)->EnableWindow(d3Config.skill01Enable);
 	GetDlgItem(IDC_SKILL01TEXTMS)->EnableWindow(d3Config.skill01Enable);
-	CFile saveFile;
-	if (saveFile.Open(savePath, CFile::modeCreate | CFile::modeWrite))
-	{
-		saveFile.Write(&d3Config, sizeof(d3Config));
-		saveFile.Close();
-	}
-	GetDlgItem(IDC_F2BIGFRAME)->EnableWindow(d3Config.skill01Enable != 0
-		|| d3Config.skill02Enable != 0
-		|| d3Config.skill03Enable != 0
-		|| d3Config.skill04Enable != 0
-		|| d3Config.healingEnable != 0
-		|| d3Config.autoSpaceEnable != 0
-	);
+	OnSaveConfig();
 }
-void CDialoIIISupportDlg::OnClickedSkill02check()
+void CDialoIIISupportDlg::OnClickedSkill02Check()
 {
 	d3Config.skill02Enable = !d3Config.skill02Enable;
 	d3Config.profileskill02Enable[d3Config.currentProfile] = d3Config.skill02Enable;
@@ -1533,21 +1416,9 @@ void CDialoIIISupportDlg::OnClickedSkill02check()
 	GetDlgItem(IDC_SKILL02TIME)->EnableWindow(d3Config.skill02Enable);
 	GetDlgItem(IDC_SKILL02TEXT)->EnableWindow(d3Config.skill02Enable);
 	GetDlgItem(IDC_SKILL02TEXTMS)->EnableWindow(d3Config.skill02Enable);
-	CFile saveFile;
-	if (saveFile.Open(savePath, CFile::modeCreate | CFile::modeWrite))
-	{
-		saveFile.Write(&d3Config, sizeof(d3Config));
-		saveFile.Close();
-	}
-	GetDlgItem(IDC_F2BIGFRAME)->EnableWindow(d3Config.skill01Enable != 0
-		|| d3Config.skill02Enable != 0
-		|| d3Config.skill03Enable != 0
-		|| d3Config.skill04Enable != 0
-		|| d3Config.healingEnable != 0
-		|| d3Config.autoSpaceEnable != 0
-	);
+	OnSaveConfig();
 }
-void CDialoIIISupportDlg::OnClickedSkill03check()
+void CDialoIIISupportDlg::OnClickedSkill03Check()
 {
 	d3Config.skill03Enable = !d3Config.skill03Enable;
 	d3Config.profileskill03Enable[d3Config.currentProfile] = d3Config.skill03Enable;
@@ -1555,21 +1426,9 @@ void CDialoIIISupportDlg::OnClickedSkill03check()
 	GetDlgItem(IDC_SKILL03TIME)->EnableWindow(d3Config.skill03Enable);
 	GetDlgItem(IDC_SKILL03TEXT)->EnableWindow(d3Config.skill03Enable);
 	GetDlgItem(IDC_SKILL03TEXTMS)->EnableWindow(d3Config.skill03Enable);
-	CFile saveFile;
-	if (saveFile.Open(savePath, CFile::modeCreate | CFile::modeWrite))
-	{
-		saveFile.Write(&d3Config, sizeof(d3Config));
-		saveFile.Close();
-	}
-	GetDlgItem(IDC_F2BIGFRAME)->EnableWindow(d3Config.skill01Enable != 0
-		|| d3Config.skill02Enable != 0
-		|| d3Config.skill03Enable != 0
-		|| d3Config.skill04Enable != 0
-		|| d3Config.healingEnable != 0
-		|| d3Config.autoSpaceEnable != 0
-	);
+	OnSaveConfig();
 }
-void CDialoIIISupportDlg::OnClickedSkill04check()
+void CDialoIIISupportDlg::OnClickedSkill04Check()
 {
 	d3Config.skill04Enable = !d3Config.skill04Enable;
 	d3Config.profileskill04Enable[d3Config.currentProfile] = d3Config.skill04Enable;
@@ -1577,21 +1436,9 @@ void CDialoIIISupportDlg::OnClickedSkill04check()
 	GetDlgItem(IDC_SKILL04TIME)->EnableWindow(d3Config.skill04Enable);
 	GetDlgItem(IDC_SKILL04TEXT)->EnableWindow(d3Config.skill04Enable);
 	GetDlgItem(IDC_SKILL04TEXTMS)->EnableWindow(d3Config.skill04Enable);
-	CFile saveFile;
-	if (saveFile.Open(savePath, CFile::modeCreate | CFile::modeWrite))
-	{
-		saveFile.Write(&d3Config, sizeof(d3Config));
-		saveFile.Close();
-	}
-	GetDlgItem(IDC_F2BIGFRAME)->EnableWindow(d3Config.skill01Enable != 0
-		|| d3Config.skill02Enable != 0
-		|| d3Config.skill03Enable != 0
-		|| d3Config.skill04Enable != 0
-		|| d3Config.healingEnable != 0
-		|| d3Config.autoSpaceEnable != 0
-	);
+	OnSaveConfig();
 }
-void CDialoIIISupportDlg::OnClickedHealingcheck()
+void CDialoIIISupportDlg::OnClickedHealingCheck()
 {
 	d3Config.healingEnable = !d3Config.healingEnable;
 	d3Config.profilehealingEnable[d3Config.currentProfile] = d3Config.healingEnable;
@@ -1599,39 +1446,15 @@ void CDialoIIISupportDlg::OnClickedHealingcheck()
 	GetDlgItem(IDC_HEALINGTIME)->EnableWindow(d3Config.healingEnable);
 	GetDlgItem(IDC_HEALINGTEXT)->EnableWindow(d3Config.healingEnable);
 	GetDlgItem(IDC_HEALINGTEXTMS)->EnableWindow(d3Config.healingEnable);
-	CFile saveFile;
-	if (saveFile.Open(savePath, CFile::modeCreate | CFile::modeWrite))
-	{
-		saveFile.Write(&d3Config, sizeof(d3Config));
-		saveFile.Close();
-	}
-	GetDlgItem(IDC_F2BIGFRAME)->EnableWindow(d3Config.skill01Enable != 0
-		|| d3Config.skill02Enable != 0
-		|| d3Config.skill03Enable != 0
-		|| d3Config.skill04Enable != 0
-		|| d3Config.healingEnable != 0
-		|| d3Config.autoSpaceEnable != 0
-	);
+	OnSaveConfig();
 }
-void CDialoIIISupportDlg::OnClickedSpacecheck()
+void CDialoIIISupportDlg::OnClickedSpaceCheck()
 {
 	d3Config.autoSpaceEnable = !d3Config.autoSpaceEnable;
 	d3Config.profileautoSpaceEnable[d3Config.currentProfile] = d3Config.autoSpaceEnable;
-	CFile saveFile;
-	if (saveFile.Open(savePath, CFile::modeCreate | CFile::modeWrite))
-	{
-		saveFile.Write(&d3Config, sizeof(d3Config));
-		saveFile.Close();
-	}
-	GetDlgItem(IDC_F2BIGFRAME)->EnableWindow(d3Config.skill01Enable != 0
-		|| d3Config.skill02Enable != 0
-		|| d3Config.skill03Enable != 0
-		|| d3Config.skill04Enable != 0
-		|| d3Config.healingEnable != 0
-		|| d3Config.autoSpaceEnable != 0
-	);
+	OnSaveConfig();
 }
-void CDialoIIISupportDlg::OnKillfocusProfilename()
+void CDialoIIISupportDlg::OnKillFocusProfileName()
 {
 	wchar_t bufferProfileName[1000];
 	GetDlgItem(IDC_PROFILENAME)->GetWindowTextW(bufferProfileName, 999);
@@ -1716,12 +1539,7 @@ void CDialoIIISupportDlg::OnBnClickedProfile()
 	currentProfileName += d3Config.profileName[d3Config.currentProfile];
 	GetDlgItem(profileID[d3Config.currentProfile])->SetWindowTextW(currentProfileName);
 	GetDlgItem(IDC_PROFILENAME)->SetWindowTextW(d3Config.profileName[d3Config.currentProfile]);
-	CFile saveFile;
-	if (saveFile.Open(savePath, CFile::modeCreate | CFile::modeWrite))
-	{
-		saveFile.Write(&d3Config, sizeof(d3Config));
-		saveFile.Close();
-	}
+	OnSaveConfig();
 }
 void CDialoIIISupportDlg::OnBnClickedProfile01()
 {
@@ -1788,6 +1606,10 @@ void CDialoIIISupportDlg::OnBnClickedProfile10()
 
 
 void CDialoIIISupportDlg::OnBnClickedHelp()
+{
+	// TODO: Add your control notification handler code here
+}
+void CDialoIIISupportDlg::OnBnClickedWizArchoncheck()
 {
 	// TODO: Add your control notification handler code here
 }
