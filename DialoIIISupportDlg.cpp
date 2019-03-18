@@ -299,6 +299,12 @@ bool		ValidToSendD3Click(void)
 							return false;
 						}
 
+						//Season Journey Button
+						if (PointInRect(point, d3Rect.left + 1649, d3Rect.left + 1698, d3Rect.top + 25, d3Rect.top + 51))
+						{
+							return false;
+						}
+
 						//Objectives Object
 						if (PointInRect(point, d3Rect.left + 1862, d3Rect.left + 1893, d3Rect.top + 367, d3Rect.top + 391))
 						{
