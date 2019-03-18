@@ -548,6 +548,7 @@ BEGIN_MESSAGE_MAP(CDialoIIISupportDlg, CDialogEx)
 	ON_EN_KILLFOCUS(IDC_SKILLKEY03, &CDialoIIISupportDlg::OnKillfocusSkillkey03)
 	ON_EN_KILLFOCUS(IDC_SKILLKEY04, &CDialoIIISupportDlg::OnKillfocusSkillkey04)
 	ON_EN_KILLFOCUS(IDC_HEALINGKEY, &CDialoIIISupportDlg::OnKillfocusHealingkey)
+	ON_BN_CLICKED(IDC_HELP, &CDialoIIISupportDlg::OnBnClickedHelp)
 END_MESSAGE_MAP()
 
 
@@ -1784,3 +1785,9 @@ void CDialoIIISupportDlg::OnBnClickedProfile10()
 }
 
 
+
+
+void CDialoIIISupportDlg::OnBnClickedHelp()
+{
+	// TODO: Add your control notification handler code here
+}

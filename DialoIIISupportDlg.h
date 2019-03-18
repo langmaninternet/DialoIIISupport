@@ -73,4 +73,5 @@ public:
 	afx_msg void OnKillfocusSkillkey03();
 	afx_msg void OnKillfocusSkillkey04();
 	afx_msg void OnKillfocusHealingkey();
+	afx_msg void OnBnClickedHelp();
 };
