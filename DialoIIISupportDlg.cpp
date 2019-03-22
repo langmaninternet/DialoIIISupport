@@ -660,7 +660,14 @@ BOOL CDialoIIISupportDlg::OnInitDialog()
 		CreateDirectoryW(bufferDir, 0);
 		swprintf_s(configSavePath, L"%ls\\DialoIIISupport\\DialoIIISupport.dat", appdataPath);
 	}
-	OnSaveConfig();
+
+	CFile loadFile;
+	if (loadFile.Open(configSavePath, CFile::modeRead))
+	{
+		loadFile.Read(&d3Config, sizeof(d3Config));
+		loadFile.Close();
+	}
+
 	ValidateD3Config();
 	wchar_t buffer[1000] = { 0 };
 
