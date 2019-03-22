@@ -55,23 +55,29 @@ Mọi người copy vào các plugin đã fix lại thư mục TurboHUD\plugins\
 
 
 
-
 Thông tin về 1 số plugin có sẵn
+------------
 
-Bỏ chụp ảnh khi lên level cho đỡ chật ổ (Nếu muốn) 
++ (Nếu muốn) Bỏ chụp ảnh khi lên level cho đỡ chật ổ 
 Xóa file TurboHUD\plugins\Default\ParagonCapturePlugin.cs
 
-Bỏ cái khung thống kê dưới cùng bên phải (Nếu muốn) 
++ (Nếu muốn) Bỏ cái khung thống kê dưới cùng bên phải 
 Xóa file TurboHUD\config\ui_default\ui_default_labels_run_stats.xml 
 
  
-Bỏ tính năng xem trước thùng đồ cho đỡ rối mắt (Nếu muốn) 
++ (Nếu muốn) Bỏ tính năng xem trước thùng đồ cho đỡ rối mắt 
 Xóa file TurboHUD\plugins\Default\Inventory\StashPreviewPlugin.cs
 
-Bỏ thanh bar thống kê về Exp (Giữa màn hình, bên trên cùng) (Nếu muốn) 
++ (Nếu muốn) Bỏ thanh bar thống kê về Exp (Giữa màn hình, bên trên cùng) 
 File TurboHUD\plugins\Default\LabelLists\TopExperienceStatistics.cs
 
 
 Các hot-key trong TurboHUD
+------------
 + F4 bật/tắt TurboHUD
-+ 
++ F6  bật/tắt bảng thông tin bounty
+
+
+
+
+
