@@ -80,7 +80,7 @@ Xong sử dụng:
  
  Ctrl + 7 để vất hết đồ ra sàn
  
- Ctrl + 9 để đập hết đồ ở thợ rèn ( Cần phải ra thợ rèn, mở trang Salvage đồ trước)
+ Ctrl + 9 để đập hết đồ ở thợ rèn ( Cần phải ra thợ rèn trước)
  
  ESC hoặc SPACE để stop lúc đang craft
 
