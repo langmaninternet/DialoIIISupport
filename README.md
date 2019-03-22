@@ -48,6 +48,14 @@ ESC or SPACE to Stop
 
 
 
+Ưu điểm so với macro của bàn phím hoặc các tool khác đã có
+------------
+
+Các skill được gọi đều đặn có tính toán chống chồng lấp, nên không bị trôi/nuốt skill khi sử dụng nhiều skill.
+
+Có thêm tính năng bán và sửa đồ, rất tiện khi đi GR Speed. (Lúc về thành thì lọc đồ, đồ ngon cất vào Stash, xong ra thợ rèn, bấm Ctrl + 9 là tự bán đồ và sửa đồ)
+
+
 
 
 Tự động bấm skill theo thời gian

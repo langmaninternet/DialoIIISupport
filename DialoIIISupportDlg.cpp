@@ -1161,16 +1161,17 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 						{
 							if (flagOnCtrl9) SetD3Mouse(xIventoryArray[iitem], yIventoryArray[iitem]);
 							if (flagOnCtrl9) SendD3LeftMouseClick();
-							if (flagOnCtrl9) Sleep(50 + (rand() % 5));
+							if (flagOnCtrl9) Sleep(40 + (rand() % 5));
 							if (flagOnCtrl9) SendD3Key(VK_RETURN);
+							if (flagOnCtrl9) Sleep(20 + (rand() % 5));
 						}
 
 						if (flagOnCtrl9) SetD3Mouse(xRepairTable, yRepairTable);
 						if (flagOnCtrl9) SendD3LeftMouseClick();
-
+						if (flagOnCtrl9) Sleep(50 + (rand() % 5));
 						if (flagOnCtrl9) SetD3Mouse(xRepairButton, yRepairButton);
 						if (flagOnCtrl9) SendD3LeftMouseClick();
-
+						if (flagOnCtrl9) Sleep(50 + (rand() % 5));
 						flagOnCtrl9 = false;
 					}
 
