@@ -43,7 +43,7 @@ struct DialoIIISupportConfig
 	int		skill03Enable;
 	int		skill04Enable;
 	int		healingEnable;
-	int		autoSpaceEnable;
+	int		autoClosePopupWindow;
 
 	int     currentProfile;
 	wchar_t profileName[maxProfileNumber + 1][maxProfileNameLength + 1];
@@ -60,14 +60,19 @@ struct DialoIIISupportConfig
 	int		profileskill04Enable[maxProfileNumber + 1];
 	int		profilehealingEnable[maxProfileNumber + 1];
 	int		profileautoSpaceEnable[maxProfileNumber + 1];
-
-
 	wchar_t	keySKill01;
 	wchar_t	keySKill02;
 	wchar_t	keySKill03;
 	wchar_t	keySKill04;
 	wchar_t	keyHealing;
-	wchar_t keySpace;
+	wchar_t keyClosePopupWindow;
+
+	int		FireBirdEnable;
+	int		ArchonEnable;
+	wchar_t keyMeteor;
+	wchar_t keyArchon;
+	wchar_t keyForceStand;
+	wchar_t keyArchonHotKey;
 };
 
 
@@ -101,6 +106,19 @@ HHOOK					hGlobalHook;
 /************************************************************************/
 /* Process Function                                                     */
 /************************************************************************/
+void		ValidateD3Key(wchar_t & keyValue, const wchar_t defaultValue)
+{
+	if (keyValue == '`') keyValue = '~';
+	if (!((keyValue >= 'A' && keyValue <= 'Z')
+		|| (keyValue >= '0' && keyValue <= '9')
+		|| keyValue == ' '
+		|| keyValue == '~'
+		|| keyValue == VK_SHIFT
+		|| keyValue == VK_CONTROL))
+	{
+		keyValue = defaultValue;
+	}
+}
 void		ValidateD3Config(void)
 {
 	d3Config.leftMouseTime = int(round(d3Config.leftMouseTime / 50.0) * 50);
@@ -122,8 +140,9 @@ void		ValidateD3Config(void)
 	if (d3Config.skill03Enable != 0) d3Config.skill03Enable = 1;
 	if (d3Config.skill04Enable != 0) d3Config.skill04Enable = 1;
 	if (d3Config.healingEnable != 0) d3Config.healingEnable = 1;
-	if (d3Config.autoSpaceEnable != 0) d3Config.autoSpaceEnable = 1;
-
+	if (d3Config.autoClosePopupWindow != 0) d3Config.autoClosePopupWindow = 1;
+	if (d3Config.ArchonEnable != 0) d3Config.ArchonEnable = 1;
+	d3Config.FireBirdEnable = !d3Config.ArchonEnable;
 	if (d3Config.currentProfile < 0 || d3Config.currentProfile >= maxProfileNumber) d3Config.currentProfile = 0;
 	for (int iprofile = 0; iprofile < maxProfileNumber; iprofile++)
 	{
@@ -153,43 +172,19 @@ void		ValidateD3Config(void)
 		if (d3Config.profileautoSpaceEnable[iprofile] != 0) d3Config.profileautoSpaceEnable[iprofile] = 1;
 	}
 
+	ValidateD3Key(d3Config.keySKill01, '1');
+	ValidateD3Key(d3Config.keySKill02, '2');
+	ValidateD3Key(d3Config.keySKill03, '3');
+	ValidateD3Key(d3Config.keySKill04, '4');
+	ValidateD3Key(d3Config.keyHealing, 'Q');
+	ValidateD3Key(d3Config.keyClosePopupWindow, ' ');
 
-	if (!((d3Config.keySKill01 >= 'A' && d3Config.keySKill01 <= 'Z')
-		|| (d3Config.keySKill01 >= '0' && d3Config.keySKill01 <= '9')
-		|| d3Config.keySKill01 == ' '))
-	{
-		d3Config.keySKill01 = '1';
-	}
-	if (!((d3Config.keySKill02 >= 'A' && d3Config.keySKill02 <= 'Z')
-		|| (d3Config.keySKill02 >= '0' && d3Config.keySKill02 <= '9')
-		|| d3Config.keySKill02 == ' '))
-	{
-		d3Config.keySKill02 = '2';
-	}
-	if (!((d3Config.keySKill03 >= 'A' && d3Config.keySKill03 <= 'Z')
-		|| (d3Config.keySKill03 >= '0' && d3Config.keySKill03 <= '9')
-		|| d3Config.keySKill03 == ' '))
-	{
-		d3Config.keySKill03 = '3';
-	}
-	if (!((d3Config.keySKill04 >= 'A' && d3Config.keySKill04 <= 'Z')
-		|| (d3Config.keySKill04 >= '0' && d3Config.keySKill04 <= '9')
-		|| d3Config.keySKill04 == ' '))
-	{
-		d3Config.keySKill04 = '4';
-	}
-	if (!((d3Config.keyHealing >= 'A' && d3Config.keyHealing <= 'Z')
-		|| (d3Config.keyHealing >= '0' && d3Config.keyHealing <= '9')
-		|| d3Config.keyHealing == ' '))
-	{
-		d3Config.keyHealing = 'Q';
-	}
-	if (!((d3Config.keySpace >= 'A' && d3Config.keySpace <= 'Z')
-		|| (d3Config.keySpace >= '0' && d3Config.keySpace <= '9')
-		|| d3Config.keySpace == ' '))
-	{
-		d3Config.keySpace = ' ';
-	}
+
+	//wiz
+	ValidateD3Key(d3Config.keyMeteor, '1');
+	ValidateD3Key(d3Config.keyForceStand, VK_SHIFT);
+	ValidateD3Key(d3Config.keyArchon, '4');
+	ValidateD3Key(d3Config.keyArchonHotKey, '~');
 }
 bool		IsD3WindowActive(void)
 {
@@ -609,8 +604,10 @@ BEGIN_MESSAGE_MAP(CDialoIIISupportDlg, CDialogEx)
 	ON_EN_KILLFOCUS(IDC_SKILLKEY03, &CDialoIIISupportDlg::OnKillFocusSkillKey03)
 	ON_EN_KILLFOCUS(IDC_SKILLKEY04, &CDialoIIISupportDlg::OnKillFocusSkillKey04)
 	ON_EN_KILLFOCUS(IDC_HEALINGKEY, &CDialoIIISupportDlg::OnKillfocusHealingKey)
-	ON_BN_CLICKED(IDC_HELP, &CDialoIIISupportDlg::OnBnClickedHelp)
 	ON_BN_CLICKED(IDC_WIZARCHONCHECK, &CDialoIIISupportDlg::OnBnClickedWizArchoncheck)
+	ON_EN_KILLFOCUS(IDC_CLOSEPOPUPKEY, &CDialoIIISupportDlg::OnKillFocusSpaceKey)
+	ON_EN_KILLFOCUS(IDC_METEORKEY, &CDialoIIISupportDlg::OnKillFocusMeteorKey)
+	ON_BN_CLICKED(IDC_WIZFIREBRIDCHECK, &CDialoIIISupportDlg::OnBnClickedWizFireBridCheck)
 END_MESSAGE_MAP()
 
 BOOL CDialoIIISupportDlg::OnInitDialog()
@@ -661,12 +658,7 @@ BOOL CDialoIIISupportDlg::OnInitDialog()
 		swprintf_s(configSavePath, L"%ls\\DialoIIISupport\\DialoIIISupport.dat", appdataPath);
 	}
 
-	CFile loadFile;
-	if (loadFile.Open(configSavePath, CFile::modeRead))
-	{
-		loadFile.Read(&d3Config, sizeof(d3Config));
-		loadFile.Close();
-	}
+	OnLoadConfig();
 
 	ValidateD3Config();
 	wchar_t buffer[1000] = { 0 };
@@ -714,25 +706,24 @@ BOOL CDialoIIISupportDlg::OnInitDialog()
 	((CButton*)GetDlgItem(IDC_SKILL03CHECK))->SetCheck(d3Config.skill03Enable);
 	((CButton*)GetDlgItem(IDC_SKILL04CHECK))->SetCheck(d3Config.skill04Enable);
 	((CButton*)GetDlgItem(IDC_HEALINGCHECK))->SetCheck(d3Config.healingEnable);
-	((CButton*)GetDlgItem(IDC_SPACECHECK))->SetCheck(d3Config.autoSpaceEnable);
+	((CButton*)GetDlgItem(IDC_SPACECHECK))->SetCheck(d3Config.autoClosePopupWindow);
 
 
-	swprintf_s(buffer, L"%lc", d3Config.keySKill01);
-	GetDlgItem(IDC_SKILLKEY01)->SetWindowText(buffer);
+	OnShowSkillKey(IDC_SKILLKEY01, d3Config.keySKill01);
+	OnShowSkillKey(IDC_SKILLKEY02, d3Config.keySKill02);
+	OnShowSkillKey(IDC_SKILLKEY03, d3Config.keySKill03);
+	OnShowSkillKey(IDC_SKILLKEY04, d3Config.keySKill04);
+	OnShowSkillKey(IDC_HEALINGKEY, d3Config.keyHealing);
+	OnShowSkillKey(IDC_CLOSEPOPUPKEY, d3Config.keyClosePopupWindow);
+	OnShowSkillKey(IDC_ARCHONKEY, d3Config.keyArchon);
 
-	swprintf_s(buffer, L"%lc", d3Config.keySKill02);
-	GetDlgItem(IDC_SKILLKEY02)->SetWindowText(buffer);
+	OnShowSkillKey(IDC_METEORKEY, d3Config.keyMeteor);
+	OnShowSkillKey(IDC_FORCESTANDKEY, d3Config.keyForceStand);
+	OnShowSkillKey(IDC_SINGLESHOTHOTKEY, d3Config.keyArchonHotKey);
 
-	swprintf_s(buffer, L"%lc", d3Config.keySKill03);
-	GetDlgItem(IDC_SKILLKEY03)->SetWindowText(buffer);
-
-	swprintf_s(buffer, L"%lc", d3Config.keySKill04);
-	GetDlgItem(IDC_SKILLKEY04)->SetWindowText(buffer);
-
-	swprintf_s(buffer, L"%lc", d3Config.keyHealing);
-	GetDlgItem(IDC_HEALINGKEY)->SetWindowText(buffer);
-
-
+	GetDlgItem(IDC_ELECTROCUTESKILLKEY)->SetWindowTextW(L"LeftMouse"); 
+	GetDlgItem(IDC_DISINTEGRATESKILLKEY)->SetWindowTextW(L"RightMouse");
+	
 
 	for (int iprofile = 0; iprofile < maxProfileNumber; iprofile++)
 	{
@@ -744,6 +735,13 @@ BOOL CDialoIIISupportDlg::OnInitDialog()
 		}
 		GetDlgItem(profileID[iprofile])->SetWindowTextW(currentProfileName);
 	}
+
+
+	((CButton*)GetDlgItem(IDC_WIZFIREBRIDCHECK))->SetCheck(d3Config.FireBirdEnable);
+	((CButton*)GetDlgItem(IDC_WIZARCHONCHECK))->SetCheck(d3Config.ArchonEnable);
+
+	d3Config.ArchonEnable = !d3Config.ArchonEnable;
+	OnBnClickedWizArchoncheck();
 
 	hGlobalHook = SetWindowsHookEx(WH_KEYBOARD_LL, HookProc, GetModuleHandle(NULL), 0);
 	return TRUE;  // return TRUE  unless you set the focus to a control
@@ -868,7 +866,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 						{
 							if (flagValidForSendSpace)
 							{
-								if (d3Config.autoSpaceEnable) SendD3Key(VK_SPACE);
+								if (d3Config.autoClosePopupWindow) SendD3Key(d3Config.keyClosePopupWindow);
 								flagValidForSendSpace = false;
 							}
 							SendD3Key(d3Config.keySKill01);
@@ -882,7 +880,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 						{
 							if (flagValidForSendSpace)
 							{
-								if (d3Config.autoSpaceEnable) SendD3Key(VK_SPACE);
+								if (d3Config.autoClosePopupWindow) SendD3Key(d3Config.keyClosePopupWindow);
 								flagValidForSendSpace = false;
 							}
 							SendD3Key(d3Config.keySKill02);
@@ -896,7 +894,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 						{
 							if (flagValidForSendSpace)
 							{
-								if (d3Config.autoSpaceEnable) SendD3Key(VK_SPACE);
+								if (d3Config.autoClosePopupWindow) SendD3Key(d3Config.keyClosePopupWindow);
 								flagValidForSendSpace = false;
 							}
 							SendD3Key(d3Config.keySKill03);
@@ -910,7 +908,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 						{
 							if (flagValidForSendSpace)
 							{
-								if (d3Config.autoSpaceEnable) SendD3Key(VK_SPACE);
+								if (d3Config.autoClosePopupWindow) SendD3Key(d3Config.keyClosePopupWindow);
 								flagValidForSendSpace = false;
 							}
 							SendD3Key(d3Config.keySKill04);
@@ -924,7 +922,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 						{
 							if (flagValidForSendSpace)
 							{
-								if (d3Config.autoSpaceEnable) SendD3Key(VK_SPACE);
+								if (d3Config.autoClosePopupWindow) SendD3Key(d3Config.keyClosePopupWindow);
 								flagValidForSendSpace = false;
 							}
 							SendD3Key(d3Config.keyHealing);
@@ -1207,10 +1205,24 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 		}
 	}
 }
+void CDialoIIISupportDlg::OnLoadConfig()
+{
+	CFile loadFile;
+	if (loadFile.Open(configSavePath, CFile::modeRead | CFile::typeBinary))
+	{
+		int fileSize = int(loadFile.GetLength());
+		if (fileSize > sizeof(d3Config))
+		{
+			fileSize = sizeof(d3Config);
+		}
+		loadFile.Read(&d3Config, fileSize);
+		loadFile.Close();
+	}
+}
 void CDialoIIISupportDlg::OnSaveConfig()
 {
 	CFile saveFile;
-	if (saveFile.Open(configSavePath, CFile::modeCreate | CFile::modeWrite))
+	if (saveFile.Open(configSavePath, CFile::modeCreate | CFile::modeWrite | CFile::typeBinary))
 	{
 		saveFile.Write(&d3Config, sizeof(d3Config));
 		saveFile.Close();
@@ -1333,15 +1345,52 @@ void CDialoIIISupportDlg::OnKillFocusHealingTime()
 		OnSaveConfig();
 	}
 }
+void CDialoIIISupportDlg::OnShowSkillKey(int idW, wchar_t key)
+{
+	wchar_t buffer[100] = { 0 };
+	if (key == L' ') wcscpy(buffer, L"Space");
+	else if (key == VK_SHIFT) wcscpy(buffer, L"Shift");
+	else swprintf_s(buffer, L"%lc", key);
+	GetDlgItem(idW)->SetWindowText(buffer);
+}
 void CDialoIIISupportDlg::OnKillFocusSkillKey(int changeID, wchar_t & keySkill)
 {
-	wchar_t bufferText[1000] = { 0 };
+	wchar_t bufferText[1001] = { 0 };
 	GetDlgItem(changeID)->GetWindowTextW(bufferText, 999);
+	for (wchar_t *p = bufferText; *p; p++)
+	{
+		*p = toupper(*p);
+	}
 	int newValue = bufferText[0];
+	if (newValue == '`') newValue = '~';
+	if (wcscmp(bufferText, L"SPACE") == 0 || newValue == ' ')
+	{
+		wcscpy(bufferText, L"Space");
+		newValue = L' ';
+	}
+	else if (wcscmp(bufferText, L"SHIFT") == 0)
+	{
+		wcscpy(bufferText, L"Shift");
+		newValue = VK_SHIFT;
+	}
+	else if (wcscmp(bufferText, L"CTRL") == 0)
+	{
+		wcscpy(bufferText, L"Ctrl");
+		newValue = VK_CONTROL;
+	}
+	else
+	{
+		bufferText[1] = 0;
+	}
+
+
 	if (newValue >= 'a' && newValue <= 'z') newValue = 'A' + newValue - 'a';
 	if ((newValue >= 'A' && newValue <= 'Z')
 		|| (newValue >= '0' && newValue <= '9')
-		|| newValue == ' ')
+		|| newValue == ' '
+		|| newValue == '~'
+		|| newValue == VK_SHIFT
+		|| newValue == VK_CONTROL)
 	{
 		if (newValue != keySkill)
 		{
@@ -1354,11 +1403,10 @@ void CDialoIIISupportDlg::OnKillFocusSkillKey(int changeID, wchar_t & keySkill)
 		static int flagAlreadyWarning = 0;
 		if (flagAlreadyWarning == 0)
 		{
-			MessageBoxW(L"Only allow : ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
+			MessageBoxW(L"Only allow :\r\nABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789~\r\nSpace\r\nShift\r\nCtrl\r\n");
 			flagAlreadyWarning = 1;
 		}
 	}
-	swprintf_s(bufferText, L"%lc", keySkill);
 	GetDlgItem(changeID)->SetWindowText(bufferText);
 }
 void CDialoIIISupportDlg::OnKillFocusSkillKey01()
@@ -1379,33 +1427,19 @@ void CDialoIIISupportDlg::OnKillFocusSkillKey04()
 }
 void CDialoIIISupportDlg::OnKillfocusHealingKey()
 {
-	int changeID = IDC_HEALINGKEY;
-	wchar_t bufferText[1000] = { 0 };
-	GetDlgItem(changeID)->GetWindowTextW(bufferText, 999);
-	int newValue = bufferText[0];
-	if (newValue >= 'a' && newValue <= 'z') newValue = 'A' + newValue - 'a';
-	if ((newValue >= 'A' && newValue <= 'Z')
-		|| (newValue >= '0' && newValue <= '9')
-		|| newValue == ' ')
-	{
-		if (newValue != d3Config.keyHealing)
-		{
-			d3Config.keyHealing = newValue;
-			OnSaveConfig();
-		}
-	}
-	else
-	{
-		static int flagAlreadyWarning = 0;
-		if (flagAlreadyWarning == 0)
-		{
-			MessageBoxW(L"Only allow : ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
-			flagAlreadyWarning = 1;
-		}
-	}
-	swprintf_s(bufferText, L"%lc", d3Config.keyHealing);
-	GetDlgItem(changeID)->SetWindowText(bufferText);
+	OnKillFocusSkillKey(IDC_HEALINGKEY, d3Config.keyHealing);
 }
+void CDialoIIISupportDlg::OnKillFocusSpaceKey()
+{
+	OnKillFocusSkillKey(IDC_CLOSEPOPUPKEY, d3Config.keyClosePopupWindow);
+}
+void CDialoIIISupportDlg::OnKillFocusMeteorKey()
+{
+	OnKillFocusSkillKey(IDC_METEORKEY, d3Config.keyMeteor);
+}
+
+
+
 void CDialoIIISupportDlg::OnClickedSkill01Check()
 {
 	d3Config.skill01Enable = !d3Config.skill01Enable;
@@ -1450,7 +1484,7 @@ void CDialoIIISupportDlg::OnClickedHealingCheck()
 {
 	d3Config.healingEnable = !d3Config.healingEnable;
 	d3Config.profilehealingEnable[d3Config.currentProfile] = d3Config.healingEnable;
-	((CButton*)GetDlgItem(IDC_HEALINGCHECK))->SetCheck(d3Config.healingEnable);// TODO: Add your control notification handler code here
+	((CButton*)GetDlgItem(IDC_HEALINGCHECK))->SetCheck(d3Config.healingEnable);
 	GetDlgItem(IDC_HEALINGTIME)->EnableWindow(d3Config.healingEnable);
 	GetDlgItem(IDC_HEALINGTEXT)->EnableWindow(d3Config.healingEnable);
 	GetDlgItem(IDC_HEALINGTEXTMS)->EnableWindow(d3Config.healingEnable);
@@ -1458,8 +1492,8 @@ void CDialoIIISupportDlg::OnClickedHealingCheck()
 }
 void CDialoIIISupportDlg::OnClickedSpaceCheck()
 {
-	d3Config.autoSpaceEnable = !d3Config.autoSpaceEnable;
-	d3Config.profileautoSpaceEnable[d3Config.currentProfile] = d3Config.autoSpaceEnable;
+	d3Config.autoClosePopupWindow = !d3Config.autoClosePopupWindow;
+	d3Config.profileautoSpaceEnable[d3Config.currentProfile] = d3Config.autoClosePopupWindow;
 	OnSaveConfig();
 }
 void CDialoIIISupportDlg::OnKillFocusProfileName()
@@ -1488,7 +1522,7 @@ void CDialoIIISupportDlg::OnBnClickedProfile()
 	d3Config.skill03Enable = d3Config.profileskill03Enable[d3Config.currentProfile];
 	d3Config.skill04Enable = d3Config.profileskill04Enable[d3Config.currentProfile];
 	d3Config.healingEnable = d3Config.profilehealingEnable[d3Config.currentProfile];
-	d3Config.autoSpaceEnable = d3Config.profileautoSpaceEnable[d3Config.currentProfile];
+	d3Config.autoClosePopupWindow = d3Config.profileautoSpaceEnable[d3Config.currentProfile];
 
 
 
@@ -1538,7 +1572,7 @@ void CDialoIIISupportDlg::OnBnClickedProfile()
 	((CButton*)GetDlgItem(IDC_SKILL03CHECK))->SetCheck(d3Config.skill03Enable);
 	((CButton*)GetDlgItem(IDC_SKILL04CHECK))->SetCheck(d3Config.skill04Enable);
 	((CButton*)GetDlgItem(IDC_HEALINGCHECK))->SetCheck(d3Config.healingEnable);
-	((CButton*)GetDlgItem(IDC_SPACECHECK))->SetCheck(d3Config.autoSpaceEnable);
+	((CButton*)GetDlgItem(IDC_SPACECHECK))->SetCheck(d3Config.autoClosePopupWindow);
 
 
 
@@ -1613,11 +1647,32 @@ void CDialoIIISupportDlg::OnBnClickedProfile10()
 
 
 
-void CDialoIIISupportDlg::OnBnClickedHelp()
-{
-	// TODO: Add your control notification handler code here
-}
+
 void CDialoIIISupportDlg::OnBnClickedWizArchoncheck()
 {
-	// TODO: Add your control notification handler code here
+	d3Config.ArchonEnable = !d3Config.ArchonEnable;
+	GetDlgItem(IDC_ARCHONTEXT)->EnableWindow(d3Config.ArchonEnable);
+	GetDlgItem(IDC_ARCHONKEY)->EnableWindow(d3Config.ArchonEnable);
+	//GetDlgItem(IDC_ELECTROCUTESKILLKEYTEXT)->EnableWindow(d3Config.ArchonEnable);
+	//GetDlgItem(IDC_ELECTROCUTESKILLKEY)->EnableWindow(d3Config.ArchonEnable);
+	if (d3Config.ArchonEnable)
+	{
+		d3Config.FireBirdEnable = 0;
+		((CButton*)GetDlgItem(IDC_WIZFIREBRIDCHECK))->SetCheck(0);
+	}
+	OnSaveConfig();
+}
+void CDialoIIISupportDlg::OnBnClickedWizFireBridCheck()
+{
+	d3Config.FireBirdEnable = !d3Config.FireBirdEnable;
+	if (d3Config.FireBirdEnable)
+	{
+		d3Config.ArchonEnable = 0;
+		((CButton*)GetDlgItem(IDC_WIZARCHONCHECK))->SetCheck(0);
+		GetDlgItem(IDC_ARCHONTEXT)->EnableWindow(d3Config.ArchonEnable);
+		GetDlgItem(IDC_ARCHONKEY)->EnableWindow(d3Config.ArchonEnable);
+		//GetDlgItem(IDC_ELECTROCUTESKILLKEYTEXT)->EnableWindow(d3Config.ArchonEnable);
+		//GetDlgItem(IDC_ELECTROCUTESKILLKEY)->EnableWindow(d3Config.ArchonEnable);
+	}
+	OnSaveConfig();
 }

@@ -44,6 +44,7 @@ public:
 
 
 	afx_msg void OnTimer(UINT_PTR nIdEvent);
+	afx_msg void OnLoadConfig();
 	afx_msg void OnSaveConfig();
 	afx_msg void OnKillFocusLeftMouseTime();
 	afx_msg void OnKillFocusRightMouseTime();
@@ -52,6 +53,11 @@ public:
 	afx_msg void OnKillFocusSkill03Time();
 	afx_msg void OnKillFocusSkill04Time();
 	afx_msg void OnKillFocusHealingTime();
+	afx_msg void OnKillFocusSpaceKey();
+	afx_msg void OnKillFocusMeteorKey();
+
+
+
 	afx_msg void OnClickedSkill01Check();
 	afx_msg void OnClickedSkill02Check();
 	afx_msg void OnClickedSkill03Check();
@@ -70,12 +76,15 @@ public:
 	afx_msg void OnBnClickedProfile08();
 	afx_msg void OnBnClickedProfile09();
 	afx_msg void OnBnClickedProfile10();
+	afx_msg void OnShowSkillKey(int idW, wchar_t key);
 	afx_msg void OnKillFocusSkillKey(int changeID, wchar_t & keySkill);
 	afx_msg void OnKillFocusSkillKey01();
 	afx_msg void OnKillFocusSkillKey02();
 	afx_msg void OnKillFocusSkillKey03();
 	afx_msg void OnKillFocusSkillKey04();
 	afx_msg void OnKillfocusHealingKey();
-	afx_msg void OnBnClickedHelp();
 	afx_msg void OnBnClickedWizArchoncheck();
+	afx_msg void OnBnClickedWizFireBridCheck();
+
+
 };
