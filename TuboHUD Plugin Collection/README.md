@@ -1,6 +1,10 @@
 # Tổng hợp các plugin hay cho TurboHUD
 Đã sửa lại code để tương thích với version mới nhất của TurboHUD
 
+Link download
+------------
+https://github.com/langmaninternet/DialoIIISupport/archive/master.zip
+
 
 
 Mọi người copy vào các plugin đã fix lại thư mục TurboHUD\plugins\Default
