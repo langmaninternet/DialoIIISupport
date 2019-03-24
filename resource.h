@@ -76,8 +76,9 @@
 #define IDC_MultiSHOTHOTKEYTEXT         1073
 #define IDC_MULTISHOTHOTKEY             1074
 #define IDC_DISINTEGRATESKILLKEYTEXT    1075
-#define IDC_ELECTROCUTESKILLKEY2        1076
 #define IDC_DISINTEGRATESKILLKEY        1076
+#define IDC_FORCEMOVEKEYTEXT            1078
+#define IDC_FORCEMOVEKEY                1079
 
 // Next default values for new objects
 // 

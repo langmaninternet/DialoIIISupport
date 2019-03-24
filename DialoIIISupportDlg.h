@@ -53,9 +53,20 @@ public:
 	afx_msg void OnKillFocusSkill03Time();
 	afx_msg void OnKillFocusSkill04Time();
 	afx_msg void OnKillFocusHealingTime();
-	afx_msg void OnKillFocusSpaceKey();
-	afx_msg void OnKillFocusMeteorKey();
 
+
+	afx_msg void OnShowSkillKey(int idW, wchar_t key);
+	afx_msg void OnKillFocusSkillKey(int changeID, wchar_t & keySkill);
+	afx_msg void OnKillFocusSkillKey01();
+	afx_msg void OnKillFocusSkillKey02();
+	afx_msg void OnKillFocusSkillKey03();
+	afx_msg void OnKillFocusSkillKey04();
+	afx_msg void OnKillfocusHealingKey();
+	afx_msg void OnKillFocusSpaceKey();
+	afx_msg void OnKillFocusForceStandKey();
+	afx_msg void OnKillFocusForceMoveKey();
+	afx_msg void OnKillFocusMeteorKey();
+	afx_msg void OnKillFocusArchonKey();
 
 
 	afx_msg void OnClickedSkill01Check();
@@ -64,6 +75,7 @@ public:
 	afx_msg void OnClickedSkill04Check();
 	afx_msg void OnClickedHealingCheck();
 	afx_msg void OnClickedSpaceCheck();
+
 	afx_msg void OnKillFocusProfileName();
 	afx_msg void OnBnClickedProfile();
 	afx_msg void OnBnClickedProfile01();
@@ -76,15 +88,15 @@ public:
 	afx_msg void OnBnClickedProfile08();
 	afx_msg void OnBnClickedProfile09();
 	afx_msg void OnBnClickedProfile10();
-	afx_msg void OnShowSkillKey(int idW, wchar_t key);
-	afx_msg void OnKillFocusSkillKey(int changeID, wchar_t & keySkill);
-	afx_msg void OnKillFocusSkillKey01();
-	afx_msg void OnKillFocusSkillKey02();
-	afx_msg void OnKillFocusSkillKey03();
-	afx_msg void OnKillFocusSkillKey04();
-	afx_msg void OnKillfocusHealingKey();
+
+
+
+
 	afx_msg void OnBnClickedWizArchoncheck();
 	afx_msg void OnBnClickedWizFireBridCheck();
+
+
+
 
 
 };
