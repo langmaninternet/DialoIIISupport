@@ -99,4 +99,5 @@ public:
 
 
 
+	afx_msg void OnKillFocusSingleShotHotKey();
 };

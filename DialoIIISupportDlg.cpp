@@ -70,11 +70,10 @@ struct DialoIIISupportConfig
 	wchar_t keyForceMove;
 	wchar_t keyMeteor;
 	wchar_t keyArchon;
+	wchar_t keyWizSingleShot;
 	int		modeFireBirdEnable;
 	int		modeArchonEnable;
 
-
-	wchar_t keyArchonHotKey;
 };
 
 
@@ -93,6 +92,7 @@ bool					flagOnCtrl5 = false;
 bool					flagOnCtrl6 = false;
 bool					flagOnCtrl7 = false;
 bool					flagOnCtrl9 = false;
+bool					flagOnWizSingleShot = false;
 bool					flagOnProcess = false;
 int						leftMouseCooldown;
 int						rightMouseCooldown;
@@ -101,6 +101,7 @@ int						skillSlot02Cooldown;
 int						skillSlot03Cooldown;
 int						skillSlot04Cooldown;
 int						healingCooldown;
+int						archonModeCooldown;
 HHOOK					hGlobalHook;
 
 
@@ -186,7 +187,7 @@ void		ValidateD3Config(void)
 	ValidateD3Key(d3Config.keyMeteor, '1');
 	ValidateD3Key(d3Config.keyForceStand, VK_SHIFT);
 	ValidateD3Key(d3Config.keyArchon, '4');
-	ValidateD3Key(d3Config.keyArchonHotKey, '~');
+	ValidateD3Key(d3Config.keyWizSingleShot, '~');
 }
 bool		IsD3WindowActive(void)
 {
@@ -381,50 +382,7 @@ bool		ValidToSendD3Click(void)
 	}
 	return false;
 }
-void		ArchonStarPactSingle(const wchar_t meteorKey, const wchar_t channelingKey, const wchar_t archonKey, const wchar_t forceStandKey)
-{
-	const int repeatLparam = 0x00000063;
-	const int holdLparam = 0x40000000;
-	HWND d3Wnd = FindWindowW(L"D3 Main Window Class", L"Diablo III");
-	if (d3Wnd)
-	{
-		//Force-Stand
-		SendMessage(d3Wnd, WM_KEYDOWN, forceStandKey, repeatLparam);
-		Sleep(10);
 
-
-		//01. Cast meteor
-		SendMessage(d3Wnd, WM_KEYDOWN, meteorKey, 0);
-		Sleep(10);
-		SendMessage(d3Wnd, WM_KEYUP, meteorKey, 0);
-		Sleep(10);
-		SendMessage(d3Wnd, WM_KEYDOWN, forceStandKey, holdLparam);
-
-
-		//start Channeling 
-		SendMessage(d3Wnd, WM_KEYDOWN, channelingKey, repeatLparam);
-		Sleep(20);
-		for (int iloop = 0; iloop < 20; iloop++)
-		{
-			SendMessage(d3Wnd, WM_KEYDOWN, channelingKey, holdLparam);
-			Sleep(20);
-		}
-
-		//04. Archon
-		SendMessage(d3Wnd, WM_KEYDOWN, archonKey, 0);
-		Sleep(10);
-		SendMessage(d3Wnd, WM_KEYUP, archonKey, 0);
-		Sleep(10);
-		SendMessage(d3Wnd, WM_KEYDOWN, channelingKey, holdLparam);
-
-
-		//End Channeling 
-		Sleep(500);
-		SendMessage(d3Wnd, WM_KEYUP, channelingKey, 0);
-		SendMessage(d3Wnd, WM_KEYUP, forceStandKey, 0);
-	}
-
-}
 
 /************************************************************************/
 /* Hook                                                                 */
@@ -492,6 +450,8 @@ extern "C" __declspec(dllexport) LRESULT CALLBACK HookProc(int nCode, WPARAM wPa
 				flagOnCtrl6 = false;
 				flagOnCtrl7 = false;
 				flagOnCtrl9 = false;
+				flagOnWizSingleShot = false;
+				archonModeCooldown = 0;
 				break;
 			case 0x35/*'5'*/:
 				if (flagOnCtrl)
@@ -544,6 +504,13 @@ extern "C" __declspec(dllexport) LRESULT CALLBACK HookProc(int nCode, WPARAM wPa
 			case VK_LCONTROL:
 			case VK_RCONTROL:
 				flagOnCtrl = true;
+				break;
+			default:
+				if ((keyParam->vkCode == d3Config.keyWizSingleShot)
+					|| (d3Config.keyWizSingleShot == L'~' &&keyParam->vkCode == VK_OEM_3))
+				{
+					flagOnWizSingleShot = true;
+				}
 				break;
 			}
 		}
@@ -613,6 +580,7 @@ BEGIN_MESSAGE_MAP(CDialoIIISupportDlg, CDialogEx)
 	ON_EN_KILLFOCUS(IDC_FORCESTANDKEY, &CDialoIIISupportDlg::OnKillFocusForceStandKey)
 	ON_EN_KILLFOCUS(IDC_FORCEMOVEKEY, &CDialoIIISupportDlg::OnKillFocusForceMoveKey)
 	ON_EN_KILLFOCUS(IDC_ARCHONKEY, &CDialoIIISupportDlg::OnKillFocusArchonKey)
+	ON_EN_KILLFOCUS(IDC_SINGLESHOTHOTKEY, &CDialoIIISupportDlg::OnKillFocusSingleShotHotKey)
 END_MESSAGE_MAP()
 
 BOOL CDialoIIISupportDlg::OnInitDialog()
@@ -724,7 +692,7 @@ BOOL CDialoIIISupportDlg::OnInitDialog()
 
 	OnShowSkillKey(IDC_METEORKEY, d3Config.keyMeteor);
 	OnShowSkillKey(IDC_FORCESTANDKEY, d3Config.keyForceStand);
-	OnShowSkillKey(IDC_SINGLESHOTHOTKEY, d3Config.keyArchonHotKey);
+	OnShowSkillKey(IDC_SINGLESHOTHOTKEY, d3Config.keyWizSingleShot);
 
 	GetDlgItem(IDC_METEORTEXT)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
 	GetDlgItem(IDC_METEORKEY)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
@@ -816,6 +784,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 {
 	if (myTimerID == nIdEvent)
 	{
+		archonModeCooldown -= 50;
 		if (flagOnProcess == false)
 		{
 			flagOnProcess = true;
@@ -849,6 +818,27 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 				point.y
 			);
 			GetDlgItem(IDC_DEBUGINFO)->SetWindowTextW(debugInfo);
+
+			/************************************************************************/
+			/*                                                                      */
+			/************************************************************************/
+			if (flagOnWizSingleShot)
+			{
+				void		ArchonStarPactSingleShot(const wchar_t meteorKey,
+					const wchar_t archonKey,
+					const wchar_t primaryKey,
+					const wchar_t secondKey,
+					const wchar_t forceStandKey);
+				ArchonStarPactSingleShot(
+					d3Config.keyMeteor,
+					d3Config.keyArchon,
+					VK_LBUTTON,
+					VK_RBUTTON,
+					d3Config.keyForceStand
+				);
+				flagOnWizSingleShot = false;
+			}
+
 
 			/************************************************************************/
 			/*                                                                      */
@@ -1468,6 +1458,10 @@ void CDialoIIISupportDlg::OnKillFocusArchonKey()
 {
 	OnKillFocusSkillKey(IDC_ARCHONKEY, d3Config.keyArchon);
 }
+void CDialoIIISupportDlg::OnKillFocusSingleShotHotKey()
+{
+	OnKillFocusSkillKey(IDC_SINGLESHOTHOTKEY, d3Config.keyWizSingleShot);
+}
 
 
 
@@ -1718,4 +1712,5 @@ void CDialoIIISupportDlg::OnBnClickedWizFireBridCheck()
 	GetDlgItem(IDC_SINGLESHOTHOTKEY)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
 	OnSaveConfig();
 }
+
 

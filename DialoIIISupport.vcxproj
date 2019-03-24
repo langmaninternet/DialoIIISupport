@@ -211,6 +211,11 @@
     <Image Include="DialoIIISupport.png" />
     <Image Include="res\DialoIIISupport.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\StarPact\StarPact.vcxproj">
+      <Project>{78cd00f1-fec9-4d3c-91d7-a934a8827c38}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
