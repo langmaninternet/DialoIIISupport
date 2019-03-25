@@ -43,7 +43,6 @@
 #define IDC_CTRL7TEXT                   1041
 #define IDC_CTRLESC                     1042
 #define IDC_CTRL9TEXT                   1043
-#define IDC_SKILL01CHECK2               1044
 #define IDC_PROFILE01                   1045
 #define IDC_PROFILE03                   1046
 #define IDC_PROFILE08                   1047
@@ -54,16 +53,13 @@
 #define IDC_PROFILE09                   1052
 #define IDC_PROFILE07                   1053
 #define IDC_PROFILE10                   1054
-#define IDC_CHANNELINGTEXT              1057
-#define IDC_ELECTROCUTESKILLKEYTEXT     1057
-#define IDC_CHANNELINGKEY               1058
-#define IDC_ELECTROCUTESKILLKEY         1058
+#define IDC_PRIMARYSKILLKEYTEXT     1057
+#define IDC_PRIMARYSKILLKEY         1058
 #define IDC_SKILLKEY01                  1059
 #define IDC_SKILLKEY02                  1060
 #define IDC_SKILLKEY03                  1061
 #define IDC_SKILLKEY04                  1062
 #define IDC_HEALINGKEY                  1063
-#define IDC_SKILLKEY6                   1064
 #define IDC_ARCHONTEXT                  1064
 #define IDC_ARCHONKEY                   1065
 #define IDC_METEORTEXT                  1066
@@ -73,14 +69,15 @@
 #define IDC_CLOSEPOPUPKEY               1070
 #define IDC_SINGLESHOTHOTKEYTEXT        1071
 #define IDC_SINGLESHOTHOTKEY            1072
-#define IDC_MultiSHOTHOTKEYTEXT         1073
+#define IDC_MULTISHOTHOTKEYTEXT         1073
 #define IDC_MULTISHOTHOTKEY             1074
-#define IDC_DISINTEGRATESKILLKEYTEXT    1075
-#define IDC_DISINTEGRATESKILLKEY        1076
-#define IDC_CHECK1                      1077
-#define IDC_LightingBlast               1077
+#define IDC_SECONDARYSKILLKEYTEXT    1075
+#define IDC_SECONDARYSKILLKEY        1076
+#define IDC_LIGHTINGBLAST               1077
 #define IDC_FORCEMOVEKEYTEXT            1078
 #define IDC_FORCEMOVEKEY                1079
+#define IDC_BLACKHOLETEXT               1080
+#define IDC_BLACKHOLEKEY                1081
 
 // Next default values for new objects
 // 
