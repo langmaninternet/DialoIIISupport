@@ -53,8 +53,8 @@
 #define IDC_PROFILE09                   1052
 #define IDC_PROFILE07                   1053
 #define IDC_PROFILE10                   1054
-#define IDC_PRIMARYSKILLKEYTEXT     1057
-#define IDC_PRIMARYSKILLKEY         1058
+#define IDC_PRIMARYSKILLKEYTEXT         1057
+#define IDC_PRIMARYSKILLKEY             1058
 #define IDC_SKILLKEY01                  1059
 #define IDC_SKILLKEY02                  1060
 #define IDC_SKILLKEY03                  1061
@@ -71,13 +71,15 @@
 #define IDC_SINGLESHOTHOTKEY            1072
 #define IDC_MULTISHOTHOTKEYTEXT         1073
 #define IDC_MULTISHOTHOTKEY             1074
-#define IDC_SECONDARYSKILLKEYTEXT    1075
-#define IDC_SECONDARYSKILLKEY        1076
+#define IDC_SECONDARYSKILLKEYTEXT       1075
+#define IDC_SECONDARYSKILLKEY           1076
 #define IDC_LIGHTINGBLAST               1077
 #define IDC_FORCEMOVEKEYTEXT            1078
 #define IDC_FORCEMOVEKEY                1079
 #define IDC_BLACKHOLETEXT               1080
 #define IDC_BLACKHOLEKEY                1081
+#define IDC_RAYOFFORSTTEXT              1082
+#define IDC_RAYOFFORSTKEY               1083
 
 // Next default values for new objects
 // 
