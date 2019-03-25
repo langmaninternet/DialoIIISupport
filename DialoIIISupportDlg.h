@@ -67,7 +67,7 @@ public:
 	afx_msg void OnKillFocusForceMoveKey();
 	afx_msg void OnKillFocusMeteorKey();
 	afx_msg void OnKillFocusArchonKey();
-
+	afx_msg void OnKillFocusSingleShotHotKey();
 
 	afx_msg void OnClickedSkill01Check();
 	afx_msg void OnClickedSkill02Check();
@@ -75,6 +75,11 @@ public:
 	afx_msg void OnClickedSkill04Check();
 	afx_msg void OnClickedHealingCheck();
 	afx_msg void OnClickedSpaceCheck();
+	afx_msg void OnBnClickedWizArchoncheck();
+	afx_msg void OnBnClickedWizFireBridCheck();
+	afx_msg void OnClickedLightingBlast();
+
+
 
 	afx_msg void OnKillFocusProfileName();
 	afx_msg void OnBnClickedProfile();
@@ -92,12 +97,10 @@ public:
 
 
 
-	afx_msg void OnBnClickedWizArchoncheck();
-	afx_msg void OnBnClickedWizFireBridCheck();
 
 
 
 
 
-	afx_msg void OnKillFocusSingleShotHotKey();
+
 };

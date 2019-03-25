@@ -77,6 +77,8 @@
 #define IDC_MULTISHOTHOTKEY             1074
 #define IDC_DISINTEGRATESKILLKEYTEXT    1075
 #define IDC_DISINTEGRATESKILLKEY        1076
+#define IDC_CHECK1                      1077
+#define IDC_LightingBlast               1077
 #define IDC_FORCEMOVEKEYTEXT            1078
 #define IDC_FORCEMOVEKEY                1079
 
@@ -86,7 +88,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        132
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1071
+#define _APS_NEXT_CONTROL_VALUE         1078
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

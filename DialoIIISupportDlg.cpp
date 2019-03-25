@@ -86,6 +86,7 @@ struct DialoIIISupportConfig
 	wchar_t keyWizSingleShot;
 	int		modeFireBirdEnable;
 	int		modeArchonEnable;
+	int		lightingBlastEnable;
 
 };
 
@@ -159,6 +160,7 @@ void		ValidateD3Config(void)
 	if (d3Config.forceCloseEnable != 0) d3Config.forceCloseEnable = 1;
 	if (d3Config.modeArchonEnable != 0) d3Config.modeArchonEnable = 1;
 	if (d3Config.modeFireBirdEnable != 0) d3Config.modeFireBirdEnable = 1;
+	if (d3Config.lightingBlastEnable != 0) d3Config.lightingBlastEnable = 1;
 	if (d3Config.currentProfile < 0 || d3Config.currentProfile >= maxProfileNumber) d3Config.currentProfile = 0;
 	for (int iprofile = 0; iprofile < maxProfileNumber; iprofile++)
 	{
@@ -201,6 +203,7 @@ void		ValidateD3Config(void)
 	ValidateD3Key(d3Config.keyForceStand, VK_SHIFT);
 	ValidateD3Key(d3Config.keyArchon, '4');
 	ValidateD3Key(d3Config.keyWizSingleShot, '~');
+
 }
 bool		IsD3WindowActive(void)
 {
@@ -597,6 +600,7 @@ BEGIN_MESSAGE_MAP(CDialoIIISupportDlg, CDialogEx)
 	ON_EN_KILLFOCUS(IDC_FORCEMOVEKEY, &CDialoIIISupportDlg::OnKillFocusForceMoveKey)
 	ON_EN_KILLFOCUS(IDC_ARCHONKEY, &CDialoIIISupportDlg::OnKillFocusArchonKey)
 	ON_EN_KILLFOCUS(IDC_SINGLESHOTHOTKEY, &CDialoIIISupportDlg::OnKillFocusSingleShotHotKey)
+	ON_BN_CLICKED(IDC_LightingBlast, &CDialoIIISupportDlg::OnClickedLightingBlast)
 END_MESSAGE_MAP()
 
 BOOL CDialoIIISupportDlg::OnInitDialog()
@@ -696,6 +700,9 @@ BOOL CDialoIIISupportDlg::OnInitDialog()
 	((CButton*)GetDlgItem(IDC_SKILL04CHECK))->SetCheck(d3Config.skill04Enable);
 	((CButton*)GetDlgItem(IDC_HEALINGCHECK))->SetCheck(d3Config.healingEnable);
 	((CButton*)GetDlgItem(IDC_SPACECHECK))->SetCheck(d3Config.forceCloseEnable);
+	((CButton*)GetDlgItem(IDC_LightingBlast))->SetCheck(d3Config.lightingBlastEnable);
+
+
 
 
 	OnShowSkillKey(IDC_SKILLKEY01, d3Config.keySKill01);
@@ -742,7 +749,6 @@ BOOL CDialoIIISupportDlg::OnInitDialog()
 		d3Config.modeFireBirdEnable = 0;
 		((CButton*)GetDlgItem(IDC_WIZFIREBRIDCHECK))->EnableWindow(FALSE);
 		((CButton*)GetDlgItem(IDC_WIZARCHONCHECK))->EnableWindow(FALSE);
-
 		GenDeviceIdentification(buffer, 999);
 
 
@@ -817,7 +823,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 {
 	if (myTimerID == nIdEvent)
 	{
-		archonModeCooldown -= 50;
+		if (archonModeCooldown>-9000) archonModeCooldown -= 50;
 		if (flagOnProcess == false)
 		{
 			flagOnProcess = true;
@@ -869,8 +875,24 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 					VK_RBUTTON,
 					d3Config.keyForceStand
 				);
+				archonModeCooldown = 19000/*ms*/;
 				flagOnWizSingleShot = false;
 			}
+			if (archonModeCooldown > 0)
+			{
+				wchar_t bufferText[1000] = { 0 };
+				swprintf_s(bufferText, L"Archon %0.3lfs", archonModeCooldown / 1000.0);
+				GetDlgItem(IDC_SINGLESHOTHOTKEY)->EnableWindow(FALSE);
+				GetDlgItem(IDC_SINGLESHOTHOTKEY)->SetWindowText(bufferText);
+
+				if (d3Config.lightingBlastEnable) SendD3Key(d3Config.keySKill01);
+			}
+			else if (archonModeCooldown + 50 >= 0)
+			{
+				GetDlgItem(IDC_SINGLESHOTHOTKEY)->EnableWindow(TRUE);
+				OnShowSkillKey(IDC_SINGLESHOTHOTKEY, d3Config.keyWizSingleShot);
+			}
+
 
 
 			/************************************************************************/
@@ -1602,6 +1624,11 @@ void CDialoIIISupportDlg::OnBnClickedWizFireBridCheck()
 	GetDlgItem(IDC_SINGLESHOTHOTKEY)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
 	OnSaveConfig();
 }
+void CDialoIIISupportDlg::OnClickedLightingBlast()
+{
+	d3Config.lightingBlastEnable = !d3Config.lightingBlastEnable;
+	OnSaveConfig();
+}
 
 
 void CDialoIIISupportDlg::OnKillFocusProfileName()
@@ -1751,6 +1778,7 @@ void CDialoIIISupportDlg::OnBnClickedProfile10()
 	d3Config.currentProfile = 9;
 	OnBnClickedProfile();
 }
+
 
 
 
