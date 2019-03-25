@@ -1,4 +1,4 @@
-
+﻿
 // DialoIIISupportDlg.cpp : implementation file
 //
 
@@ -744,7 +744,7 @@ BOOL CDialoIIISupportDlg::OnInitDialog()
 		((CButton*)GetDlgItem(IDC_WIZARCHONCHECK))->EnableWindow(FALSE);
 
 		GenDeviceIdentification(buffer, 999);
-		
+
 
 		wchar_t bufferAbout[10000] = { 0 };
 		swprintf_s(bufferAbout, L"DialoIIISupport is free, but [Wizard - Meteor Star Pact] feature is limited distribution.\r\nTo get Activation Key, please email to quangxengvn@gmail.com (It's free).\r\nYour DeviceID is [%ls].", buffer);
@@ -1404,7 +1404,13 @@ void CDialoIIISupportDlg::OnKillFocusSkillKey(int changeID, wchar_t & keySkill)
 	tempTrunc.Replace(L" ", L"");
 	tempTrunc.MakeUpper();
 	wcscpy(bufferText, tempTrunc.GetBuffer());
-	InitStarPactEngine(bufferText);
+	if (InitStarPactEngine(NULL) == false && InitStarPactEngine(bufferText))
+	{
+		GetDlgItem(IDC_ABOUT)->SetWindowTextW(L"Create by Bùi Tấn Quang\r\nhttps://github.com/langmaninternet\r\nhttps://www.facebook.com/langmaninternet");
+		OnShowSkillKey(changeID, keySkill);
+		return;
+	}
+
 
 	int newValue = bufferText[0];
 	if (newValue == '`') newValue = '~';
