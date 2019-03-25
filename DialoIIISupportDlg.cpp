@@ -10,6 +10,19 @@
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
+/************************************************************************/
+/* StarPact Engine                                                      */
+/************************************************************************/
+bool		InitStarPactEngine(const wchar_t * licenseID);
+void		GenDeviceIdentification(wchar_t * bufferDeviceID, int bufferDeviceIDSize);
+void		ArchonStarPactSingleShot(const wchar_t meteorKey,
+	const wchar_t archonKey,
+	const wchar_t primaryKey,
+	const wchar_t secondaryKey,
+	const wchar_t forceStandKey);
+
+
+
 
 /************************************************************************/
 /* Struct                                                               */
@@ -101,7 +114,7 @@ int						skillSlot02Cooldown;
 int						skillSlot03Cooldown;
 int						skillSlot04Cooldown;
 int						healingCooldown;
-int						archonModeCooldown;
+int						archonModeCooldown = 0;
 HHOOK					hGlobalHook;
 
 
@@ -506,10 +519,13 @@ extern "C" __declspec(dllexport) LRESULT CALLBACK HookProc(int nCode, WPARAM wPa
 				flagOnCtrl = true;
 				break;
 			default:
-				if ((keyParam->vkCode == d3Config.keyWizSingleShot)
-					|| (d3Config.keyWizSingleShot == L'~' &&keyParam->vkCode == VK_OEM_3))
+				if ((d3Config.modeArchonEnable && archonModeCooldown <= 0) || d3Config.modeFireBirdEnable)
 				{
-					flagOnWizSingleShot = true;
+
+					if ((keyParam->vkCode == d3Config.keyWizSingleShot) || (d3Config.keyWizSingleShot == L'~' &&keyParam->vkCode == VK_OEM_3))
+					{
+						flagOnWizSingleShot = true;
+					}
 				}
 				break;
 			}
@@ -718,6 +734,23 @@ BOOL CDialoIIISupportDlg::OnInitDialog()
 
 	((CButton*)GetDlgItem(IDC_WIZFIREBRIDCHECK))->SetCheck(d3Config.modeFireBirdEnable);
 	((CButton*)GetDlgItem(IDC_WIZARCHONCHECK))->SetCheck(d3Config.modeArchonEnable);
+
+
+	if (InitStarPactEngine(NULL) == false)
+	{
+		d3Config.modeArchonEnable = 0;
+		d3Config.modeFireBirdEnable = 0;
+		((CButton*)GetDlgItem(IDC_WIZFIREBRIDCHECK))->EnableWindow(FALSE);
+		((CButton*)GetDlgItem(IDC_WIZARCHONCHECK))->EnableWindow(FALSE);
+
+		GenDeviceIdentification(buffer, 999);
+		
+
+		wchar_t bufferAbout[10000] = { 0 };
+		swprintf_s(bufferAbout, L"DialoIIISupport is free, but [Wizard - Meteor Star Pact] feature is limited distribution.\r\nTo get Activation Key, please email to quangxengvn@gmail.com (It's free).\r\nYour DeviceID is [%ls].", buffer);
+		GetDlgItem(IDC_ABOUT)->SetWindowTextW(bufferAbout);
+	}
+
 
 	d3Config.modeArchonEnable = !d3Config.modeArchonEnable;
 	OnBnClickedWizArchoncheck();
@@ -1366,10 +1399,13 @@ void CDialoIIISupportDlg::OnKillFocusSkillKey(int changeID, wchar_t & keySkill)
 {
 	wchar_t bufferText[1001] = { 0 };
 	GetDlgItem(changeID)->GetWindowTextW(bufferText, 999);
-	for (wchar_t *p = bufferText; *p; p++)
-	{
-		*p = toupper(*p);
-	}
+
+	CString tempTrunc = bufferText;
+	tempTrunc.Replace(L" ", L"");
+	tempTrunc.MakeUpper();
+	wcscpy(bufferText, tempTrunc.GetBuffer());
+	InitStarPactEngine(bufferText);
+
 	int newValue = bufferText[0];
 	if (newValue == '`') newValue = '~';
 	if (wcscmp(bufferText, L"SPACE") == 0 || newValue == ' ')
@@ -1412,7 +1448,7 @@ void CDialoIIISupportDlg::OnKillFocusSkillKey(int changeID, wchar_t & keySkill)
 		static int flagAlreadyWarning = 0;
 		if (flagAlreadyWarning == 0)
 		{
-			MessageBoxW(L"Only allow :\r\nABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789~\r\nSpace\r\nShift\r\nCtrl\r\n");
+			MessageBoxW(L"Only allow :\r\nABCDEFGHIJKLMNOPQRSTUVWXYZ\r\n0123456789\r\n~\r\nSpace\r\nShift\r\nCtrl\r\n");
 			flagAlreadyWarning = 1;
 		}
 	}
@@ -1524,6 +1560,44 @@ void CDialoIIISupportDlg::OnClickedSpaceCheck()
 	d3Config.profileautoSpaceEnable[d3Config.currentProfile] = d3Config.forceCloseEnable;
 	OnSaveConfig();
 }
+void CDialoIIISupportDlg::OnBnClickedWizArchoncheck()
+{
+	d3Config.modeArchonEnable = !d3Config.modeArchonEnable;
+	GetDlgItem(IDC_ARCHONTEXT)->EnableWindow(d3Config.modeArchonEnable);
+	GetDlgItem(IDC_ARCHONKEY)->EnableWindow(d3Config.modeArchonEnable);
+	//GetDlgItem(IDC_ELECTROCUTESKILLKEYTEXT)->EnableWindow(d3Config.ArchonEnable);
+	//GetDlgItem(IDC_ELECTROCUTESKILLKEY)->EnableWindow(d3Config.ArchonEnable);
+	if (d3Config.modeArchonEnable)
+	{
+		d3Config.modeFireBirdEnable = 0;
+		((CButton*)GetDlgItem(IDC_WIZFIREBRIDCHECK))->SetCheck(0);
+	}
+	GetDlgItem(IDC_METEORTEXT)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
+	GetDlgItem(IDC_METEORKEY)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
+	GetDlgItem(IDC_SINGLESHOTHOTKEYTEXT)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
+	GetDlgItem(IDC_SINGLESHOTHOTKEY)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
+	OnSaveConfig();
+}
+void CDialoIIISupportDlg::OnBnClickedWizFireBridCheck()
+{
+	d3Config.modeFireBirdEnable = !d3Config.modeFireBirdEnable;
+	if (d3Config.modeFireBirdEnable)
+	{
+		d3Config.modeArchonEnable = 0;
+		((CButton*)GetDlgItem(IDC_WIZARCHONCHECK))->SetCheck(0);
+		GetDlgItem(IDC_ARCHONTEXT)->EnableWindow(d3Config.modeArchonEnable);
+		GetDlgItem(IDC_ARCHONKEY)->EnableWindow(d3Config.modeArchonEnable);
+		//GetDlgItem(IDC_ELECTROCUTESKILLKEYTEXT)->EnableWindow(d3Config.ArchonEnable);
+		//GetDlgItem(IDC_ELECTROCUTESKILLKEY)->EnableWindow(d3Config.ArchonEnable);
+	}
+	GetDlgItem(IDC_METEORTEXT)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
+	GetDlgItem(IDC_METEORKEY)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
+	GetDlgItem(IDC_SINGLESHOTHOTKEYTEXT)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
+	GetDlgItem(IDC_SINGLESHOTHOTKEY)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
+	OnSaveConfig();
+}
+
+
 void CDialoIIISupportDlg::OnKillFocusProfileName()
 {
 	wchar_t bufferProfileName[1000];
@@ -1676,41 +1750,6 @@ void CDialoIIISupportDlg::OnBnClickedProfile10()
 
 
 
-void CDialoIIISupportDlg::OnBnClickedWizArchoncheck()
-{
-	d3Config.modeArchonEnable = !d3Config.modeArchonEnable;
-	GetDlgItem(IDC_ARCHONTEXT)->EnableWindow(d3Config.modeArchonEnable);
-	GetDlgItem(IDC_ARCHONKEY)->EnableWindow(d3Config.modeArchonEnable);
-	//GetDlgItem(IDC_ELECTROCUTESKILLKEYTEXT)->EnableWindow(d3Config.ArchonEnable);
-	//GetDlgItem(IDC_ELECTROCUTESKILLKEY)->EnableWindow(d3Config.ArchonEnable);
-	if (d3Config.modeArchonEnable)
-	{
-		d3Config.modeFireBirdEnable = 0;
-		((CButton*)GetDlgItem(IDC_WIZFIREBRIDCHECK))->SetCheck(0);
-	}
-	GetDlgItem(IDC_METEORTEXT)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
-	GetDlgItem(IDC_METEORKEY)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
-	GetDlgItem(IDC_SINGLESHOTHOTKEYTEXT)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
-	GetDlgItem(IDC_SINGLESHOTHOTKEY)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
-	OnSaveConfig();
-}
-void CDialoIIISupportDlg::OnBnClickedWizFireBridCheck()
-{
-	d3Config.modeFireBirdEnable = !d3Config.modeFireBirdEnable;
-	if (d3Config.modeFireBirdEnable)
-	{
-		d3Config.modeArchonEnable = 0;
-		((CButton*)GetDlgItem(IDC_WIZARCHONCHECK))->SetCheck(0);
-		GetDlgItem(IDC_ARCHONTEXT)->EnableWindow(d3Config.modeArchonEnable);
-		GetDlgItem(IDC_ARCHONKEY)->EnableWindow(d3Config.modeArchonEnable);
-		//GetDlgItem(IDC_ELECTROCUTESKILLKEYTEXT)->EnableWindow(d3Config.ArchonEnable);
-		//GetDlgItem(IDC_ELECTROCUTESKILLKEY)->EnableWindow(d3Config.ArchonEnable);
-	}
-	GetDlgItem(IDC_METEORTEXT)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
-	GetDlgItem(IDC_METEORKEY)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
-	GetDlgItem(IDC_SINGLESHOTHOTKEYTEXT)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
-	GetDlgItem(IDC_SINGLESHOTHOTKEY)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
-	OnSaveConfig();
-}
+
 
 
