@@ -103,4 +103,6 @@ public:
 
 
 
+	afx_msg void OnKillFocusBlackHoleKey();
+	afx_msg void OnKillFocusWaveOfForceKey();
 };

@@ -219,10 +219,15 @@ void		ValidateD3Config(void)
 
 
 	//wiz
-	ValidateD3Key(d3Config.keyMeteor, '1');
 	ValidateD3Key(d3Config.keyForceStand, VK_SHIFT);
+	ValidateD3Key(d3Config.keyElectrocute, VK_LBUTTON);
+	ValidateD3Key(d3Config.keyRayOfFrost, VK_RBUTTON);
+	ValidateD3Key(d3Config.keyMeteor, '1');
+	ValidateD3Key(d3Config.keyBlackHole, '2');
+	ValidateD3Key(d3Config.keyWaveOfForce, '3');
 	ValidateD3Key(d3Config.keyArchon, '4');
 	ValidateD3Key(d3Config.keyWizSingleShot, '~');
+
 
 }
 bool		IsD3WindowActive(void)
@@ -243,27 +248,7 @@ HWND		GetD3Windows(void)
 {
 	return FindWindowW(L"D3 Main Window Class", L"Diablo III");
 }
-void		SendD3Key(int keyCode)
-{
-	HWND d3Wnd = GetD3Windows();
-	if (d3Wnd)
-	{
-		SendMessage(d3Wnd, WM_KEYDOWN, keyCode, 0);
-		Sleep(20 + (rand() % 5));
-		SendMessage(d3Wnd, WM_KEYUP, keyCode, 0);
-		Sleep(20 + (rand() % 5));
-	}
-}
-void		SetD3Mouse(int x, int y)
-{
-	HWND d3Wnd = GetD3Windows();
-	if (d3Wnd)
-	{
-		RECT d3Rect = { 0 };
-		GetWindowRect(d3Wnd, &d3Rect);
-		SetCursorPos(d3Rect.left + x, d3Rect.top + y);
-	}
-}
+
 void		SendD3LeftMouseClick()
 {
 	HWND d3Wnd = GetD3Windows();
@@ -302,6 +287,28 @@ void		SendD3RightMouseClick()
 		Sleep(20 + (rand() % 5));
 	}
 }
+void		SendD3Key(int keyCode)
+{
+	HWND d3Wnd = GetD3Windows();
+	if (d3Wnd)
+	{
+		SendMessage(d3Wnd, WM_KEYDOWN, keyCode, 0);
+		Sleep(20 + (rand() % 5));
+		SendMessage(d3Wnd, WM_KEYUP, keyCode, 0);
+		Sleep(20 + (rand() % 5));
+	}
+}
+void		SetD3Mouse(int x, int y)
+{
+	HWND d3Wnd = GetD3Windows();
+	if (d3Wnd)
+	{
+		RECT d3Rect = { 0 };
+		GetWindowRect(d3Wnd, &d3Rect);
+		SetCursorPos(d3Rect.left + x, d3Rect.top + y);
+	}
+}
+
 bool		PointInRect(POINT point, int rLeft, int rRight, int rTop, int rBottom)
 {
 	if (rLeft >= rRight || rTop >= rBottom)
@@ -621,6 +628,8 @@ BEGIN_MESSAGE_MAP(CDialoIIISupportDlg, CDialogEx)
 	ON_EN_KILLFOCUS(IDC_ARCHONKEY, &CDialoIIISupportDlg::OnKillFocusArchonKey)
 	ON_EN_KILLFOCUS(IDC_SINGLESHOTHOTKEY, &CDialoIIISupportDlg::OnKillFocusSingleShotHotKey)
 	ON_BN_CLICKED(IDC_LIGHTINGBLAST, &CDialoIIISupportDlg::OnClickedLightingBlast)
+	ON_EN_KILLFOCUS(IDC_BLACKHOLEKEY, &CDialoIIISupportDlg::OnKillFocusBlackHoleKey)
+	ON_EN_KILLFOCUS(IDC_WAVEOFFORCEKEY, &CDialoIIISupportDlg::OnKillFocusWaveOfForceKey)
 END_MESSAGE_MAP()
 
 BOOL CDialoIIISupportDlg::OnInitDialog()
@@ -732,19 +741,20 @@ BOOL CDialoIIISupportDlg::OnInitDialog()
 	OnShowSkillKey(IDC_HEALINGKEY, d3Config.keyHealing);
 	OnShowSkillKey(IDC_CLOSEPOPUPKEY, d3Config.keyForceClose);
 	OnShowSkillKey(IDC_ARCHONKEY, d3Config.keyArchon);
-
 	OnShowSkillKey(IDC_METEORKEY, d3Config.keyMeteor);
 	OnShowSkillKey(IDC_FORCESTANDKEY, d3Config.keyForceStand);
 	OnShowSkillKey(IDC_SINGLESHOTHOTKEY, d3Config.keyWizSingleShot);
+	OnShowSkillKey(IDC_BLACKHOLEKEY, d3Config.keyBlackHole);
+	OnShowSkillKey(IDC_WAVEOFFORCEKEY, d3Config.keyWaveOfForce);
+	OnShowSkillKey(IDC_PRIMARYSKILLKEY, d3Config.keyElectrocute);
+	OnShowSkillKey(IDC_SECONDARYSKILLKEY, d3Config.keyRayOfFrost);
 
 	GetDlgItem(IDC_METEORTEXT)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
 	GetDlgItem(IDC_METEORKEY)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
 	GetDlgItem(IDC_SINGLESHOTHOTKEYTEXT)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
 	GetDlgItem(IDC_SINGLESHOTHOTKEY)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
 
-
-	GetDlgItem(IDC_PRIMARYSKILLKEY)->SetWindowTextW(L"LeftMouse");
-	GetDlgItem(IDC_SECONDARYSKILLKEY)->SetWindowTextW(L"RightMouse");
+	
 
 
 	for (int iprofile = 0; iprofile < maxProfileNumber; iprofile++)
@@ -758,10 +768,8 @@ BOOL CDialoIIISupportDlg::OnInitDialog()
 		GetDlgItem(profileID[iprofile])->SetWindowTextW(currentProfileName);
 	}
 
-
 	((CButton*)GetDlgItem(IDC_WIZFIREBRIDCHECK))->SetCheck(d3Config.modeFireBirdEnable);
 	((CButton*)GetDlgItem(IDC_WIZARCHONCHECK))->SetCheck(d3Config.modeArchonEnable);
-
 
 	if (InitStarPactEngine(NULL) == false)
 	{
@@ -776,7 +784,6 @@ BOOL CDialoIIISupportDlg::OnInitDialog()
 		swprintf_s(bufferAbout, L"DialoIIISupport is free, but [Wizard - Meteor Star Pact] feature is limited distribution.\r\nTo get Activation Key, please email to quangxengvn@gmail.com (It's free).\r\nYour DeviceID is [%ls].", buffer);
 		GetDlgItem(IDC_ABOUT)->SetWindowTextW(bufferAbout);
 	}
-
 
 	d3Config.modeArchonEnable = !d3Config.modeArchonEnable;
 	OnBnClickedWizArchoncheck();
@@ -909,7 +916,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 			}
 			else if (archonModeCooldown + timerDelay >= 0)
 			{
-				GetDlgItem(IDC_SINGLESHOTHOTKEY)->EnableWindow(TRUE);
+				GetDlgItem(IDC_SINGLESHOTHOTKEYTEXT)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
 				OnShowSkillKey(IDC_SINGLESHOTHOTKEY, d3Config.keyWizSingleShot);
 			}
 
@@ -1434,6 +1441,8 @@ void CDialoIIISupportDlg::OnShowSkillKey(int idW, wchar_t key)
 	wchar_t buffer[100] = { 0 };
 	if (key == L' ') wcscpy(buffer, L"Space");
 	else if (key == VK_SHIFT) wcscpy(buffer, L"Shift");
+	else if (key== VK_LBUTTON) wcscpy(buffer, L"LeftMouse");
+	else if (key == VK_RBUTTON) wcscpy(buffer, L"RightMouse");
 	else swprintf_s(buffer, L"%lc", key);
 	GetDlgItem(idW)->SetWindowText(buffer);
 }
@@ -1471,6 +1480,19 @@ void CDialoIIISupportDlg::OnKillFocusSkillKey(int changeID, wchar_t & keySkill)
 		wcscpy(bufferText, L"Ctrl");
 		newValue = VK_CONTROL;
 	}
+	else if (wcscmp(bufferText, L"LEFTMOUSE") == 0)
+	{
+		wcscpy(bufferText, L"LeftMouse");
+		newValue = VK_LBUTTON;
+	}
+	else if (wcscmp(bufferText, L"RIGHTMOUSE") == 0)
+	{
+		wcscpy(bufferText, L"RightMouse");
+		newValue = VK_RBUTTON;
+	}
+
+
+
 	else
 	{
 		bufferText[1] = 0;
@@ -1546,8 +1568,14 @@ void CDialoIIISupportDlg::OnKillFocusSingleShotHotKey()
 {
 	OnKillFocusSkillKey(IDC_SINGLESHOTHOTKEY, d3Config.keyWizSingleShot);
 }
-
-
+void CDialoIIISupportDlg::OnKillFocusBlackHoleKey()
+{
+	OnKillFocusSkillKey(IDC_BLACKHOLEKEY, d3Config.keyBlackHole);
+}
+void CDialoIIISupportDlg::OnKillFocusWaveOfForceKey()
+{
+	OnKillFocusSkillKey(IDC_WAVEOFFORCEKEY, d3Config.keyWaveOfForce);
+}
 
 
 
@@ -1611,10 +1639,19 @@ void CDialoIIISupportDlg::OnClickedSpaceCheck()
 void CDialoIIISupportDlg::OnBnClickedWizArchoncheck()
 {
 	d3Config.modeArchonEnable = !d3Config.modeArchonEnable;
+	d3Config.profilemodeArchonEnable[d3Config.currentProfile] = d3Config.modeArchonEnable;
 	GetDlgItem(IDC_ARCHONTEXT)->EnableWindow(d3Config.modeArchonEnable);
 	GetDlgItem(IDC_ARCHONKEY)->EnableWindow(d3Config.modeArchonEnable);
-	//GetDlgItem(IDC_PRIMARYSKILLKEYTEXT)->EnableWindow(d3Config.ArchonEnable);
-	//GetDlgItem(IDC_PRIMARYSKILLKEY)->EnableWindow(d3Config.ArchonEnable);
+	GetDlgItem(IDC_BLACKHOLETEXT)->EnableWindow(d3Config.modeArchonEnable);
+	GetDlgItem(IDC_BLACKHOLEKEY)->EnableWindow(d3Config.modeArchonEnable);
+	GetDlgItem(IDC_WAVEOFFORCEKEYTEXT)->EnableWindow(d3Config.modeArchonEnable);
+	GetDlgItem(IDC_WAVEOFFORCEKEY)->EnableWindow(d3Config.modeArchonEnable);
+	GetDlgItem(IDC_PRIMARYSKILLKEYTEXT)->EnableWindow(d3Config.modeArchonEnable);
+	GetDlgItem(IDC_PRIMARYSKILLKEY)->EnableWindow(d3Config.modeArchonEnable);
+	GetDlgItem(IDC_SECONDARYSKILLKEYTEXT)->EnableWindow(d3Config.modeArchonEnable);
+	GetDlgItem(IDC_SECONDARYSKILLKEY)->EnableWindow(d3Config.modeArchonEnable);
+
+
 	if (d3Config.modeArchonEnable)
 	{
 		d3Config.modeFireBirdEnable = 0;
@@ -1629,14 +1666,21 @@ void CDialoIIISupportDlg::OnBnClickedWizArchoncheck()
 void CDialoIIISupportDlg::OnBnClickedWizFireBridCheck()
 {
 	d3Config.modeFireBirdEnable = !d3Config.modeFireBirdEnable;
+	d3Config.profilemodeFireBirdEnable[d3Config.currentProfile] = !d3Config.modeFireBirdEnable;
 	if (d3Config.modeFireBirdEnable)
 	{
 		d3Config.modeArchonEnable = 0;
 		((CButton*)GetDlgItem(IDC_WIZARCHONCHECK))->SetCheck(0);
 		GetDlgItem(IDC_ARCHONTEXT)->EnableWindow(d3Config.modeArchonEnable);
 		GetDlgItem(IDC_ARCHONKEY)->EnableWindow(d3Config.modeArchonEnable);
-		//GetDlgItem(IDC_PRIMARYSKILLKEYTEXT)->EnableWindow(d3Config.ArchonEnable);
-		//GetDlgItem(IDC_PRIMARYSKILLKEY)->EnableWindow(d3Config.ArchonEnable);
+		GetDlgItem(IDC_BLACKHOLETEXT)->EnableWindow(d3Config.modeArchonEnable);
+		GetDlgItem(IDC_BLACKHOLEKEY)->EnableWindow(d3Config.modeArchonEnable);
+		GetDlgItem(IDC_WAVEOFFORCEKEYTEXT)->EnableWindow(d3Config.modeArchonEnable);
+		GetDlgItem(IDC_WAVEOFFORCEKEY)->EnableWindow(d3Config.modeArchonEnable);
+		GetDlgItem(IDC_PRIMARYSKILLKEYTEXT)->EnableWindow(d3Config.modeArchonEnable);
+		GetDlgItem(IDC_PRIMARYSKILLKEY)->EnableWindow(d3Config.modeArchonEnable);
+		GetDlgItem(IDC_SECONDARYSKILLKEYTEXT)->EnableWindow(d3Config.modeArchonEnable);
+		GetDlgItem(IDC_SECONDARYSKILLKEY)->EnableWindow(d3Config.modeArchonEnable);
 	}
 	GetDlgItem(IDC_METEORTEXT)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
 	GetDlgItem(IDC_METEORKEY)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
@@ -1732,7 +1776,15 @@ void CDialoIIISupportDlg::OnBnClickedProfile()
 	((CButton*)GetDlgItem(IDC_SPACECHECK))->SetCheck(d3Config.forceCloseEnable);
 
 
+	GetDlgItem(IDC_METEORTEXT)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
+	GetDlgItem(IDC_METEORKEY)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
+	GetDlgItem(IDC_SINGLESHOTHOTKEYTEXT)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
+	GetDlgItem(IDC_SINGLESHOTHOTKEY)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
+	((CButton*)GetDlgItem(IDC_WIZFIREBRIDCHECK))->SetCheck(d3Config.modeFireBirdEnable);
+	((CButton*)GetDlgItem(IDC_WIZARCHONCHECK))->SetCheck(d3Config.modeArchonEnable);
 
+	d3Config.modeArchonEnable = !d3Config.modeArchonEnable;
+	OnBnClickedWizArchoncheck();
 
 	CString currentProfileName = L"> ";
 	currentProfileName += d3Config.profileName[d3Config.currentProfile];
