@@ -754,7 +754,7 @@ BOOL CDialoIIISupportDlg::OnInitDialog()
 	GetDlgItem(IDC_SINGLESHOTHOTKEYTEXT)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
 	GetDlgItem(IDC_SINGLESHOTHOTKEY)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
 
-	
+
 
 
 	for (int iprofile = 0; iprofile < maxProfileNumber; iprofile++)
@@ -905,7 +905,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 				archonModeCooldown = 19000/*ms*/;
 				flagOnWizSingleShot = false;
 			}
-			if (archonModeCooldown > 0)
+			else if (archonModeCooldown > 0)
 			{
 				wchar_t bufferText[1000] = { 0 };
 				swprintf_s(bufferText, L"Archon %0.3lfs", archonModeCooldown / 1000.0);
@@ -919,6 +919,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 				GetDlgItem(IDC_SINGLESHOTHOTKEYTEXT)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
 				OnShowSkillKey(IDC_SINGLESHOTHOTKEY, d3Config.keyWizSingleShot);
 			}
+			else InitStarPactEngine(NULL);
 
 
 
@@ -1441,7 +1442,7 @@ void CDialoIIISupportDlg::OnShowSkillKey(int idW, wchar_t key)
 	wchar_t buffer[100] = { 0 };
 	if (key == L' ') wcscpy(buffer, L"Space");
 	else if (key == VK_SHIFT) wcscpy(buffer, L"Shift");
-	else if (key== VK_LBUTTON) wcscpy(buffer, L"LeftMouse");
+	else if (key == VK_LBUTTON) wcscpy(buffer, L"LeftMouse");
 	else if (key == VK_RBUTTON) wcscpy(buffer, L"RightMouse");
 	else swprintf_s(buffer, L"%lc", key);
 	GetDlgItem(idW)->SetWindowText(buffer);
@@ -1724,7 +1725,7 @@ void CDialoIIISupportDlg::OnBnClickedProfile()
 	d3Config.forceCloseEnable = d3Config.profileautoSpaceEnable[d3Config.currentProfile];
 	d3Config.modeFireBirdEnable = d3Config.profilemodeFireBirdEnable[d3Config.currentProfile];
 	d3Config.modeArchonEnable = d3Config.profilemodeArchonEnable[d3Config.currentProfile];
-	d3Config.lightingBlastEnable =  d3Config.profilelightingBlastEnable[d3Config.currentProfile];
+	d3Config.lightingBlastEnable = d3Config.profilelightingBlastEnable[d3Config.currentProfile];
 
 
 
