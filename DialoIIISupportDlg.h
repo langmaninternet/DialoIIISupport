@@ -71,8 +71,9 @@ public:
 	afx_msg void OnKillFocusArchonKey();
 	afx_msg void OnKillFocusBlackHoleKey();
 	afx_msg void OnKillFocusWaveOfForceKey();
-	afx_msg void OnKillfocusPrimaryskillkey();
-	afx_msg void OnKillfocusSecondaryskillkey();
+	afx_msg void OnKillFocusPrimarySkillKey();
+	afx_msg void OnKillFocusSecondarySkillKey();
+	afx_msg void OnKillFocusLightingBlastKey();
 
 	afx_msg void OnClickedSkill01Check();
 	afx_msg void OnClickedSkill02Check();
@@ -82,7 +83,8 @@ public:
 	afx_msg void OnClickedSpaceCheck();
 	afx_msg void OnBnClickedWizArchoncheck();
 	afx_msg void OnBnClickedWizFireBridCheck();
-	afx_msg void OnClickedLightingBlast();
+	afx_msg void OnClickedLightingBlastCheck();
+
 
 
 
@@ -110,4 +112,6 @@ public:
 
 
 
+	afx_msg void OnBnClickedSingleshothotcastmeteoronly();
+	afx_msg void OnBnClickedSingleshothotcastfullcycle();
 };

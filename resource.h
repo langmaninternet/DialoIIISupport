@@ -80,6 +80,11 @@
 #define IDC_BLACKHOLEKEY                1081
 #define IDC_WAVEOFFORCEKEYTEXT          1082
 #define IDC_WAVEOFFORCEKEY              1083
+#define IDC_LIGHTINGBLASTTEXT           1084
+#define IDC_LIGHTINGBLASTKEY            1085
+#define IDC_SINGLESHOTHOTCASTMETEORONLY 1086
+#define IDC_SINGLESHOTHOTCASTFULLCYCLE  1087
+#define IDC_SINGLESHOTHOTKEYFORTEXT     1088
 
 // Next default values for new objects
 // 
@@ -87,7 +92,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        132
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1078
+#define _APS_NEXT_CONTROL_VALUE         1089
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
