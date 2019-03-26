@@ -21,6 +21,13 @@ void		ArchonStarPactCastMeteor(const wchar_t meteorKey,
 	const wchar_t secondaryKey,
 	const wchar_t forceStandKey);
 
+void			ArchonStarPactCycle(const wchar_t blackHoleKey,
+	const wchar_t wayOfForceKey,
+	const wchar_t meteorKey,
+	const wchar_t archonKey,
+	const wchar_t primaryKey,
+	const wchar_t secondaryKey,
+	const wchar_t forceStandKey);
 
 
 
@@ -906,13 +913,28 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 			/************************************************************************/
 			if (flagOnWizSingleShot)
 			{
-				ArchonStarPactCastMeteor(
-					d3Config.keyMeteor,
-					d3Config.keyArchon,
-					d3Config.keyPrimary,
-					d3Config.keySecondary,
-					d3Config.keyForceStand
-				);
+				if (d3Config.fullCycleEnable)
+				{
+					ArchonStarPactCycle(
+						d3Config.keyBlackHole,
+						d3Config.keyWaveOfForce,
+						d3Config.keyMeteor,
+						d3Config.keyArchon,
+						d3Config.keyPrimary,
+						d3Config.keySecondary,
+						d3Config.keyForceStand
+					);
+				}
+				else
+				{
+					ArchonStarPactCastMeteor(
+						d3Config.keyMeteor,
+						d3Config.keyArchon,
+						d3Config.keyPrimary,
+						d3Config.keySecondary,
+						d3Config.keyForceStand
+					);
+				}
 				archonModeCooldown = 19000/*ms*/;
 				flagOnWizSingleShot = false;
 			}
@@ -1732,11 +1754,6 @@ void CDialoIIISupportDlg::OnClickedLightingBlastCheck()
 	GetDlgItem(IDC_LIGHTINGBLASTTEXT)->EnableWindow(d3Config.modeArchonEnable && d3Config.lightingBlastEnable);
 	GetDlgItem(IDC_LIGHTINGBLASTKEY)->EnableWindow(d3Config.modeArchonEnable && d3Config.lightingBlastEnable);
 }
-
-
-
-
-
 void CDialoIIISupportDlg::OnBnClickedSingleshothotcastmeteoronly()
 {
 	d3Config.fullCycleEnable = !d3Config.fullCycleEnable;
@@ -1744,8 +1761,6 @@ void CDialoIIISupportDlg::OnBnClickedSingleshothotcastmeteoronly()
 	((CButton*)GetDlgItem(IDC_SINGLESHOTHOTCASTFULLCYCLE))->SetCheck(d3Config.fullCycleEnable);
 	OnSaveConfig();
 }
-
-
 void CDialoIIISupportDlg::OnBnClickedSingleshothotcastfullcycle()
 {
 	d3Config.fullCycleEnable = !d3Config.fullCycleEnable;
