@@ -62,12 +62,17 @@ public:
 	afx_msg void OnKillFocusSkillKey03();
 	afx_msg void OnKillFocusSkillKey04();
 	afx_msg void OnKillfocusHealingKey();
-	afx_msg void OnKillFocusSpaceKey();
+	afx_msg void OnKillFocusClosePopupKey();
+
 	afx_msg void OnKillFocusForceStandKey();
 	afx_msg void OnKillFocusForceMoveKey();
+	afx_msg void OnKillFocusSingleShotHotKey();
 	afx_msg void OnKillFocusMeteorKey();
 	afx_msg void OnKillFocusArchonKey();
-	afx_msg void OnKillFocusSingleShotHotKey();
+	afx_msg void OnKillFocusBlackHoleKey();
+	afx_msg void OnKillFocusWaveOfForceKey();
+	afx_msg void OnKillfocusPrimaryskillkey();
+	afx_msg void OnKillfocusSecondaryskillkey();
 
 	afx_msg void OnClickedSkill01Check();
 	afx_msg void OnClickedSkill02Check();
@@ -103,6 +108,6 @@ public:
 
 
 
-	afx_msg void OnKillFocusBlackHoleKey();
-	afx_msg void OnKillFocusWaveOfForceKey();
+
+
 };

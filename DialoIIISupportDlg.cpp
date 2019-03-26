@@ -86,8 +86,8 @@ struct DialoIIISupportConfig
 	wchar_t keyForceMove;
 	wchar_t keyBlackHole;
 	wchar_t keyWaveOfForce;
-	wchar_t keyElectrocute;
-	wchar_t keyRayOfFrost;
+	wchar_t keyPrimary;
+	wchar_t keySecondary;
 	wchar_t keyMeteor;
 	wchar_t keyArchon;
 	wchar_t keyWizSingleShot;
@@ -220,12 +220,14 @@ void		ValidateD3Config(void)
 
 	//wiz
 	ValidateD3Key(d3Config.keyForceStand, VK_SHIFT);
-	ValidateD3Key(d3Config.keyElectrocute, VK_LBUTTON);
-	ValidateD3Key(d3Config.keyRayOfFrost, VK_RBUTTON);
-	ValidateD3Key(d3Config.keyMeteor, '1');
-	ValidateD3Key(d3Config.keyBlackHole, '2');
-	ValidateD3Key(d3Config.keyWaveOfForce, '3');
-	ValidateD3Key(d3Config.keyArchon, '4');
+	ValidateD3Key(d3Config.keyWaveOfForce, '1');
+	ValidateD3Key(d3Config.keyMeteor, '2');
+	ValidateD3Key(d3Config.keyPrimary, '3');
+	if (!isalnum(d3Config.keyPrimary)) d3Config.keyPrimary = '3';
+	ValidateD3Key(d3Config.keySecondary, '4');
+	if (!isalnum(d3Config.keySecondary)) d3Config.keySecondary = '4';
+	ValidateD3Key(d3Config.keyBlackHole, VK_LBUTTON);
+	ValidateD3Key(d3Config.keyArchon, VK_RBUTTON);
 	ValidateD3Key(d3Config.keyWizSingleShot, '~');
 
 
@@ -620,7 +622,7 @@ BEGIN_MESSAGE_MAP(CDialoIIISupportDlg, CDialogEx)
 	ON_EN_KILLFOCUS(IDC_SKILLKEY04, &CDialoIIISupportDlg::OnKillFocusSkillKey04)
 	ON_EN_KILLFOCUS(IDC_HEALINGKEY, &CDialoIIISupportDlg::OnKillfocusHealingKey)
 	ON_BN_CLICKED(IDC_WIZARCHONCHECK, &CDialoIIISupportDlg::OnBnClickedWizArchoncheck)
-	ON_EN_KILLFOCUS(IDC_CLOSEPOPUPKEY, &CDialoIIISupportDlg::OnKillFocusSpaceKey)
+	ON_EN_KILLFOCUS(IDC_CLOSEPOPUPKEY, &CDialoIIISupportDlg::OnKillFocusClosePopupKey)
 	ON_EN_KILLFOCUS(IDC_METEORKEY, &CDialoIIISupportDlg::OnKillFocusMeteorKey)
 	ON_BN_CLICKED(IDC_WIZFIREBRIDCHECK, &CDialoIIISupportDlg::OnBnClickedWizFireBridCheck)
 	ON_EN_KILLFOCUS(IDC_FORCESTANDKEY, &CDialoIIISupportDlg::OnKillFocusForceStandKey)
@@ -630,6 +632,8 @@ BEGIN_MESSAGE_MAP(CDialoIIISupportDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_LIGHTINGBLAST, &CDialoIIISupportDlg::OnClickedLightingBlast)
 	ON_EN_KILLFOCUS(IDC_BLACKHOLEKEY, &CDialoIIISupportDlg::OnKillFocusBlackHoleKey)
 	ON_EN_KILLFOCUS(IDC_WAVEOFFORCEKEY, &CDialoIIISupportDlg::OnKillFocusWaveOfForceKey)
+	ON_EN_KILLFOCUS(IDC_PRIMARYSKILLKEY, &CDialoIIISupportDlg::OnKillfocusPrimaryskillkey)
+	ON_EN_KILLFOCUS(IDC_SECONDARYSKILLKEY, &CDialoIIISupportDlg::OnKillfocusSecondaryskillkey)
 END_MESSAGE_MAP()
 
 BOOL CDialoIIISupportDlg::OnInitDialog()
@@ -746,8 +750,8 @@ BOOL CDialoIIISupportDlg::OnInitDialog()
 	OnShowSkillKey(IDC_SINGLESHOTHOTKEY, d3Config.keyWizSingleShot);
 	OnShowSkillKey(IDC_BLACKHOLEKEY, d3Config.keyBlackHole);
 	OnShowSkillKey(IDC_WAVEOFFORCEKEY, d3Config.keyWaveOfForce);
-	OnShowSkillKey(IDC_PRIMARYSKILLKEY, d3Config.keyElectrocute);
-	OnShowSkillKey(IDC_SECONDARYSKILLKEY, d3Config.keyRayOfFrost);
+	OnShowSkillKey(IDC_PRIMARYSKILLKEY, d3Config.keyPrimary);
+	OnShowSkillKey(IDC_SECONDARYSKILLKEY, d3Config.keySecondary);
 
 	GetDlgItem(IDC_METEORTEXT)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
 	GetDlgItem(IDC_METEORKEY)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
@@ -890,16 +894,11 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 			/************************************************************************/
 			if (flagOnWizSingleShot)
 			{
-				void		ArchonStarPactSingleShot(const wchar_t meteorKey,
-					const wchar_t archonKey,
-					const wchar_t primaryKey,
-					const wchar_t secondKey,
-					const wchar_t forceStandKey);
 				ArchonStarPactSingleShot(
 					d3Config.keyMeteor,
 					d3Config.keyArchon,
-					VK_LBUTTON,
-					VK_RBUTTON,
+					d3Config.keyPrimary,
+					d3Config.keySecondary,
 					d3Config.keyForceStand
 				);
 				archonModeCooldown = 19000/*ms*/;
@@ -1491,12 +1490,13 @@ void CDialoIIISupportDlg::OnKillFocusSkillKey(int changeID, wchar_t & keySkill)
 		wcscpy(bufferText, L"RightMouse");
 		newValue = VK_RBUTTON;
 	}
+	else bufferText[1] = 0;
 
-
-
-	else
+	if ((changeID == IDC_PRIMARYSKILLKEY || changeID == IDC_SECONDARYSKILLKEY) && (!(isalnum(newValue))))
 	{
-		bufferText[1] = 0;
+		MessageBoxW(L"Channling Skill Only allow :\r\nABCDEFGHIJKLMNOPQRSTUVWXYZ\r\n0123456789\r\n");
+		OnShowSkillKey(changeID, keySkill);
+		return;
 	}
 
 
@@ -1545,13 +1545,9 @@ void CDialoIIISupportDlg::OnKillfocusHealingKey()
 {
 	OnKillFocusSkillKey(IDC_HEALINGKEY, d3Config.keyHealing);
 }
-void CDialoIIISupportDlg::OnKillFocusSpaceKey()
+void CDialoIIISupportDlg::OnKillFocusClosePopupKey()
 {
 	OnKillFocusSkillKey(IDC_CLOSEPOPUPKEY, d3Config.keyForceClose);
-}
-void CDialoIIISupportDlg::OnKillFocusMeteorKey()
-{
-	OnKillFocusSkillKey(IDC_METEORKEY, d3Config.keyMeteor);
 }
 void CDialoIIISupportDlg::OnKillFocusForceStandKey()
 {
@@ -1561,13 +1557,17 @@ void CDialoIIISupportDlg::OnKillFocusForceMoveKey()
 {
 	OnKillFocusSkillKey(IDC_FORCEMOVEKEY, d3Config.keyForceMove);
 }
-void CDialoIIISupportDlg::OnKillFocusArchonKey()
-{
-	OnKillFocusSkillKey(IDC_ARCHONKEY, d3Config.keyArchon);
-}
 void CDialoIIISupportDlg::OnKillFocusSingleShotHotKey()
 {
 	OnKillFocusSkillKey(IDC_SINGLESHOTHOTKEY, d3Config.keyWizSingleShot);
+}
+void CDialoIIISupportDlg::OnKillFocusMeteorKey()
+{
+	OnKillFocusSkillKey(IDC_METEORKEY, d3Config.keyMeteor);
+}
+void CDialoIIISupportDlg::OnKillFocusArchonKey()
+{
+	OnKillFocusSkillKey(IDC_ARCHONKEY, d3Config.keyArchon);
 }
 void CDialoIIISupportDlg::OnKillFocusBlackHoleKey()
 {
@@ -1577,7 +1577,14 @@ void CDialoIIISupportDlg::OnKillFocusWaveOfForceKey()
 {
 	OnKillFocusSkillKey(IDC_WAVEOFFORCEKEY, d3Config.keyWaveOfForce);
 }
-
+void CDialoIIISupportDlg::OnKillfocusPrimaryskillkey()
+{
+	OnKillFocusSkillKey(IDC_PRIMARYSKILLKEY, d3Config.keyPrimary);
+}
+void CDialoIIISupportDlg::OnKillfocusSecondaryskillkey()
+{
+	OnKillFocusSkillKey(IDC_SECONDARYSKILLKEY, d3Config.keySecondary);
+}
 
 
 

@@ -78,9 +78,7 @@
 #define IDC_FORCEMOVEKEY                1079
 #define IDC_BLACKHOLETEXT               1080
 #define IDC_BLACKHOLEKEY                1081
-#define IDC_RAYOFFORSTTEXT              1082
 #define IDC_WAVEOFFORCEKEYTEXT          1082
-#define IDC_RAYOFFORSTKEY               1083
 #define IDC_WAVEOFFORCEKEY              1083
 
 // Next default values for new objects
