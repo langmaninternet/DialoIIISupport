@@ -935,7 +935,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 						d3Config.keyForceStand
 					);
 				}
-				archonModeCooldown = 19000/*ms*/;
+				archonModeCooldown = 10000/*ms*/;
 				flagOnWizSingleShot = false;
 			}
 			else if (archonModeCooldown > 0)
