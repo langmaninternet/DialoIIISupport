@@ -137,6 +137,7 @@ int						skillSlot02Cooldown;
 int						skillSlot03Cooldown;
 int						skillSlot04Cooldown;
 int						healingCooldown;
+INT64					archonStartTime;
 int						archonModeCooldown = 0;
 HHOOK					hGlobalHook;
 
@@ -873,7 +874,9 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 {
 	if (myTimerID == nIdEvent)
 	{
-		if (archonModeCooldown > -9000) archonModeCooldown -= timerDelay;
+		if (archonModeCooldown > -timerDelay) archonModeCooldown -= timerDelay;
+		INT64 archonInTime = GetTickCount64() - archonStartTime;
+		if (archonInTime < 19000) archonModeCooldown = 19000 - archonInTime;
 		if (flagOnProcess == false)
 		{
 			flagOnProcess = true;
@@ -936,6 +939,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 					);
 				}
 				archonModeCooldown = 10000/*ms*/;
+				archonStartTime = GetTickCount64();
 				flagOnWizSingleShot = false;
 			}
 			else if (archonModeCooldown > 0)
