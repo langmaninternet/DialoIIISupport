@@ -1521,21 +1521,21 @@ void CDialoIIISupportDlg::OnKillFocusSkillKey(int changeID, wchar_t & keySkill)
 		wcscpy(bufferText, L"Ctrl");
 		newValue = VK_CONTROL;
 	}
-	else if (wcscmp(bufferText, L"LEFTMOUSE") == 0)
+	else if (wcscmp(bufferText, L"LEFTMOUSE") == 0 || wcscmp(bufferText, L"LM") == 0)
 	{
 		wcscpy(bufferText, L"LeftMouse");
 		newValue = VK_LBUTTON;
 	}
-	else if (wcscmp(bufferText, L"RIGHTMOUSE") == 0)
+	else if (wcscmp(bufferText, L"RIGHTMOUSE") == 0 || wcscmp(bufferText, L"RM") == 0)
 	{
 		wcscpy(bufferText, L"RightMouse");
 		newValue = VK_RBUTTON;
 	}
 	else bufferText[1] = 0;
 
-	if ((changeID == IDC_PRIMARYSKILLKEY || changeID == IDC_SECONDARYSKILLKEY) && (!(isalnum(newValue))))
+	if ((changeID == IDC_PRIMARYSKILLKEY || changeID == IDC_SECONDARYSKILLKEY) && (newValue == VK_RBUTTON || newValue == VK_LBUTTON))
 	{
-		MessageBoxW(L"Channling Skill Only allow :\r\nABCDEFGHIJKLMNOPQRSTUVWXYZ\r\n0123456789\r\n");
+		MessageBoxW(L"English : Channling Skill Only allow :\r\nABCDEFGHIJKLMNOPQRSTUVWXYZ\r\n0123456789\r\n\r\nVietnamese : Tạm thời các skill channling chưa hỗ trợ chuột trái chuột phải");
 		OnShowSkillKey(changeID, keySkill);
 		return;
 	}
@@ -1547,7 +1547,10 @@ void CDialoIIISupportDlg::OnKillFocusSkillKey(int changeID, wchar_t & keySkill)
 		|| newValue == ' '
 		|| newValue == '~'
 		|| newValue == VK_SHIFT
-		|| newValue == VK_CONTROL)
+		|| newValue == VK_CONTROL
+		|| newValue == VK_RBUTTON
+		|| newValue == VK_LBUTTON
+		)
 	{
 		if (newValue != keySkill)
 		{
@@ -1560,7 +1563,7 @@ void CDialoIIISupportDlg::OnKillFocusSkillKey(int changeID, wchar_t & keySkill)
 		static int flagAlreadyWarning = 0;
 		if (flagAlreadyWarning == 0)
 		{
-			MessageBoxW(L"Only allow :\r\nABCDEFGHIJKLMNOPQRSTUVWXYZ\r\n0123456789\r\n~\r\nSpace\r\nShift\r\nCtrl\r\n");
+			MessageBoxW(L"English : Only allow :\r\nABCDEFGHIJKLMNOPQRSTUVWXYZ\r\n0123456789\r\n~\r\nSpace\r\nShift\r\nCtrl\r\n\r\n Vietnamese : Chỉ hỗ trợ các kí tự A-Z 0-9 Shift, Space, Ctrl, LeftMouse, RightMouse\r\n Đối với các kí tự điều khiển thì cần bạn gõ đúng chuỗi kí tự vào");
 			flagAlreadyWarning = 1;
 		}
 	}
