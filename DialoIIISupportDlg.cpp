@@ -873,12 +873,12 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 {
 	if (myTimerID == nIdEvent)
 	{
-		if (archonModeCooldown > -timerDelay) archonModeCooldown -= timerDelay;
-		if (archonModeCooldown>0)
+		if (archonModeCooldown > -timerDelay - timerDelay) archonModeCooldown -= timerDelay;
+		if (archonModeCooldown > 0)
 		{
 			INT64 archonInTime = GetTickCount64() - archonStartTime;
 			if (archonInTime < 19000) archonModeCooldown = 19000 - archonInTime;
-		}		
+		}
 		if (flagOnProcess == false)
 		{
 			flagOnProcess = true;
