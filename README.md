@@ -68,6 +68,12 @@ Bật tool, vào game, bấm F2 để bật/tắt tự động sử dụng skill
 Bật tool, vào game, bấm F3 để bật/tắt tự động bấm chuột phải
 
 
+
+Tự động đóng các cửa sổ popup trong game
+------------
+Auto close popup Windows : Tự động bấm Space trước khi gọi skill để đóng các cửa sổ popup trong game (Không thích hợp với những người dùng Space cho force stand)
+
+
 Hỗ trợ craft đồ từ cube
 ------------
 Craft 60 đồ vàng 1 lỗ (rare item) hoặc 30 đồ vàng 2 lỗ (rare item), xong ra cube, mở page 3 lên. 
