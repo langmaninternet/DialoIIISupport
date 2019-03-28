@@ -53,6 +53,8 @@ ESC or SPACE to Stop
 
 Các skill được gọi đều đặn có tính toán chống chồng lấp, nên không bị trôi/nuốt skill khi sử dụng nhiều skill.
 
+Không bị out game khi nhặt bounty bằng tool
+
 Có thêm tính năng bán và sửa đồ, rất tiện khi đi GR Speed. (Lúc về thành thì lọc đồ, đồ ngon cất vào Stash, xong ra thợ rèn, bấm Ctrl + 9 là tự bán đồ và sửa đồ)
 
 
