@@ -96,7 +96,7 @@ Xong sử dụng:
 
 Screenshot
 ------------
-![](FinalRelease/Screen02.png)
+![](FinalRelease/Screen03.png)
 ![](FinalRelease/ImpaleProfile.png)
 ![](FinalRelease/Cube02.png)
 ![](FinalRelease/Cube03.png)
