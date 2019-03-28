@@ -774,10 +774,9 @@ BOOL CDialoIIISupportDlg::OnInitDialog()
 	GetDlgItem(IDC_SINGLESHOTHOTKEYFORTEXT)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
 	GetDlgItem(IDC_SINGLESHOTHOTCASTMETEORONLY)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
 	GetDlgItem(IDC_SINGLESHOTHOTCASTFULLCYCLE)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
-
-
 	GetDlgItem(IDC_SINGLESHOTHOTKEY)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
-
+	GetDlgItem(IDC_LIGHTINGBLASTTEXT)->EnableWindow(d3Config.modeArchonEnable && d3Config.lightingBlastEnable);
+	GetDlgItem(IDC_LIGHTINGBLASTKEY)->EnableWindow(d3Config.modeArchonEnable && d3Config.lightingBlastEnable);
 
 
 
@@ -1712,7 +1711,8 @@ void CDialoIIISupportDlg::OnBnClickedWizArchoncheck()
 	GetDlgItem(IDC_SECONDARYSKILLKEYTEXT)->EnableWindow(d3Config.modeArchonEnable);
 	GetDlgItem(IDC_SECONDARYSKILLKEY)->EnableWindow(d3Config.modeArchonEnable);
 	GetDlgItem(IDC_LIGHTINGBLAST)->EnableWindow(d3Config.modeArchonEnable);
-
+	GetDlgItem(IDC_LIGHTINGBLASTTEXT)->EnableWindow(d3Config.modeArchonEnable && d3Config.lightingBlastEnable);
+	GetDlgItem(IDC_LIGHTINGBLASTKEY)->EnableWindow(d3Config.modeArchonEnable && d3Config.lightingBlastEnable);
 	if (d3Config.modeArchonEnable)
 	{
 		d3Config.modeFireBirdEnable = 0;
@@ -1746,6 +1746,8 @@ void CDialoIIISupportDlg::OnBnClickedWizFireBridCheck()
 		GetDlgItem(IDC_SECONDARYSKILLKEYTEXT)->EnableWindow(d3Config.modeArchonEnable);
 		GetDlgItem(IDC_SECONDARYSKILLKEY)->EnableWindow(d3Config.modeArchonEnable);
 		GetDlgItem(IDC_LIGHTINGBLAST)->EnableWindow(d3Config.modeArchonEnable);
+		GetDlgItem(IDC_LIGHTINGBLASTTEXT)->EnableWindow(d3Config.modeArchonEnable && d3Config.lightingBlastEnable);
+		GetDlgItem(IDC_LIGHTINGBLASTKEY)->EnableWindow(d3Config.modeArchonEnable && d3Config.lightingBlastEnable);
 	}
 	GetDlgItem(IDC_METEORTEXT)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
 	GetDlgItem(IDC_METEORKEY)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
