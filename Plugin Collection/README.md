@@ -54,7 +54,7 @@ Mọi người copy vào các plugin đã fix lại thư mục TurboHUD\plugins\
 + AriadnesThreadPlugin : Vẽ đường line trên mini map, rất tiện dụng, đặc biệt khi chạy bounty
 
 
-
++ MonsterCirclePlugin : Vẽ vòng tròn dưới chân Elite
 
 
 
