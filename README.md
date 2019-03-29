@@ -51,12 +51,13 @@ ESC or SPACE to Stop
 Ưu điểm so với macro của bàn phím hoặc các tool khác đã có
 ------------
 
-Các skill được gọi đều đặn có tính toán chống chồng lấp, nên không bị trôi/nuốt skill khi sử dụng nhiều skill.
++ Các skill được gọi đều đặn có tính toán chống chồng lấp, nên không bị trôi/nuốt skill khi sử dụng nhiều skill.
 
-Không bị out game khi nhặt bounty bằng tool
++ Không bị out game khi nhặt bounty bằng tool (Các tool khác đều bị)
 
-Có thêm tính năng bán và sửa đồ, rất tiện khi đi GR Speed. (Lúc về thành thì lọc đồ, đồ ngon cất vào Stash, xong ra thợ rèn, bấm Ctrl + 9 là tự bán đồ và sửa đồ)
++ Có thêm tính năng bán và sửa đồ, rất tiện khi đi GR Speed. (Lúc về thành thì lọc đồ, đồ ngon cất vào Stash, xong ra thợ rèn, bấm Ctrl + 9 là tự bán đồ và sửa đồ)
 
++ Nếu bạn di chuột ra khỏi game thì auto F1 sẽ trở thành giữ Force Stand + F1. Nếu bạn di chuột ra khỏi game thì auto F3 sẽ trở thành giữ Force Stand + F3. (Rất tiện khi bạn chơi zmonk, bạn lỡ click chuột ra ngoài thì nhân vật bạn sẽ đứng im 1 chỗ và tank quái)
 
 
 
