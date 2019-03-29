@@ -29,7 +29,7 @@ void			ArchonStarPactCycle(const wchar_t blackHoleKey,
 	const wchar_t secondaryKey,
 	const wchar_t forceStandKey);
 
-
+const double DialoIIISupportVersion = 1.03;
 
 /************************************************************************/
 /* Struct                                                               */
@@ -109,7 +109,7 @@ struct DialoIIISupportConfig
 	int		fullCycleEnable;
 
 
-
+	double	saveDialoIIISupportVersion;
 };
 
 
@@ -161,20 +161,20 @@ void		ValidateD3Key(wchar_t & keyValue, const wchar_t defaultValue)
 }
 void		ValidateD3Config(void)
 {
-	d3Config.leftMouseTime = int(round(d3Config.leftMouseTime / 100.0) * 100);
-	d3Config.rightMouseTime = int(round(d3Config.rightMouseTime / 100.0) * 100);
-	d3Config.skillSlot01Time = int(round(d3Config.skillSlot01Time / 100.0) * 100);
-	d3Config.skillSlot02Time = int(round(d3Config.skillSlot02Time / 100.0) * 100);
-	d3Config.skillSlot03Time = int(round(d3Config.skillSlot03Time / 100.0) * 100);
-	d3Config.skillSlot04Time = int(round(d3Config.skillSlot04Time / 100.0) * 100);
-	d3Config.healingTime = int(round(d3Config.healingTime / 100.0) * 100);
-	if (d3Config.leftMouseTime < 100) d3Config.leftMouseTime = 100;
-	if (d3Config.rightMouseTime < 100) d3Config.rightMouseTime = 100;
-	if (d3Config.skillSlot01Time < 100) d3Config.skillSlot01Time = 100;
-	if (d3Config.skillSlot02Time < 100) d3Config.skillSlot02Time = 100;
-	if (d3Config.skillSlot03Time < 100) d3Config.skillSlot03Time = 100;
-	if (d3Config.skillSlot04Time < 100) d3Config.skillSlot04Time = 100;
-	if (d3Config.healingTime < 100) d3Config.healingTime = 100;
+	d3Config.leftMouseTime = int(round(d3Config.leftMouseTime / 50.0) * 50);
+	d3Config.rightMouseTime = int(round(d3Config.rightMouseTime / 50.0) * 50);
+	d3Config.skillSlot01Time = int(round(d3Config.skillSlot01Time / 50.0) * 50);
+	d3Config.skillSlot02Time = int(round(d3Config.skillSlot02Time / 50.0) * 50);
+	d3Config.skillSlot03Time = int(round(d3Config.skillSlot03Time / 50.0) * 50);
+	d3Config.skillSlot04Time = int(round(d3Config.skillSlot04Time / 50.0) * 50);
+	d3Config.healingTime = int(round(d3Config.healingTime / 50.0) * 50);
+	if (d3Config.leftMouseTime < 50) d3Config.leftMouseTime = 50;
+	if (d3Config.rightMouseTime < 50) d3Config.rightMouseTime = 50;
+	if (d3Config.skillSlot01Time < 50) d3Config.skillSlot01Time = 50;
+	if (d3Config.skillSlot02Time < 50) d3Config.skillSlot02Time = 50;
+	if (d3Config.skillSlot03Time < 50) d3Config.skillSlot03Time = 50;
+	if (d3Config.skillSlot04Time < 50) d3Config.skillSlot04Time = 50;
+	if (d3Config.healingTime < 50) d3Config.healingTime = 50;
 	if (d3Config.skill01Enable != 0) d3Config.skill01Enable = 1;
 	if (d3Config.skill02Enable != 0) d3Config.skill02Enable = 1;
 	if (d3Config.skill03Enable != 0) d3Config.skill03Enable = 1;
@@ -192,20 +192,20 @@ void		ValidateD3Config(void)
 		{
 			swprintf_s(d3Config.profileName[iprofile], L"Profile %02d", iprofile);
 		}
-		d3Config.profileleftMouseTime[iprofile] = int(round(d3Config.profileleftMouseTime[iprofile] / 100.0) * 100);
-		d3Config.profilerightMouseTime[iprofile] = int(round(d3Config.profilerightMouseTime[iprofile] / 100.0) * 100);
-		d3Config.profileskillSlot01Time[iprofile] = int(round(d3Config.profileskillSlot01Time[iprofile] / 100.0) * 100);
-		d3Config.profileskillSlot02Time[iprofile] = int(round(d3Config.profileskillSlot02Time[iprofile] / 100.0) * 100);
-		d3Config.profileskillSlot03Time[iprofile] = int(round(d3Config.profileskillSlot03Time[iprofile] / 100.0) * 100);
-		d3Config.profileskillSlot04Time[iprofile] = int(round(d3Config.profileskillSlot04Time[iprofile] / 100.0) * 100);
-		d3Config.profilehealingTime[iprofile] = int(round(d3Config.profilehealingTime[iprofile] / 100.0) * 100);
-		if (d3Config.profileleftMouseTime[iprofile] < 100) d3Config.profileleftMouseTime[iprofile] = 100;
-		if (d3Config.profilerightMouseTime[iprofile] < 100) d3Config.profilerightMouseTime[iprofile] = 100;
-		if (d3Config.profileskillSlot01Time[iprofile] < 100) d3Config.profileskillSlot01Time[iprofile] = 100;
-		if (d3Config.profileskillSlot02Time[iprofile] < 100) d3Config.profileskillSlot02Time[iprofile] = 100;
-		if (d3Config.profileskillSlot03Time[iprofile] < 100) d3Config.profileskillSlot03Time[iprofile] = 100;
-		if (d3Config.profileskillSlot04Time[iprofile] < 100) d3Config.profileskillSlot04Time[iprofile] = 100;
-		if (d3Config.profilehealingTime[iprofile] < 100) d3Config.profilehealingTime[iprofile] = 100;
+		d3Config.profileleftMouseTime[iprofile] = int(round(d3Config.profileleftMouseTime[iprofile] / 50.0) * 50);
+		d3Config.profilerightMouseTime[iprofile] = int(round(d3Config.profilerightMouseTime[iprofile] / 50.0) * 50);
+		d3Config.profileskillSlot01Time[iprofile] = int(round(d3Config.profileskillSlot01Time[iprofile] / 50.0) * 50);
+		d3Config.profileskillSlot02Time[iprofile] = int(round(d3Config.profileskillSlot02Time[iprofile] / 50.0) * 50);
+		d3Config.profileskillSlot03Time[iprofile] = int(round(d3Config.profileskillSlot03Time[iprofile] / 50.0) * 50);
+		d3Config.profileskillSlot04Time[iprofile] = int(round(d3Config.profileskillSlot04Time[iprofile] / 50.0) * 50);
+		d3Config.profilehealingTime[iprofile] = int(round(d3Config.profilehealingTime[iprofile] / 50.0) * 50);
+		if (d3Config.profileleftMouseTime[iprofile] < 50) d3Config.profileleftMouseTime[iprofile] = 50;
+		if (d3Config.profilerightMouseTime[iprofile] < 50) d3Config.profilerightMouseTime[iprofile] = 50;
+		if (d3Config.profileskillSlot01Time[iprofile] < 50) d3Config.profileskillSlot01Time[iprofile] = 50;
+		if (d3Config.profileskillSlot02Time[iprofile] < 50) d3Config.profileskillSlot02Time[iprofile] = 50;
+		if (d3Config.profileskillSlot03Time[iprofile] < 50) d3Config.profileskillSlot03Time[iprofile] = 50;
+		if (d3Config.profileskillSlot04Time[iprofile] < 50) d3Config.profileskillSlot04Time[iprofile] = 50;
+		if (d3Config.profilehealingTime[iprofile] < 50) d3Config.profilehealingTime[iprofile] = 50;
 		if (d3Config.profileskill01Enable[iprofile] != 0) d3Config.profileskill01Enable[iprofile] = 1;
 		if (d3Config.profileskill02Enable[iprofile] != 0) d3Config.profileskill02Enable[iprofile] = 1;
 		if (d3Config.profileskill03Enable[iprofile] != 0) d3Config.profileskill03Enable[iprofile] = 1;
@@ -275,9 +275,9 @@ void		SendD3LeftMouseClick()
 		LPARAM lParam = (point.x - d3Rect.left) | ((point.y - d3Rect.top) << 16);
 
 		SendMessage(d3Wnd, WM_LBUTTONDOWN, MK_LBUTTON, lParam);
-		Sleep(20 + (rand() % 5));
+		Sleep(10 + (rand() % 3));
 		SendMessage(d3Wnd, WM_LBUTTONUP, 0, lParam);
-		Sleep(20 + (rand() % 5));
+		Sleep(10 + (rand() % 3));
 	}
 }
 void		SendD3RightMouseClick()
@@ -294,9 +294,9 @@ void		SendD3RightMouseClick()
 		LPARAM lParam = (point.x - d3Rect.left) | ((point.y - d3Rect.top) << 16);
 
 		SendMessage(d3Wnd, WM_RBUTTONDOWN, MK_RBUTTON, lParam);
-		Sleep(20 + (rand() % 5));
+		Sleep(10 + (rand() % 3));
 		SendMessage(d3Wnd, WM_RBUTTONUP, 0, lParam);
-		Sleep(20 + (rand() % 5));
+		Sleep(10 + (rand() % 3));
 	}
 }
 void		SendD3Key(int keyCode)
@@ -305,9 +305,9 @@ void		SendD3Key(int keyCode)
 	if (d3Wnd)
 	{
 		SendMessage(d3Wnd, WM_KEYDOWN, keyCode, 0);
-		Sleep(20 + (rand() % 5));
+		Sleep(10 + (rand() % 3));
 		SendMessage(d3Wnd, WM_KEYUP, keyCode, 0);
-		Sleep(20 + (rand() % 5));
+		Sleep(10 + (rand() % 3));
 	}
 }
 void		SetD3Mouse(int x, int y)
@@ -723,6 +723,11 @@ BOOL CDialoIIISupportDlg::OnInitDialog()
 	swprintf_s(buffer, L"%d", d3Config.healingTime);
 	GetDlgItem(IDC_HEALINGTIME)->SetWindowText(buffer);
 
+
+	swprintf_s(buffer, L"Dialo III Support Version %0.2lf", DialoIIISupportVersion);
+	SetWindowTextW(buffer);
+
+
 	GetDlgItem(IDC_SKILL01TIME)->EnableWindow(d3Config.skill01Enable);
 	GetDlgItem(IDC_SKILL02TIME)->EnableWindow(d3Config.skill02Enable);
 	GetDlgItem(IDC_SKILL03TIME)->EnableWindow(d3Config.skill03Enable);
@@ -1085,7 +1090,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 						else
 						{
 							::SendMessageW(d3Wnd, WM_KEYDOWN, d3Config.keyForceStand, 0);
-							Sleep(20);
+							Sleep(10);
 							SendD3LeftMouseClick();
 							::SendMessageW(d3Wnd, WM_KEYUP, d3Config.keyForceStand, 0);
 						}
@@ -1115,7 +1120,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 						else
 						{
 							::SendMessageW(d3Wnd, WM_KEYDOWN, d3Config.keyForceStand, 0);
-							Sleep(20);
+							Sleep(10);
 							SendD3RightMouseClick();
 							::SendMessageW(d3Wnd, WM_KEYUP, d3Config.keyForceStand, 0);
 						}
@@ -1355,6 +1360,13 @@ void CDialoIIISupportDlg::OnLoadConfig()
 		}
 		loadFile.Read(&d3Config, fileSize);
 		loadFile.Close();
+		if (d3Config.saveDialoIIISupportVersion != DialoIIISupportVersion)
+		{
+			memset(&d3Config, 0, sizeof(d3Config));
+			d3Config.saveDialoIIISupportVersion = DialoIIISupportVersion;
+			ValidateD3Config();
+			OnSaveConfig();
+		}
 	}
 }
 void CDialoIIISupportDlg::OnSaveConfig()
