@@ -76,7 +76,6 @@ Xóa file TurboHUD\plugins\Default\Inventory\StashPreviewPlugin.cs
 File TurboHUD\plugins\Default\LabelLists\TopExperienceStatistics.cs
 
 + (Nếu muốn) Bỏ mấy dòng chữ cạnh con boss cho đỡ rối mắt 
-
 TurboHUD\plugins\Default\Monsters\EliteMonsterAffixPlugin.cs
 
 Các hot-key trong TurboHUD
