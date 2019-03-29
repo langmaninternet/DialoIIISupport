@@ -29,7 +29,7 @@ void			ArchonStarPactCycle(const wchar_t blackHoleKey,
 	const wchar_t secondaryKey,
 	const wchar_t forceStandKey);
 
-const double DialoIIISupportVersion = 1.03;
+const double DialoIIISupportVersion = 1.04;
 
 /************************************************************************/
 /* Struct                                                               */
@@ -64,6 +64,11 @@ struct DialoIIISupportConfig
 	int		skill04Enable;
 	int		healingEnable;
 	int		forceCloseEnable;
+	int		modeFireBirdEnable;
+	int		modeArchonEnable;
+	int		lightingBlastEnable;
+	int		fullCycleEnable;
+
 
 	int     currentProfile;
 	wchar_t profileName[maxProfileNumber + 1][maxProfileNameLength + 1];
@@ -80,15 +85,16 @@ struct DialoIIISupportConfig
 	int		profileskill04Enable[maxProfileNumber + 1];
 	int		profilehealingEnable[maxProfileNumber + 1];
 	int		profileautoSpaceEnable[maxProfileNumber + 1];
+	int		profilemodeFireBirdEnable[maxProfileNumber + 1];
+	int		profilemodeArchonEnable[maxProfileNumber + 1];
+	int		profilelightingBlastEnable[maxProfileNumber + 1];
+
 	wchar_t	keySKill01;
 	wchar_t	keySKill02;
 	wchar_t	keySKill03;
 	wchar_t	keySKill04;
 	wchar_t	keyHealing;
 	wchar_t keyForceClose;
-
-
-
 	wchar_t keyForceStand;
 	wchar_t keyForceMove;
 	wchar_t keyBlackHole;
@@ -100,13 +106,7 @@ struct DialoIIISupportConfig
 	wchar_t keyWizSingleShot;
 
 
-	int		profilemodeFireBirdEnable[maxProfileNumber + 1];
-	int		profilemodeArchonEnable[maxProfileNumber + 1];
-	int		profilelightingBlastEnable[maxProfileNumber + 1];
-	int		modeFireBirdEnable;
-	int		modeArchonEnable;
-	int		lightingBlastEnable;
-	int		fullCycleEnable;
+
 
 
 	double	saveDialoIIISupportVersion;
