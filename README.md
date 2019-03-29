@@ -28,7 +28,7 @@ F2 to auto skill 1 2 3 4 an healing Q
 
 F3 to auto right mouse click
 
-
+(Smart handling situations)
 
 
 Features : Cube converter
@@ -45,6 +45,15 @@ CTRL + 7 to drop all item in Inventory to ground
 CTRL + 9 if you want to clear the Inventory at the Blacksmith
 
 ESC or SPACE to Stop 
+
+
+Features : Wizard LoN32 Archon Macro
+------------
+Use 1 hotkey to call full-cycle of StarPact
+
+
+
+
 
 
 
