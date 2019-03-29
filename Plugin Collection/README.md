@@ -75,7 +75,8 @@ Xóa file TurboHUD\plugins\Default\Inventory\StashPreviewPlugin.cs
 + (Nếu muốn) Bỏ thanh bar thống kê về Exp (Giữa màn hình, bên trên cùng) 
 File TurboHUD\plugins\Default\LabelLists\TopExperienceStatistics.cs
 
-+ (Nếu muốn) Bỏ mấy dòng chữ cạnh con boss
++ (Nếu muốn) Bỏ mấy dòng chữ cạnh con boss cho đỡ rối mắt 
+
 TurboHUD\plugins\Default\Monsters\EliteMonsterAffixPlugin.cs
 
 Các hot-key trong TurboHUD
