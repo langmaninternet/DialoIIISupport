@@ -961,8 +961,6 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 				GetDlgItem(IDC_SINGLESHOTHOTCASTFULLCYCLE)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
 				OnShowSkillKey(IDC_SINGLESHOTHOTKEY, d3Config.keyWizSingleShot);
 			}
-			else InitStarPactEngine(NULL);
-
 
 
 			/************************************************************************/
@@ -1084,6 +1082,13 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 					if (leftMouseCooldown >= d3Config.leftMouseTime)
 					{
 						if (ValidToSendD3Click()) SendD3LeftMouseClick();
+						else
+						{
+							::SendMessageW(d3Wnd, WM_KEYDOWN, d3Config.keyForceStand, 0);
+							Sleep(20);
+							SendD3LeftMouseClick();
+							::SendMessageW(d3Wnd, WM_KEYUP, d3Config.keyForceStand, 0);
+						}
 						leftMouseCooldown = 0;
 					}
 				}
@@ -1107,6 +1112,13 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 					if (rightMouseCooldown >= d3Config.leftMouseTime)
 					{
 						if (ValidToSendD3Click()) SendD3RightMouseClick();
+						else
+						{
+							::SendMessageW(d3Wnd, WM_KEYDOWN, d3Config.keyForceStand, 0);
+							Sleep(20);
+							SendD3RightMouseClick();
+							::SendMessageW(d3Wnd, WM_KEYUP, d3Config.keyForceStand, 0);
+						}
 						rightMouseCooldown = 0;
 					}
 				}
