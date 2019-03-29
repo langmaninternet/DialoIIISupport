@@ -22,11 +22,11 @@ https://github.com/langmaninternet/DialoIIISupport
 Features : Auto use skill over time
 ------------
 
-F1 to auto left mouse click
+F1 to on/off auto left mouse click
 
-F2 to auto skill 1 2 3 4 an healing Q
+F2 to on/off auto skill 1 2 3 4 an healing Q
 
-F3 to auto right mouse click
+F3 to on/off auto right mouse click
 
 (Smart handling situations)
 
