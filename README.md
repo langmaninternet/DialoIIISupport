@@ -57,7 +57,7 @@ ESC or SPACE to Stop
 
 + Có thêm tính năng bán và sửa đồ, rất tiện khi đi GR Speed. (Lúc về thành thì lọc đồ, đồ ngon cất vào Stash, xong ra thợ rèn, bấm Ctrl + 9 là tự bán đồ và sửa đồ)
 
-+ Nếu bạn di chuột ra khỏi game thì auto F1 sẽ trở thành giữ Force Stand + F1. Nếu bạn di chuột ra khỏi game thì auto F3 sẽ trở thành giữ Force Stand + F3. (Rất tiện khi bạn chơi zmonk, bạn lỡ click chuột ra ngoài thì nhân vật bạn sẽ đứng im 1 chỗ và tank quái)
++ Nếu bạn di chuột ra khỏi game thì auto F1 sẽ trở thành giữ Force Stand + LeftMouse. Nếu bạn di chuột ra khỏi game thì auto F3 sẽ trở thành giữ Force Stand + RightMouse. (Rất tiện khi bạn chơi zmonk, bạn lỡ click chuột ra ngoài thì nhân vật bạn sẽ đứng im 1 chỗ và tank quái)
 
 
 
