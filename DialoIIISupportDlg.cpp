@@ -15,21 +15,31 @@
 /************************************************************************/
 bool		InitStarPactEngine(const wchar_t * licenseID);
 void		GenDeviceIdentification(wchar_t * bufferDeviceID, int bufferDeviceIDSize);
+
 void		ArchonStarPactCastMeteor(const wchar_t meteorKey,
 	const wchar_t archonKey,
 	const wchar_t primaryKey,
 	const wchar_t secondaryKey,
 	const wchar_t forceStandKey);
 
-void			ArchonStarPactCycle(const wchar_t blackHoleKey,
+void		ArchonStarPactCycle(const wchar_t blackHoleKey,
 	const wchar_t wayOfForceKey,
 	const wchar_t meteorKey,
 	const wchar_t archonKey,
 	const wchar_t primaryKey,
 	const wchar_t secondaryKey,
 	const wchar_t forceStandKey);
+void		StopStarPact(void);
+
+void		StarPactDumpData(void);
 double		GetCurrentHealth(void);
-const double DialoIIISupportVersion = 1.04;
+
+
+
+
+
+
+const double DialoIIISupportVersion = 1.05;
 
 /************************************************************************/
 /* Struct                                                               */
@@ -63,7 +73,7 @@ struct DialoIIISupportConfig
 	int		skill03Enable;
 	int		skill04Enable;
 	int		healingEnable;
-	int		forceCloseEnable;
+	//int		forceCloseEnable;
 	int		modeFireBirdEnable;
 	int		modeArchonEnable;
 	int		lightingBlastEnable;
@@ -84,7 +94,7 @@ struct DialoIIISupportConfig
 	int		profileskill03Enable[maxProfileNumber + 1];
 	int		profileskill04Enable[maxProfileNumber + 1];
 	int		profilehealingEnable[maxProfileNumber + 1];
-	int		profileautoSpaceEnable[maxProfileNumber + 1];
+	//int		profileforceCloseEnable[maxProfileNumber + 1];
 	int		profilemodeFireBirdEnable[maxProfileNumber + 1];
 	int		profilemodeArchonEnable[maxProfileNumber + 1];
 	int		profilelightingBlastEnable[maxProfileNumber + 1];
@@ -181,7 +191,7 @@ void		ValidateD3Config(void)
 	if (d3Config.skill03Enable != 0) d3Config.skill03Enable = 1;
 	if (d3Config.skill04Enable != 0) d3Config.skill04Enable = 1;
 	if (d3Config.healingEnable != 0) d3Config.healingEnable = 1;
-	if (d3Config.forceCloseEnable != 0) d3Config.forceCloseEnable = 1;
+	//if (d3Config.forceCloseEnable != 0) d3Config.forceCloseEnable = 1;
 	if (d3Config.modeArchonEnable != 0) d3Config.modeArchonEnable = 1;
 	if (d3Config.modeFireBirdEnable != 0) d3Config.modeFireBirdEnable = 1;
 	if (d3Config.lightingBlastEnable != 0) d3Config.lightingBlastEnable = 1;
@@ -212,7 +222,7 @@ void		ValidateD3Config(void)
 		if (d3Config.profileskill03Enable[iprofile] != 0) d3Config.profileskill03Enable[iprofile] = 1;
 		if (d3Config.profileskill04Enable[iprofile] != 0) d3Config.profileskill04Enable[iprofile] = 1;
 		if (d3Config.profilehealingEnable[iprofile] != 0) d3Config.profilehealingEnable[iprofile] = 1;
-		if (d3Config.profileautoSpaceEnable[iprofile] != 0) d3Config.profileautoSpaceEnable[iprofile] = 1;
+		//if (d3Config.profileforceCloseEnable[iprofile] != 0) d3Config.profileforceCloseEnable[iprofile] = 1;
 		if (d3Config.profilemodeFireBirdEnable[iprofile] != 0) d3Config.profilemodeFireBirdEnable[iprofile] = 1;
 		if (d3Config.profilemodeArchonEnable[iprofile] != 0) d3Config.profilemodeArchonEnable[iprofile] = 1;
 		if (d3Config.profilelightingBlastEnable[iprofile] != 0) d3Config.profilelightingBlastEnable[iprofile] = 1;
@@ -508,7 +518,16 @@ extern "C" __declspec(dllexport) LRESULT CALLBACK HookProc(int nCode, WPARAM wPa
 				flagOnCtrl9 = false;
 				flagOnWizSingleShot = false;
 				archonModeCooldown = 0;
+				StopStarPact();
 				break;
+
+#ifdef _DEBUG
+			case VK_F5:
+				StarPactDumpData();
+				break;
+#endif
+
+
 			case 0x35/*'5'*/:
 				if (flagOnCtrl)
 				{
@@ -614,7 +633,7 @@ BEGIN_MESSAGE_MAP(CDialoIIISupportDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_SKILL03CHECK, &CDialoIIISupportDlg::OnClickedSkill03Check)
 	ON_BN_CLICKED(IDC_SKILL04CHECK, &CDialoIIISupportDlg::OnClickedSkill04Check)
 	ON_BN_CLICKED(IDC_HEALINGCHECK, &CDialoIIISupportDlg::OnClickedHealingCheck)
-	ON_BN_CLICKED(IDC_SPACECHECK, &CDialoIIISupportDlg::OnClickedSpaceCheck)
+	//ON_BN_CLICKED(IDC_SPACECHECK, &CDialoIIISupportDlg::OnClickedSpaceCheck)
 	ON_COMMAND(ID_HELP, &CDialoIIISupportDlg::OnHelp)
 	ON_EN_KILLFOCUS(IDC_PROFILENAME, &CDialoIIISupportDlg::OnKillFocusProfileName)
 	ON_BN_CLICKED(IDC_PROFILE01, &CDialoIIISupportDlg::OnBnClickedProfile01)
@@ -633,7 +652,7 @@ BEGIN_MESSAGE_MAP(CDialoIIISupportDlg, CDialogEx)
 	ON_EN_KILLFOCUS(IDC_SKILLKEY04, &CDialoIIISupportDlg::OnKillFocusSkillKey04)
 	ON_EN_KILLFOCUS(IDC_HEALINGKEY, &CDialoIIISupportDlg::OnKillfocusHealingKey)
 	ON_BN_CLICKED(IDC_WIZARCHONCHECK, &CDialoIIISupportDlg::OnBnClickedWizArchoncheck)
-	ON_EN_KILLFOCUS(IDC_CLOSEPOPUPKEY, &CDialoIIISupportDlg::OnKillFocusClosePopupKey)
+	//ON_EN_KILLFOCUS(IDC_CLOSEPOPUPKEY, &CDialoIIISupportDlg::OnKillFocusClosePopupKey)
 	ON_EN_KILLFOCUS(IDC_METEORKEY, &CDialoIIISupportDlg::OnKillFocusMeteorKey)
 	ON_BN_CLICKED(IDC_WIZFIREBRIDCHECK, &CDialoIIISupportDlg::OnBnClickedWizFireBridCheck)
 	ON_EN_KILLFOCUS(IDC_FORCESTANDKEY, &CDialoIIISupportDlg::OnKillFocusForceStandKey)
@@ -752,7 +771,7 @@ BOOL CDialoIIISupportDlg::OnInitDialog()
 	((CButton*)GetDlgItem(IDC_SKILL03CHECK))->SetCheck(d3Config.skill03Enable);
 	((CButton*)GetDlgItem(IDC_SKILL04CHECK))->SetCheck(d3Config.skill04Enable);
 	((CButton*)GetDlgItem(IDC_HEALINGCHECK))->SetCheck(d3Config.healingEnable);
-	((CButton*)GetDlgItem(IDC_SPACECHECK))->SetCheck(d3Config.forceCloseEnable);
+	//((CButton*)GetDlgItem(IDC_SPACECHECK))->SetCheck(d3Config.forceCloseEnable);
 	((CButton*)GetDlgItem(IDC_LIGHTINGBLAST))->SetCheck(d3Config.lightingBlastEnable);
 
 
@@ -765,7 +784,7 @@ BOOL CDialoIIISupportDlg::OnInitDialog()
 	OnShowSkillKey(IDC_SKILLKEY03, d3Config.keySKill03);
 	OnShowSkillKey(IDC_SKILLKEY04, d3Config.keySKill04);
 	OnShowSkillKey(IDC_HEALINGKEY, d3Config.keyHealing);
-	OnShowSkillKey(IDC_CLOSEPOPUPKEY, d3Config.keyForceClose);
+	//OnShowSkillKey(IDC_CLOSEPOPUPKEY, d3Config.keyForceClose);
 	OnShowSkillKey(IDC_ARCHONKEY, d3Config.keyArchon);
 	OnShowSkillKey(IDC_METEORKEY, d3Config.keyMeteor);
 	OnShowSkillKey(IDC_FORCESTANDKEY, d3Config.keyForceStand);
@@ -889,12 +908,15 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 		if (flagOnProcess == false)
 		{
 			flagOnProcess = true;
-			const WCHAR * bufferActive = L"Found";
+			WCHAR bufferActive[100] = L"Found";
+#ifdef _DEBUG
+			if (currentHeath > 0.0) swprintf_s(bufferActive, L"Found - HP : %0.0lf%% ", currentHeath);
+#endif 
 			HWND d3Wnd = GetD3Windows();
 			RECT d3Rect = { 0 };
 			if (d3Wnd == 0)
 			{
-				bufferActive = L"";
+				bufferActive[0] = NULL;
 				flagOnF1 = false;
 				flagOnF2 = false;
 				flagOnF3 = false;
@@ -985,7 +1007,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 				GetDlgItem(IDC_SKILL03CHECK)->EnableWindow(FALSE);
 				GetDlgItem(IDC_SKILL04CHECK)->EnableWindow(FALSE);
 				GetDlgItem(IDC_HEALINGCHECK)->EnableWindow(FALSE);
-				GetDlgItem(IDC_SPACECHECK)->EnableWindow(FALSE);
+				//GetDlgItem(IDC_SPACECHECK)->EnableWindow(FALSE);
 				GetDlgItem(IDC_F2BIGFRAME)->SetWindowTextW(L"Skill (Hotkey F2) - Running");
 				if (d3Wnd != 0)
 				{
@@ -997,7 +1019,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 						{
 							if (flagValidForSendSpace)
 							{
-								if (d3Config.forceCloseEnable) SendD3Key(d3Config.keyForceClose);
+								//if (d3Config.forceCloseEnable) SendD3Key(d3Config.keyForceClose);
 								flagValidForSendSpace = false;
 							}
 							SendD3Key(d3Config.keySKill01);
@@ -1011,7 +1033,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 						{
 							if (flagValidForSendSpace)
 							{
-								if (d3Config.forceCloseEnable) SendD3Key(d3Config.keyForceClose);
+								//if (d3Config.forceCloseEnable) SendD3Key(d3Config.keyForceClose);
 								flagValidForSendSpace = false;
 							}
 							SendD3Key(d3Config.keySKill02);
@@ -1025,7 +1047,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 						{
 							if (flagValidForSendSpace)
 							{
-								if (d3Config.forceCloseEnable) SendD3Key(d3Config.keyForceClose);
+								//if (d3Config.forceCloseEnable) SendD3Key(d3Config.keyForceClose);
 								flagValidForSendSpace = false;
 							}
 							SendD3Key(d3Config.keySKill03);
@@ -1039,21 +1061,21 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 						{
 							if (flagValidForSendSpace)
 							{
-								if (d3Config.forceCloseEnable) SendD3Key(d3Config.keyForceClose);
+								//if (d3Config.forceCloseEnable) SendD3Key(d3Config.keyForceClose);
 								flagValidForSendSpace = false;
 							}
 							SendD3Key(d3Config.keySKill04);
 							skillSlot04Cooldown = 0;
 						}
 					}
-					if (d3Config.healingEnable)
+					if (d3Config.healingEnable && currentHeath < 80.0)
 					{
 						healingCooldown += mainTimerDelay;
 						if (healingCooldown >= d3Config.skillSlot04Time)
 						{
 							if (flagValidForSendSpace)
 							{
-								if (d3Config.forceCloseEnable) SendD3Key(d3Config.keyForceClose);
+								//if (d3Config.forceCloseEnable) SendD3Key(d3Config.keyForceClose);
 								flagValidForSendSpace = false;
 							}
 							SendD3Key(d3Config.keyHealing);
@@ -1074,7 +1096,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 				GetDlgItem(IDC_SKILL03CHECK)->EnableWindow(TRUE);
 				GetDlgItem(IDC_SKILL04CHECK)->EnableWindow(TRUE);
 				GetDlgItem(IDC_HEALINGCHECK)->EnableWindow(TRUE);
-				GetDlgItem(IDC_SPACECHECK)->EnableWindow(TRUE);
+				//GetDlgItem(IDC_SPACECHECK)->EnableWindow(TRUE);
 				GetDlgItem(IDC_F2BIGFRAME)->SetWindowTextW(L"Skill (Hotkey F2)");
 			}
 			if (flagOnF1)
@@ -1352,6 +1374,10 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 	else if (heathTimerID == nIdEvent)
 	{
 		currentHeath = GetCurrentHealth();
+		if (currentHeath > 0.0)
+		{
+
+		}
 	}
 }
 void CDialoIIISupportDlg::OnLoadConfig()
@@ -1622,10 +1648,10 @@ void CDialoIIISupportDlg::OnKillfocusHealingKey()
 {
 	OnKillFocusSkillKey(IDC_HEALINGKEY, d3Config.keyHealing);
 }
-void CDialoIIISupportDlg::OnKillFocusClosePopupKey()
-{
-	OnKillFocusSkillKey(IDC_CLOSEPOPUPKEY, d3Config.keyForceClose);
-}
+//void CDialoIIISupportDlg::OnKillFocusClosePopupKey()
+//{
+//	OnKillFocusSkillKey(IDC_CLOSEPOPUPKEY, d3Config.keyForceClose);
+//}
 void CDialoIIISupportDlg::OnKillFocusForceStandKey()
 {
 	OnKillFocusSkillKey(IDC_FORCESTANDKEY, d3Config.keyForceStand);
@@ -1720,12 +1746,12 @@ void CDialoIIISupportDlg::OnClickedHealingCheck()
 	GetDlgItem(IDC_HEALINGTEXTMS)->EnableWindow(d3Config.healingEnable);
 	OnSaveConfig();
 }
-void CDialoIIISupportDlg::OnClickedSpaceCheck()
-{
-	d3Config.forceCloseEnable = !d3Config.forceCloseEnable;
-	d3Config.profileautoSpaceEnable[d3Config.currentProfile] = d3Config.forceCloseEnable;
-	OnSaveConfig();
-}
+//void CDialoIIISupportDlg::OnClickedSpaceCheck()
+//{
+//	d3Config.forceCloseEnable = !d3Config.forceCloseEnable;
+//	d3Config.profileforceCloseEnable[d3Config.currentProfile] = d3Config.forceCloseEnable;
+//	OnSaveConfig();
+//}
 void CDialoIIISupportDlg::OnBnClickedWizArchoncheck()
 {
 	d3Config.modeArchonEnable = !d3Config.modeArchonEnable;
@@ -1840,7 +1866,7 @@ void CDialoIIISupportDlg::OnBnClickedProfile()
 	d3Config.skill03Enable = d3Config.profileskill03Enable[d3Config.currentProfile];
 	d3Config.skill04Enable = d3Config.profileskill04Enable[d3Config.currentProfile];
 	d3Config.healingEnable = d3Config.profilehealingEnable[d3Config.currentProfile];
-	d3Config.forceCloseEnable = d3Config.profileautoSpaceEnable[d3Config.currentProfile];
+	//d3Config.forceCloseEnable = d3Config.profileforceCloseEnable[d3Config.currentProfile];
 	d3Config.modeFireBirdEnable = d3Config.profilemodeFireBirdEnable[d3Config.currentProfile];
 	d3Config.modeArchonEnable = d3Config.profilemodeArchonEnable[d3Config.currentProfile];
 	d3Config.lightingBlastEnable = d3Config.profilelightingBlastEnable[d3Config.currentProfile];
@@ -1892,7 +1918,7 @@ void CDialoIIISupportDlg::OnBnClickedProfile()
 	((CButton*)GetDlgItem(IDC_SKILL03CHECK))->SetCheck(d3Config.skill03Enable);
 	((CButton*)GetDlgItem(IDC_SKILL04CHECK))->SetCheck(d3Config.skill04Enable);
 	((CButton*)GetDlgItem(IDC_HEALINGCHECK))->SetCheck(d3Config.healingEnable);
-	((CButton*)GetDlgItem(IDC_SPACECHECK))->SetCheck(d3Config.forceCloseEnable);
+	//((CButton*)GetDlgItem(IDC_SPACECHECK))->SetCheck(d3Config.forceCloseEnable);
 
 
 	GetDlgItem(IDC_METEORTEXT)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);

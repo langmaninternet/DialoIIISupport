@@ -62,7 +62,7 @@ public:
 	afx_msg void OnKillFocusSkillKey03();
 	afx_msg void OnKillFocusSkillKey04();
 	afx_msg void OnKillfocusHealingKey();
-	afx_msg void OnKillFocusClosePopupKey();
+	//afx_msg void OnKillFocusClosePopupKey();
 
 	afx_msg void OnKillFocusForceStandKey();
 	afx_msg void OnKillFocusForceMoveKey();
@@ -80,7 +80,7 @@ public:
 	afx_msg void OnClickedSkill03Check();
 	afx_msg void OnClickedSkill04Check();
 	afx_msg void OnClickedHealingCheck();
-	afx_msg void OnClickedSpaceCheck();
+	//afx_msg void OnClickedSpaceCheck();
 	afx_msg void OnBnClickedWizArchoncheck();
 	afx_msg void OnBnClickedWizFireBridCheck();
 	afx_msg void OnClickedLightingBlastCheck();

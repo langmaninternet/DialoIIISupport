@@ -8,7 +8,6 @@
 #define IDC_LEFTMOUSETIME               1006
 #define IDC_RIGHTMOUSETIME              1007
 #define IDC_PROFILENAME                 1009
-#define IDC_SPACECHECK                  1010
 #define IDC_SKILL01TIME                 1011
 #define IDC_SKILL01CHECK                1012
 #define IDC_SKILL02TIME                 1013
@@ -66,7 +65,7 @@
 #define IDC_METEORKEY                   1067
 #define IDC_FORCESTANDTEXT              1068
 #define IDC_FORCESTANDKEY               1069
-#define IDC_CLOSEPOPUPKEY               1070
+
 #define IDC_SINGLESHOTHOTKEYTEXT        1071
 #define IDC_SINGLESHOTHOTKEY            1072
 #define IDC_MULTISHOTHOTKEYTEXT         1073
