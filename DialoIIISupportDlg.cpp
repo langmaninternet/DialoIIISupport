@@ -28,7 +28,7 @@ void			ArchonStarPactCycle(const wchar_t blackHoleKey,
 	const wchar_t primaryKey,
 	const wchar_t secondaryKey,
 	const wchar_t forceStandKey);
-
+double		GetCurrentHealth(void);
 const double DialoIIISupportVersion = 1.04;
 
 /************************************************************************/
@@ -120,7 +120,8 @@ struct DialoIIISupportConfig
 DialoIIISupportConfig	d3Config;
 wchar_t					configSavePath[3000] = { 0 };
 
-const int				timerDelay = 50/*ms*/;
+const int				mainTimerDelay = 50/*ms*/;
+const int				heathTimerDelay = 300/*ms*/;
 bool					flagOnF1 = false;
 bool					flagOnF2 = false;
 bool					flagOnF3 = false;
@@ -140,7 +141,7 @@ int						healingCooldown;
 INT64					archonStartTime;
 int						archonModeCooldown = 0;
 HHOOK					hGlobalHook;
-
+double					currentHeath = 0.0;
 
 
 /************************************************************************/
@@ -685,7 +686,8 @@ BOOL CDialoIIISupportDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
 	// TODO: Add extra initialization here
-	myTimerID = CDialogEx::SetTimer(1, timerDelay, NULL);
+	mainTimerID = CDialogEx::SetTimer(1, mainTimerDelay, NULL);
+	heathTimerID = CDialogEx::SetTimer(2, heathTimerDelay, NULL);
 
 	if (configSavePath[0] == 0)
 	{
@@ -876,9 +878,9 @@ void CDialoIIISupportDlg::OnHelp()
 /************************************************************************/
 void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 {
-	if (myTimerID == nIdEvent)
+	if (mainTimerID == nIdEvent)
 	{
-		if (archonModeCooldown > -timerDelay - timerDelay) archonModeCooldown -= timerDelay;
+		if (archonModeCooldown > -mainTimerDelay - mainTimerDelay) archonModeCooldown -= mainTimerDelay;
 		if (archonModeCooldown > 0)
 		{
 			INT64 archonInTime = GetTickCount64() - archonStartTime;
@@ -958,7 +960,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 
 				if (d3Config.lightingBlastEnable) SendD3Key(d3Config.keySKill01);
 			}
-			else if (archonModeCooldown + timerDelay >= 0)
+			else if (archonModeCooldown + mainTimerDelay >= 0)
 			{
 				GetDlgItem(IDC_SINGLESHOTHOTKEYTEXT)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
 				GetDlgItem(IDC_SINGLESHOTHOTKEYFORTEXT)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
@@ -990,7 +992,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 					bool flagValidForSendSpace = true;
 					if (d3Config.skill01Enable)
 					{
-						skillSlot01Cooldown += timerDelay;
+						skillSlot01Cooldown += mainTimerDelay;
 						if (skillSlot01Cooldown >= d3Config.skillSlot01Time)
 						{
 							if (flagValidForSendSpace)
@@ -1004,7 +1006,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 					}
 					if (d3Config.skill02Enable)
 					{
-						skillSlot02Cooldown += timerDelay;
+						skillSlot02Cooldown += mainTimerDelay;
 						if (skillSlot02Cooldown >= d3Config.skillSlot02Time)
 						{
 							if (flagValidForSendSpace)
@@ -1018,7 +1020,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 					}
 					if (d3Config.skill03Enable)
 					{
-						skillSlot03Cooldown += timerDelay;
+						skillSlot03Cooldown += mainTimerDelay;
 						if (skillSlot03Cooldown >= d3Config.skillSlot03Time)
 						{
 							if (flagValidForSendSpace)
@@ -1032,7 +1034,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 					}
 					if (d3Config.skill04Enable)
 					{
-						skillSlot04Cooldown += timerDelay;
+						skillSlot04Cooldown += mainTimerDelay;
 						if (skillSlot04Cooldown >= d3Config.skillSlot04Time)
 						{
 							if (flagValidForSendSpace)
@@ -1046,7 +1048,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 					}
 					if (d3Config.healingEnable)
 					{
-						healingCooldown += timerDelay;
+						healingCooldown += mainTimerDelay;
 						if (healingCooldown >= d3Config.skillSlot04Time)
 						{
 							if (flagValidForSendSpace)
@@ -1083,7 +1085,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 				GetDlgItem(IDC_LEFTMOUSETIME)->EnableWindow(FALSE);
 				if (d3Wnd != 0)
 				{
-					leftMouseCooldown += timerDelay;
+					leftMouseCooldown += mainTimerDelay;
 					if (leftMouseCooldown >= d3Config.leftMouseTime)
 					{
 						if (ValidToSendD3Click()) SendD3LeftMouseClick();
@@ -1113,7 +1115,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 				GetDlgItem(IDC_RIGHTMOUSETIME)->EnableWindow(FALSE);
 				if (d3Wnd != 0)
 				{
-					rightMouseCooldown += timerDelay;
+					rightMouseCooldown += mainTimerDelay;
 					if (rightMouseCooldown >= d3Config.leftMouseTime)
 					{
 						if (ValidToSendD3Click()) SendD3RightMouseClick();
@@ -1346,6 +1348,10 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 
 			flagOnProcess = false;
 		}
+	}
+	else if (heathTimerID == nIdEvent)
+	{
+		currentHeath = GetCurrentHealth();
 	}
 }
 void CDialoIIISupportDlg::OnLoadConfig()

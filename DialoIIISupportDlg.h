@@ -30,8 +30,8 @@ protected:
 	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
 
-	UINT_PTR myTimerID;
-	
+	UINT_PTR mainTimerID;
+	UINT_PTR heathTimerID;
 	
 
 
