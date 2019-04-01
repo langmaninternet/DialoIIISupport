@@ -42,6 +42,7 @@
 #define IDC_CTRL7TEXT                   1041
 #define IDC_CTRLESC                     1042
 #define IDC_CTRL9TEXT                   1043
+#define IDC_HEALINGPERCENTTEXT          1044
 #define IDC_PROFILE01                   1045
 #define IDC_PROFILE03                   1046
 #define IDC_PROFILE08                   1047
@@ -52,6 +53,9 @@
 #define IDC_PROFILE09                   1052
 #define IDC_PROFILE07                   1053
 #define IDC_PROFILE10                   1054
+#define IDC_HEALINGPERCENTVALUE         1055
+#define IDC_HEALINGTEXTMS2              1056
+#define IDC_HEALINGPERCENTTEXTP         1056
 #define IDC_PRIMARYSKILLKEYTEXT         1057
 #define IDC_PRIMARYSKILLKEY             1058
 #define IDC_SKILLKEY01                  1059
@@ -65,7 +69,6 @@
 #define IDC_METEORKEY                   1067
 #define IDC_FORCESTANDTEXT              1068
 #define IDC_FORCESTANDKEY               1069
-
 #define IDC_SINGLESHOTHOTKEYTEXT        1071
 #define IDC_SINGLESHOTHOTKEY            1072
 #define IDC_MULTISHOTHOTKEYTEXT         1073

@@ -114,4 +114,5 @@ public:
 
 	afx_msg void OnBnClickedSingleshothotcastmeteoronly();
 	afx_msg void OnBnClickedSingleshothotcastfullcycle();
+	afx_msg void OnKillFocusHealingPercentValue();
 };

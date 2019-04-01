@@ -68,6 +68,7 @@ struct DialoIIISupportConfig
 	int		skillSlot03Time;
 	int		skillSlot04Time;
 	int		healingTime;
+	int		healingPercent;
 	int		skill01Enable;
 	int		skill02Enable;
 	int		skill03Enable;
@@ -89,6 +90,7 @@ struct DialoIIISupportConfig
 	int		profileskillSlot03Time[maxProfileNumber + 1];
 	int		profileskillSlot04Time[maxProfileNumber + 1];
 	int		profilehealingTime[maxProfileNumber + 1];
+	int		profilehealingPercent[maxProfileNumber + 1];
 	int		profileskill01Enable[maxProfileNumber + 1];
 	int		profileskill02Enable[maxProfileNumber + 1];
 	int		profileskill03Enable[maxProfileNumber + 1];
@@ -153,7 +155,6 @@ int						archonModeCooldown = 0;
 HHOOK					hGlobalHook;
 double					currentHeath = 0.0;
 
-
 /************************************************************************/
 /* Process Function                                                     */
 /************************************************************************/
@@ -186,6 +187,10 @@ void		ValidateD3Config(void)
 	if (d3Config.skillSlot03Time < 50) d3Config.skillSlot03Time = 50;
 	if (d3Config.skillSlot04Time < 50) d3Config.skillSlot04Time = 50;
 	if (d3Config.healingTime < 50) d3Config.healingTime = 50;
+
+	if (d3Config.healingPercent == 0) d3Config.healingPercent = 70;
+	if (d3Config.healingPercent < 40) d3Config.healingPercent = 40;
+	if (d3Config.healingPercent > 95) d3Config.healingPercent = 95;
 	if (d3Config.skill01Enable != 0) d3Config.skill01Enable = 1;
 	if (d3Config.skill02Enable != 0) d3Config.skill02Enable = 1;
 	if (d3Config.skill03Enable != 0) d3Config.skill03Enable = 1;
@@ -197,6 +202,7 @@ void		ValidateD3Config(void)
 	if (d3Config.lightingBlastEnable != 0) d3Config.lightingBlastEnable = 1;
 	if (d3Config.currentProfile < 0 || d3Config.currentProfile >= maxProfileNumber) d3Config.currentProfile = 0;
 	if (d3Config.fullCycleEnable != 0) d3Config.fullCycleEnable = 1;
+
 	for (int iprofile = 0; iprofile < maxProfileNumber; iprofile++)
 	{
 		if (d3Config.profileName[iprofile][0] == 0)
@@ -210,6 +216,9 @@ void		ValidateD3Config(void)
 		d3Config.profileskillSlot03Time[iprofile] = int(round(d3Config.profileskillSlot03Time[iprofile] / 50.0) * 50);
 		d3Config.profileskillSlot04Time[iprofile] = int(round(d3Config.profileskillSlot04Time[iprofile] / 50.0) * 50);
 		d3Config.profilehealingTime[iprofile] = int(round(d3Config.profilehealingTime[iprofile] / 50.0) * 50);
+		if (d3Config.profilehealingPercent[iprofile] == 0) d3Config.profilehealingPercent[iprofile] = 70;
+		if (d3Config.profilehealingPercent[iprofile] < 40) d3Config.profilehealingPercent[iprofile] = 40;
+		if (d3Config.profilehealingPercent[iprofile] > 95) d3Config.profilehealingPercent[iprofile] = 95;
 		if (d3Config.profileleftMouseTime[iprofile] < 50) d3Config.profileleftMouseTime[iprofile] = 50;
 		if (d3Config.profilerightMouseTime[iprofile] < 50) d3Config.profilerightMouseTime[iprofile] = 50;
 		if (d3Config.profileskillSlot01Time[iprofile] < 50) d3Config.profileskillSlot01Time[iprofile] = 50;
@@ -667,6 +676,7 @@ BEGIN_MESSAGE_MAP(CDialoIIISupportDlg, CDialogEx)
 	ON_EN_KILLFOCUS(IDC_LIGHTINGBLASTKEY, &CDialoIIISupportDlg::OnKillFocusLightingBlastKey)
 	ON_BN_CLICKED(IDC_SINGLESHOTHOTCASTMETEORONLY, &CDialoIIISupportDlg::OnBnClickedSingleshothotcastmeteoronly)
 	ON_BN_CLICKED(IDC_SINGLESHOTHOTCASTFULLCYCLE, &CDialoIIISupportDlg::OnBnClickedSingleshothotcastfullcycle)
+	ON_EN_KILLFOCUS(IDC_HEALINGPERCENTVALUE, &CDialoIIISupportDlg::OnKillFocusHealingPercentValue)
 END_MESSAGE_MAP()
 
 BOOL CDialoIIISupportDlg::OnInitDialog()
@@ -743,6 +753,9 @@ BOOL CDialoIIISupportDlg::OnInitDialog()
 
 	swprintf_s(buffer, L"%d", d3Config.healingTime);
 	GetDlgItem(IDC_HEALINGTIME)->SetWindowText(buffer);
+
+	swprintf_s(buffer, L"%d", d3Config.healingPercent);
+	GetDlgItem(IDC_HEALINGPERCENTVALUE)->SetWindowText(buffer);
 
 
 	swprintf_s(buffer, L"Dialo III Support Version %0.2lf", DialoIIISupportVersion);
@@ -1068,7 +1081,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 							skillSlot04Cooldown = 0;
 						}
 					}
-					if (d3Config.healingEnable && currentHeath < 80.0)
+					if (d3Config.healingEnable && currentHeath < d3Config.healingPercent)
 					{
 						healingCooldown += mainTimerDelay;
 						if (healingCooldown >= d3Config.skillSlot04Time)
@@ -1376,7 +1389,9 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 		currentHeath = GetCurrentHealth();
 		if (currentHeath > 0.0)
 		{
-
+			GetDlgItem(IDC_HEALINGPERCENTTEXT)->EnableWindow(TRUE);
+			GetDlgItem(IDC_HEALINGPERCENTVALUE)->EnableWindow(TRUE);
+			GetDlgItem(IDC_HEALINGPERCENTTEXTP)->EnableWindow(TRUE);
 		}
 	}
 }
@@ -1861,6 +1876,7 @@ void CDialoIIISupportDlg::OnBnClickedProfile()
 	d3Config.skillSlot03Time = d3Config.profileskillSlot03Time[d3Config.currentProfile];
 	d3Config.skillSlot04Time = d3Config.profileskillSlot04Time[d3Config.currentProfile];
 	d3Config.healingTime = d3Config.profilehealingTime[d3Config.currentProfile];
+	d3Config.healingPercent = d3Config.profilehealingPercent[d3Config.currentProfile];
 	d3Config.skill01Enable = d3Config.profileskill01Enable[d3Config.currentProfile];
 	d3Config.skill02Enable = d3Config.profileskill02Enable[d3Config.currentProfile];
 	d3Config.skill03Enable = d3Config.profileskill03Enable[d3Config.currentProfile];
@@ -1895,6 +1911,11 @@ void CDialoIIISupportDlg::OnBnClickedProfile()
 
 	swprintf_s(buffer, L"%d", d3Config.healingTime);
 	GetDlgItem(IDC_HEALINGTIME)->SetWindowText(buffer);
+
+
+	swprintf_s(buffer, L"%d", d3Config.healingPercent);
+	GetDlgItem(IDC_HEALINGPERCENTVALUE)->SetWindowText(buffer);
+
 
 	GetDlgItem(IDC_SKILL01TIME)->EnableWindow(d3Config.skill01Enable);
 	GetDlgItem(IDC_SKILL02TIME)->EnableWindow(d3Config.skill02Enable);
@@ -2003,6 +2024,22 @@ void CDialoIIISupportDlg::OnBnClickedProfile10()
 
 
 
+void CDialoIIISupportDlg::OnKillFocusHealingPercentValue()
+{
+	wchar_t bufferText[1000] = { 0 };
+	GetDlgItem(IDC_HEALINGPERCENTVALUE)->GetWindowTextW(bufferText, 999);
+	int newValue = 0;
+	swscanf(bufferText, L"%d", &newValue);
+	if (newValue == 0) newValue = 70;
+	if (newValue < 40) newValue = 40;
+	if (newValue > 95) newValue = 95;
 
-
-
+	swprintf(bufferText, L"%d", newValue);
+	GetDlgItem(IDC_HEALINGPERCENTVALUE)->SetWindowTextW(bufferText);
+	if (newValue != d3Config.healingPercent)
+	{
+		d3Config.healingPercent = newValue;
+		d3Config.profilehealingPercent[d3Config.currentProfile] = newValue;
+		OnSaveConfig();
+	}
+}
