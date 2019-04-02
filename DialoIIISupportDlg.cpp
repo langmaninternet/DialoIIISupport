@@ -29,10 +29,11 @@ void		ArchonStarPactCycle(const wchar_t blackHoleKey,
 	const wchar_t primaryKey,
 	const wchar_t secondaryKey,
 	const wchar_t forceStandKey);
+void		StartStarPact(void);
 void		StopStarPact(void);
 
 void		StarPactDumpData(void);
-double		GetCurrentHealth(void);
+double		GetCurrentHealth(bool & flagAttackMode);
 
 
 
@@ -150,6 +151,7 @@ INT64					archonStartTime;
 int						archonModeCooldown = 0;
 HHOOK					hGlobalHook;
 double					currentHeath = 0.0;
+bool					flagAttackMode = true;
 
 /************************************************************************/
 /* Process Function                                                     */
@@ -584,12 +586,12 @@ extern "C" __declspec(dllexport) LRESULT CALLBACK HookProc(int nCode, WPARAM wPa
 				flagOnCtrl = true;
 				break;
 			default:
-				if ((d3Config.modeArchonEnable && archonModeCooldown <= 0) || d3Config.modeFireBirdEnable)
+				if (flagOnWizSingleShot == false && ((d3Config.modeArchonEnable && archonModeCooldown <= 0) || d3Config.modeFireBirdEnable))
 				{
-
 					if ((keyParam->vkCode == d3Config.keyWizSingleShot) || (d3Config.keyWizSingleShot == L'~' &&keyParam->vkCode == VK_OEM_3))
 					{
 						flagOnWizSingleShot = true;
+						StartStarPact();
 					}
 				}
 				break;
@@ -1008,7 +1010,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 					if (d3Config.skill01Enable)
 					{
 						skillSlot01Cooldown += mainTimerDelay;
-						if (skillSlot01Cooldown >= d3Config.skillSlot01Time)
+						if (skillSlot01Cooldown >= d3Config.skillSlot01Time && flagAttackMode)
 						{
 							SendD3Key(d3Config.keySKill01);
 							skillSlot01Cooldown = 0;
@@ -1017,7 +1019,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 					if (d3Config.skill02Enable)
 					{
 						skillSlot02Cooldown += mainTimerDelay;
-						if (skillSlot02Cooldown >= d3Config.skillSlot02Time)
+						if (skillSlot02Cooldown >= d3Config.skillSlot02Time && flagAttackMode)
 						{
 							SendD3Key(d3Config.keySKill02);
 							skillSlot02Cooldown = 0;
@@ -1026,7 +1028,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 					if (d3Config.skill03Enable)
 					{
 						skillSlot03Cooldown += mainTimerDelay;
-						if (skillSlot03Cooldown >= d3Config.skillSlot03Time)
+						if (skillSlot03Cooldown >= d3Config.skillSlot03Time && flagAttackMode)
 						{
 							SendD3Key(d3Config.keySKill03);
 							skillSlot03Cooldown = 0;
@@ -1035,7 +1037,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 					if (d3Config.skill04Enable)
 					{
 						skillSlot04Cooldown += mainTimerDelay;
-						if (skillSlot04Cooldown >= d3Config.skillSlot04Time)
+						if (skillSlot04Cooldown >= d3Config.skillSlot04Time && flagAttackMode)
 						{
 							SendD3Key(d3Config.keySKill04);
 							skillSlot04Cooldown = 0;
@@ -1044,7 +1046,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 					if (d3Config.healingEnable)
 					{
 						healingCooldown += mainTimerDelay;
-						if (healingCooldown >= d3Config.skillSlot04Time)
+						if (healingCooldown >= d3Config.skillSlot04Time )
 						{
 							if (currentHeath < defaultHeathLimit) SendD3Key(d3Config.keyHealing);
 							healingCooldown = 0;
@@ -1116,7 +1118,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 				if (d3Wnd != 0)
 				{
 					rightMouseCooldown += mainTimerDelay;
-					if (rightMouseCooldown >= d3Config.leftMouseTime)
+					if (rightMouseCooldown >= d3Config.leftMouseTime && flagAttackMode)
 					{
 						if (ValidToSendD3Click()) SendD3RightMouseClick();
 						else
@@ -1351,7 +1353,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 	}
 	else if (heathTimerID == nIdEvent)
 	{
-		currentHeath = GetCurrentHealth();
+		currentHeath = GetCurrentHealth(flagAttackMode);
 
 	}
 }
