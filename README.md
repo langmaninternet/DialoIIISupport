@@ -3,6 +3,10 @@ An open-source Dialo III Support tool
 
 Link download (Source code + Tool)
 ------------
+Latest stable version
+https://github.com/langmaninternet/DialoIIISupport/releases
+
+Current developing version
 https://github.com/langmaninternet/DialoIIISupport/archive/master.zip
 
 
