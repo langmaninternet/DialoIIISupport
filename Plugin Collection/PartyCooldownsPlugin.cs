@@ -57,19 +57,19 @@ namespace Turbo.Plugins.Default
                 //--- Barb
                 79528, //Ignore Pain
                 //79607, //Wrath of the Berserker
-                //375483, //Warcry
+                375483, //Warcry
 
                 //--- Monk
-                //317076, //Inner Sanctuary
+                317076, //Inner Sanctuary
 
                 //--- Witch Doctor
                 //106237, //Spirit Walk
 
                 //--- Demon Hunter 
-                //365311, //Companion
+                365311, //Companion
 
                 //--- Wizard
-                //134872 //Archon - Needs testing, dont use for now
+                134872 //Archon - Needs testing, dont use for now
             };
 
             ClassFont = Hud.Render.CreateFont("tahoma", 7, 230, 255, 255, 255, true, false, 255, 0, 0, 0, true);
