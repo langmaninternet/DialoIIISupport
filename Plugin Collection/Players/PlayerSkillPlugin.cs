@@ -224,7 +224,7 @@ namespace Turbo.Plugins.Default
             InnerSanctuaryTempleOfProtecteionDecorator = new WorldDecoratorCollection(
                 new GroundCircleDecorator(Hud)
                 {
-                    Brush = Hud.Render.CreateBrush(100, 255, 204, 0, 4),
+                    Brush = Hud.Render.CreateBrush(255, 255, 204, 0, 4),
                     Radius = 11,
                 },
                 new GroundLabelDecorator(Hud)
