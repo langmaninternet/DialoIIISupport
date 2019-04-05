@@ -29,9 +29,9 @@ namespace Turbo.Plugins.Default
         public HuntersVengeancePlugin()
         {
             Enabled = true;
-            permanentCircle = true;
+            permanentCircle = false;
             ElitesOnlyNumbers = true;
-            TargetForAll = true;
+            TargetForAll = false;
         }
 
         public override void Load(IController hud)
