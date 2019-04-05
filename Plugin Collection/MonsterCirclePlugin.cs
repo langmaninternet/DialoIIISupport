@@ -13,7 +13,7 @@ namespace Turbo.Plugins.Default
         public WorldDecoratorCollection ChampionDecorator { get; set; }
         public WorldDecoratorCollection JuggernautDecorator { get; set; }
         public WorldDecoratorCollection GoblinDecorator { get; set; } // Goblin
-        public WorldDecoratorCollection RareMinionDecorator { get; set; }   // Elite Minion
+        //public WorldDecoratorCollection RareMinionDecorator { get; set; }   // Elite Minion
         public WorldDecoratorCollection UniqueDecorator { get; set; }   //Purple
         public WorldDecoratorCollection BossDecorator { get; set; }   //Boss
 
@@ -131,24 +131,24 @@ namespace Turbo.Plugins.Default
                     Radius = 0.3f
                 }
                 );
-            RareMinionDecorator = new WorldDecoratorCollection(
-                new GroundCircleDecorator(Hud)
-                {
-                    Brush = Hud.Render.CreateBrush(255, 255, 148, 20, 3, SharpDX.Direct2D1.DashStyle.Dash),
-                    Radius = 3
-                },
-                new GroundCircleDecorator(Hud)
-                {
-                    Brush = Hud.Render.CreateBrush(180, 255, 0, 0, 6, SharpDX.Direct2D1.DashStyle.Dash),
-                    Radius = 0
-                },
-                new MapShapeDecorator(Hud)
-                {
-                    Brush = Hud.Render.CreateBrush(255, 192, 92, 20, 2.0f),
-                    Radius = 4,
-                    ShapePainter = new CircleShapePainter(Hud)
-                }
-            );
+            //	RareMinionDecorator = new WorldDecoratorCollection(
+            //	    new GroundCircleDecorator(Hud)
+            //	    {
+            //	        Brush = Hud.Render.CreateBrush(255, 255, 148, 20, 3, SharpDX.Direct2D1.DashStyle.Dash),
+            //	        Radius = 3
+            //	    },
+            //	    new GroundCircleDecorator(Hud)
+            //	    {
+            //	        Brush = Hud.Render.CreateBrush(180, 255, 0, 0, 6, SharpDX.Direct2D1.DashStyle.Dash),
+            //	        Radius = 0
+            //	    },
+            //	    new MapShapeDecorator(Hud)
+            //	    {
+            //	        Brush = Hud.Render.CreateBrush(255, 192, 92, 20, 2.0f),
+            //	        Radius = 4,
+            //	        ShapePainter = new CircleShapePainter(Hud)
+            //	    }
+            //	);
 
             UniqueDecorator = new WorldDecoratorCollection(
                 new GroundCircleDecorator(Hud)
@@ -224,10 +224,10 @@ namespace Turbo.Plugins.Default
                     monstersElite.Add(monster);
                 }
 
-                if (monster.Rarity == ActorRarity.RareMinion)
-                {
-                    RareMinionDecorator.Paint(layer, monster, monster.FloorCoordinate, monster.SnoMonster.NameLocalized);
-                }
+                //	if (monster.Rarity == ActorRarity.RareMinion)
+                //	{
+                //	    RareMinionDecorator.Paint(layer, monster, monster.FloorCoordinate, monster.SnoMonster.NameLocalized);
+                //	}
 
                 if (monster.Rarity == ActorRarity.Unique)
                 {
