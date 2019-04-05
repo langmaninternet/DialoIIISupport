@@ -53,7 +53,7 @@ namespace Turbo.Plugins.Default
                 //--- Necromancer
                 465350, //Simulacrum  
                 465839, //Land of the Dead
-                465952 , // Final Service
+                465952, // Final Service
 
                 //--- Barb
                 79528, //Ignore Pain
