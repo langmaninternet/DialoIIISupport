@@ -53,23 +53,30 @@ namespace Turbo.Plugins.Default
                 //--- Necromancer
                 465350, //Simulacrum  
                 465839, //Land of the Dead
+                465952 , // Final Service
 
                 //--- Barb
                 79528, //Ignore Pain
-                //79607, //Wrath of the Berserker
+                79607, //Wrath of the Berserker
                 375483, //Warcry
+                217819, // Nerves of Steel
 
                 //--- Monk
                 317076, //Inner Sanctuary
+                156484, //Near Death Experience
 
                 //--- Witch Doctor
-                //106237, //Spirit Walk
+                106237, //Spirit Walk
 
                 //--- Demon Hunter 
                 365311, //Companion
+                129217, //Sentry
+                324770, //Awareness
+
 
                 //--- Wizard
-                134872 //Archon - Needs testing, dont use for now
+                134872, //Archon - Needs testing, dont use for now
+                208474 // Unstable Anomaly
             };
 
             ClassFont = Hud.Render.CreateFont("tahoma", 7, 230, 255, 255, 255, true, false, 255, 0, 0, 0, true);
@@ -117,7 +124,7 @@ namespace Turbo.Plugins.Default
             {
                 if (player.IsMe && !ShowSelf || !player.IsMe && ShowOnlyMe)
                     continue;
-                var found = false; 
+                var found = false;
                 var firstIter = true;
                 foreach (var i in _skillOrder)
                 {
@@ -126,7 +133,7 @@ namespace Turbo.Plugins.Default
                     found = true;
                     if (firstIter)
                     {
-                        var layout = ClassFont.GetTextLayout(player.BattleTagAbovePortrait + "\n(" + _classShorts[player.HeroClassDefinition.HeroClass] + ")"); 
+                        var layout = ClassFont.GetTextLayout(player.BattleTagAbovePortrait + "\n(" + _classShorts[player.HeroClassDefinition.HeroClass] + ")");
                         ClassFont.DrawText(layout, xPos - (layout.Metrics.Width * 0.1f), HudHeight * StartYPos);
                         firstIter = false;
                     }
