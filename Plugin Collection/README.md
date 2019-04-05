@@ -53,10 +53,7 @@ Mọi người copy vào các plugin đã fix lại thư mục TurboHUD\plugins\
 
 + AriadnesThreadPlugin : Vẽ đường line trên mini map, rất tiện dụng, đặc biệt khi chạy bounty
 
-
 + MonsterCirclePlugin : Vẽ vòng tròn dưới chân Elite
-
-
 
 
 Thông tin về 1 số plugin có sẵn
@@ -77,6 +74,11 @@ File TurboHUD\plugins\Default\LabelLists\TopExperienceStatistics.cs
 
 + (Nếu muốn) Bỏ mấy dòng chữ cạnh con boss cho đỡ rối mắt 
 TurboHUD\plugins\Default\Monsters\EliteMonsterAffixPlugin.cs
+
++ (Nếu muốn) Bỏ thông tin bên trên skill bar, nhưng chả bao giờ xem đến
++ AttributeLabelListPlugin.cs : 
+
+
 
 Các hot-key trong TurboHUD
 ------------
