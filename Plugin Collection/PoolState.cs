@@ -108,7 +108,7 @@ namespace Turbo.Plugins.Default
             var _bonuspool = BonusPoolInfo(player);
             var _pool = BonusPoolRecorded[player.Index] ? (_bonuspool > 0 ? 10 * ((float)_bonuspool / player.ParagonExpToNextLevel) : 0f) : float.PositiveInfinity;
 
-            if (_pool > 0) textBuilder.AppendFormat("Có {0} pool", _pool);
+            if (_pool > 0) textBuilder.AppendFormat("Có {0:0.0} pool", _pool);
             else textBuilder.Append("Không có pool");
 
             if (player.IsMe)
