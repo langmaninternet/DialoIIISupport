@@ -27,8 +27,8 @@ namespace Turbo.Plugins.Default
         public DiadrasFirstGemPlugin()
         {
             Enabled = true;
-            ElitesnBossOnly = false;
-            BossOnly = false;
+            ElitesnBossOnly = true;
+            BossOnly = true;
             offsetX = 0;
             offsetY = 0;
             MonsterStatus = new Dictionary<uint,Tuple<double,int>>();
