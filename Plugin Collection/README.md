@@ -89,8 +89,8 @@ File TurboHUD\plugins\Default\Inventory\InventoryFreeSpacePlugin.cs
 + (Nếu muốn) Bỏ việc đếm BloodShard, vì nhìn cái là thấy, chả để làm gì
 File TurboHUD\plugins\Default\Inventory\BloodShardPlugin.cs
 
-
-
++ (Nếu muốn) Bỏ ExperienceOverBar ( Cái mặc định của D3 quá ngon rồi, ko cần thay đổi gì cả )
+File TurboHUD\plugins\Default\ExperienceOverBarPlugin.cs
 
 
 
