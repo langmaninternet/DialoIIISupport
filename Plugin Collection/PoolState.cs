@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -66,12 +67,11 @@ namespace Turbo.Plugins.Default
             textBuilder.Clear();
 
             var _bonuspool = BonusPoolInfo(player);
-            var _paragonExpToNextLevel = player.ParagonExpToNextLevel;
+            double _paragonExpToNextLevel = player.ParagonExpToNextLevel;
             if (_paragonExpToNextLevel <= 1.0) _paragonExpToNextLevel = 1.0;
-            float _pool = BonusPoolRecorded[player.Index] ? (_bonuspool > 0 ? 10 * ((float)_bonuspool / _paragonExpToNextLevel) : 0.0f) : 12.0;
-            Math.Round(_pool, 1, MidpointRounding.AwayFromZero);
+            double _pool = BonusPoolRecorded[player.Index] ? (_bonuspool > 0 ? 10.0 * ((double)_bonuspool / _paragonExpToNextLevel) : 0.0) : 99.0;
 
-            if (_pool > 0.0f && _pool < 10.0f) textBuilder.AppendFormat("Có {0} pool", _pool);
+            if (_pool > 0.0f && _pool < 10.0f) textBuilder.AppendFormat("Có {0:0.0} pool", _pool);
             else if (_pool == 0.0f) textBuilder.Append("Không có pool");
 
             return textBuilder.ToString();

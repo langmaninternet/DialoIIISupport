@@ -32,31 +32,36 @@ Xóa file TurboHUD\config\ui_default\ui_default_labels_run_stats.xml
 Xóa file TurboHUD\plugins\Default\Inventory\StashPreviewPlugin.cs
 
 + (Nếu muốn) Bỏ mấy dòng chữ cạnh con boss cho đỡ rối mắt 
-TurboHUD\plugins\Default\Monsters\EliteMonsterAffixPlugin.cs
+Xóa file TurboHUD\plugins\Default\Monsters\EliteMonsterAffixPlugin.cs
+Xóa file TurboHUD\plugins\Default\Monsters\DangerousMonsterPlugin.cs
 
 + (Nếu muốn) Bỏ thông tin bên trên skill bar, nhưng chả bao giờ xem đến
-File TurboHUD\plugins\Default\LabelLists\AttributeLabelListPlugin.cs : 
+Xóa file  TurboHUD\plugins\Default\LabelLists\AttributeLabelListPlugin.cs : 
 
 + (Nếu muốn) Bỏ thanh bar thống kê về Exp (Giữa màn hình, bên trên cùng) 
-File TurboHUD\plugins\Default\LabelLists\TopExperienceStatistics.cs
+Xóa file  TurboHUD\plugins\Default\LabelLists\TopExperienceStatistics.cs
 
 + (Nếu muốn) Bỏ mấy cái linh tinh chả bao giờ cần xem
 Bỏ cả thư mục TurboHUD\plugins\Default\LabelLists
 
 + (Nếu muốn) Bỏ mấy ô vuông màu mè linh tinh dưới bình máu
-File TurboHUD\plugins\Default\DamageBonusPlugin.cs
+Xóa file  TurboHUD\plugins\Default\DamageBonusPlugin.cs
 
 + (Nếu muốn) Bỏ việc hiện số đếm ô trống trong Inventory, vì nhìn cái là thấy, chả để làm gì
-File TurboHUD\plugins\Default\Inventory\InventoryFreeSpacePlugin.cs
+Xóa file  TurboHUD\plugins\Default\Inventory\InventoryFreeSpacePlugin.cs
 
 + (Nếu muốn) Bỏ việc đếm BloodShard, vì nhìn cái là thấy, chả để làm gì
-File TurboHUD\plugins\Default\Inventory\BloodShardPlugin.cs
+Xóa file  TurboHUD\plugins\Default\Inventory\BloodShardPlugin.cs
 
 + (Nếu muốn) Bỏ ExperienceOverBar ( Cái mặc định của D3 quá ngon rồi, ko cần thay đổi gì cả )
-File TurboHUD\plugins\Default\ExperienceOverBarPlugin.cs
+Xóa file  TurboHUD\plugins\Default\ExperienceOverBarPlugin.cs
 
 + (Nếu muốn) Bỏ Bounty Table, cái này không có ý nghĩa gì cả
-File TurboHUD\plugins\Default\BountyTablePlugin.cs
+Xóa file  TurboHUD\plugins\Default\BountyTablePlugin.cs
+
+
+
+
 
 Các hot-key trong TurboHUD
 ------------
