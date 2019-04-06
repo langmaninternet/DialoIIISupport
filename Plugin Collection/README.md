@@ -81,6 +81,8 @@ File TurboHUD\plugins\Default\LabelLists\TopExperienceStatistics.cs
 Bỏ cả thư mục TurboHUD\plugins\Default\LabelLists
 
 
++ (Nếu muốn) Bỏ mấy ô vuông màu mè linh tinh dưới bình máu
+Bỏ cả thư mục TurboHUD\plugins\Default\DamageBonusPlugin.cs
 
 
 
