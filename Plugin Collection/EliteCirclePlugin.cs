@@ -4,7 +4,7 @@ using System.Linq;
 namespace Turbo.Plugins.Default
 {
 
-    public class MonsterCirclePlugin : BasePlugin, IInGameWorldPainter
+    public class EliteCirclePlugin : BasePlugin, IInGameWorldPainter
     {
 
         public Dictionary<MonsterAffix, WorldDecoratorCollection> AffixDecorators { get; set; }
@@ -21,7 +21,7 @@ namespace Turbo.Plugins.Default
 
 
 
-        public MonsterCirclePlugin()
+        public EliteCirclePlugin()
         {
             Enabled = true;
         }
