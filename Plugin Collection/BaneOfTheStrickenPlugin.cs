@@ -17,7 +17,7 @@ namespace Turbo.Plugins.Default
         public int offsetY { get; set; }
         public TopLabelDecorator StrickenStackDecorator { get; set; }
         public TopLabelDecorator StrickenPercentDecorator { get; set; }
-        public int bracerSquareSize { get; set; }
+        public Dictionary<uint, Tuple<double, int>> MonsterStatus { get; set; }  // AcdId, Health, Stacks
 
         public BaneOfTheStrickenPlugin()
         {
@@ -46,7 +46,6 @@ namespace Turbo.Plugins.Default
             {
                 TextFont = Hud.Render.CreateFont("tahoma", 6, 255, 255, 255, 255, false, false, 250, 0, 0, 0, true),
             };
-            bracerSquareSize = (int)(Hud.Window.Size.Width / 54);
         }
 
 
@@ -91,7 +90,6 @@ namespace Turbo.Plugins.Default
 
 
                 var monsterScreenCoordinate = monster.FloorCoordinate.ToScreenCoordinate();
-                if (monster.Strongarmed) Texture.Draw(monsterScreenCoordinate.X, monsterScreenCoordinate.Y, bracerSquareSize, bracerSquareSize);
 
 
                 if (monster.IsAlive)
