@@ -81,7 +81,8 @@ File TurboHUD\plugins\Default\LabelLists\TopExperienceStatistics.cs
 Bỏ cả thư mục TurboHUD\plugins\Default\LabelLists
 
 + (Nếu muốn) Bỏ mấy ô vuông màu mè linh tinh dưới bình máu
-Bỏ cả thư mục TurboHUD\plugins\Default\DamageBonusPlugin.cs
+File TurboHUD\plugins\Default\DamageBonusPlugin.cs
+
 
 
 
@@ -90,6 +91,7 @@ Các hot-key trong TurboHUD
 ------------
 + F4 bật/tắt TurboHUD
 + F6  bật/tắt bảng thông tin bounty
++ Ctrl + End : Exit TurboHUD
 
 
 
