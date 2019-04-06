@@ -83,6 +83,14 @@ Bỏ cả thư mục TurboHUD\plugins\Default\LabelLists
 + (Nếu muốn) Bỏ mấy ô vuông màu mè linh tinh dưới bình máu
 File TurboHUD\plugins\Default\DamageBonusPlugin.cs
 
++ (Nếu muốn) Bỏ việc hiện số đếm ô trống trong Inventory, vì nhìn cái là thấy, chả để làm gì
+File TurboHUD\plugins\Default\Inventory\InventoryFreeSpacePlugin.cs
+
++ (Nếu muốn) Bỏ việc đếm BloodShard, vì nhìn cái là thấy, chả để làm gì
+File TurboHUD\plugins\Default\Inventory\BloodShardPlugin.cs
+
+
+
 
 
 
