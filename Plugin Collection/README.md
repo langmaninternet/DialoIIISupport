@@ -77,9 +77,8 @@ File TurboHUD\plugins\Default\LabelLists\AttributeLabelListPlugin.cs :
 + (Nếu muốn) Bỏ thanh bar thống kê về Exp (Giữa màn hình, bên trên cùng) 
 File TurboHUD\plugins\Default\LabelLists\TopExperienceStatistics.cs
 
-+ (Nếu muốn) Bỏ mấy cái linh tinh
++ (Nếu muốn) Bỏ mấy cái linh tinh chả bao giờ cần xem
 Bỏ cả thư mục TurboHUD\plugins\Default\LabelLists
-
 
 + (Nếu muốn) Bỏ mấy ô vuông màu mè linh tinh dưới bình máu
 Bỏ cả thư mục TurboHUD\plugins\Default\DamageBonusPlugin.cs
