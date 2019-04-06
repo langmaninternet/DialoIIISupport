@@ -27,7 +27,7 @@ Mọi người copy vào các plugin đã fix lại thư mục TurboHUD\plugins\
 + PrimalAncientProbabilityPlugin : Tạm tính tỉ lệ drop Primal hiện tại, không chính xác nhưng có tính tham khảo cao
 
 
-+ DeluxeShrineLabelsPlugin : Cảnh báo việc mang Nemesis. Nếu bạn mang nems, nó sẽ bảo bạn ăn, nếu ko nó sẽ báo tên người mang nems
+
 
 
 + BattleTagAboveBannerPlugin : Hiện tên người chơi trên cái cờ ở home town. Rất tiện dụng
@@ -39,7 +39,7 @@ Mọi người copy vào các plugin đã fix lại thư mục TurboHUD\plugins\
 + GroupGRLevelAdviserPlugin : Lúc mở Rift/GRift thì biết được ai trong Party đã solo được GR bao nhiêu
 
 
-+ DiadrasFirstGemPlugin : Hiện thông tin của Bane of the Stricken đối với từng con quái
++ BaneOfTheStrickenPlugin : Hiện thông tin của Bane of the Stricken đối với từng con quái
 
 
 + ImpalePlugin : Hiện vòng tròn Steady Aim khi di chuyển, đứng im thì mất. Rất tiện dụng

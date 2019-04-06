@@ -1,7 +1,4 @@
-//css_reference C:\v9.0.dll;
-// https://github.com/User5981/Resu
-// Deluxe Shrine labels plugin for TurboHUD version 12/02/2019 11:27
-// Psycho's Shrine labels plugin with new features 
+
 
 using Turbo.Plugins.Default;
 using System.Collections.Generic;
@@ -10,7 +7,7 @@ using System;
 
 namespace Turbo.Plugins.Default
 {
-    public class DeluxeShrineLabelsPlugin : BasePlugin, ICustomizer, IInGameWorldPainter
+    public class PylonLabelsPlugin : BasePlugin, ICustomizer, IInGameWorldPainter
     {
         public Dictionary<ShrineType, WorldDecoratorCollection> ShrineDecorators { get; set; }
         public Dictionary<ShrineType, WorldDecoratorCollection> ShrineShortDecorators { get; set; }
@@ -23,7 +20,7 @@ namespace Turbo.Plugins.Default
         public bool ShowAllWhenHealthIsUnder40 { get; set;}
         public WorldDecoratorCollection LeaveMessageDecorator { get; set; }
 
-        public DeluxeShrineLabelsPlugin()
+        public PylonLabelsPlugin()
         {
             Enabled = true;
             ShowAllWhenHealthIsUnder40 = true;

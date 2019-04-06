@@ -16,6 +16,8 @@ Mọi người copy vào các plugin đã fix lại thư mục TurboHUD\plugins\
 
 + MonstersCountPlugin : Đếm số quái vật trong 120yard/50yard ( Bấm Ctrl để đổi chế độ 120/50)
 
++ PylonLabelsPlugin : Cảnh báo việc mang Nemesis. Nếu bạn mang nems, nó sẽ bảo bạn ăn, nếu ko nó sẽ báo tên người mang nems
+
 + PoolState : Hiện thông tin pool của mọi người
 
 
