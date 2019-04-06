@@ -20,6 +20,12 @@ Mọi người copy vào các plugin đã fix lại thư mục TurboHUD\plugins\
 
 + PoolState : Hiện thông tin pool của mọi người
 
++ PartyCooldownsPlugin : Hiện Cooldowns của Ignore Pain và Land of Death của đồng đội
+
++ BattleTagAboveBannerPlugin : Hiện tên người chơi trên cái cờ ở home town. Rất tiện dụng
+
++ CraftCountPlugin : thông báo nhỏ khi thay đổi tài nguyên hoặc Rift/GRift progress . Rất tiện dụng, ở nhà cũng biết được tiến trình của Rift/GRift
+
 
 Thông tin về 1 số plugin có sẵn
 ------------
