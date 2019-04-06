@@ -92,12 +92,13 @@ File TurboHUD\plugins\Default\Inventory\BloodShardPlugin.cs
 + (Nếu muốn) Bỏ ExperienceOverBar ( Cái mặc định của D3 quá ngon rồi, ko cần thay đổi gì cả )
 File TurboHUD\plugins\Default\ExperienceOverBarPlugin.cs
 
-
-
++ (Nếu muốn) Bỏ Bounty Table, cái này không có ý nghĩa gì cả
+File TurboHUD\plugins\Default\BountyTablePlugin.cs
 
 Các hot-key trong TurboHUD
 ------------
 + F4 bật/tắt TurboHUD
++ F5 bật/tắt bảng thống kê thông tin account
 + F6  bật/tắt bảng thông tin bounty
 + Ctrl + End : Exit TurboHUD
 
