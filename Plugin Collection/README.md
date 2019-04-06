@@ -64,19 +64,24 @@ Xóa file TurboHUD\plugins\Default\ParagonCapturePlugin.cs
 
 + (Nếu muốn) Bỏ cái khung thống kê dưới cùng bên phải 
 Xóa file TurboHUD\config\ui_default\ui_default_labels_run_stats.xml 
-
  
 + (Nếu muốn) Bỏ tính năng xem trước thùng đồ cho đỡ rối mắt 
 Xóa file TurboHUD\plugins\Default\Inventory\StashPreviewPlugin.cs
-
-+ (Nếu muốn) Bỏ thanh bar thống kê về Exp (Giữa màn hình, bên trên cùng) 
-File TurboHUD\plugins\Default\LabelLists\TopExperienceStatistics.cs
 
 + (Nếu muốn) Bỏ mấy dòng chữ cạnh con boss cho đỡ rối mắt 
 TurboHUD\plugins\Default\Monsters\EliteMonsterAffixPlugin.cs
 
 + (Nếu muốn) Bỏ thông tin bên trên skill bar, nhưng chả bao giờ xem đến
-+ AttributeLabelListPlugin.cs : 
+File TurboHUD\plugins\Default\LabelLists\AttributeLabelListPlugin.cs : 
+
++ (Nếu muốn) Bỏ thanh bar thống kê về Exp (Giữa màn hình, bên trên cùng) 
+File TurboHUD\plugins\Default\LabelLists\TopExperienceStatistics.cs
+
++ (Nếu muốn) Bỏ mấy cái linh tinh
+Bỏ cả thư mục TurboHUD\plugins\Default\LabelLists
+
+
+
 
 
 
