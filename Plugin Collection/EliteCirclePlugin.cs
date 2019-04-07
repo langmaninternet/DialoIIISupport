@@ -139,7 +139,7 @@ namespace Turbo.Plugins.Default
 
 
         /************************************************************************/
-        /* ElitePlugin                                                    */
+        /* EliteCirclePlugin                                                    */
         /************************************************************************/
         public Dictionary<MonsterAffix, WorldDecoratorCollection> AffixDecorators { get; set; }
         public Dictionary<MonsterAffix, string> CustomAffixNames { get; set; }

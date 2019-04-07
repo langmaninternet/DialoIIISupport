@@ -26,6 +26,18 @@ Mọi người copy vào các plugin đã fix lại thư mục TurboHUD\plugins\
 
 + CraftCountPlugin : thông báo nhỏ khi thay đổi tài nguyên hoặc Rift/GRift progress . Rất tiện dụng, ở nhà cũng biết được tiến trình của Rift/GRift
 
++ StrickenPlugin : Hiện số stack của Stricken của mình và đồng đội khi đánh Greater Rift Guardian
+
++ HuntersVengeancePlugin : Hiện tác dụng của viên Zei's stone of vengeance 
+
++ BattleTagAboveBannerPlugin : Hiện tên người chơi trên cái cờ ở home town. Rất tiện dụng
+
++ CraftCountPlugin : thông báo nhỏ khi thay đổi tài nguyên hoặc Rift/GRift progress . Rất tiện dụng, ở nhà cũng biết được tiến trình của Rift/GRift
+
++ GRiftPlugin : hiện thời gian giết Rift Guardian
+
+
+
 
 Thông tin về 1 số plugin có sẵn
 ------------
