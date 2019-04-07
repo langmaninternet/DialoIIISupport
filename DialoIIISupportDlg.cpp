@@ -1118,7 +1118,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 				if (d3Wnd != 0)
 				{
 					rightMouseCooldown += mainTimerDelay;
-					if (rightMouseCooldown >= d3Config.leftMouseTime && flagAttackMode)
+					if (rightMouseCooldown >= d3Config.leftMouseTime )
 					{
 						if (ValidToSendD3Click()) SendD3RightMouseClick();
 						else
