@@ -80,7 +80,8 @@ Xóa file  TurboHUD\plugins\Default\ExperienceOverBarPlugin.cs
 Xóa file  TurboHUD\plugins\Default\BountyTablePlugin.cs
 
 
-
++ (Nếu muốn) Bỏ vòng tròng độc, băng, lửa dưới đất, rối mắt, mà đi meta ko cần
+Xóa file  TurboHUD\plugins\Default\Monsters\EliteMonsterSkillPlugin.cs
 
 
 Các hot-key trong TurboHUD
