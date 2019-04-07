@@ -10,9 +10,8 @@ https://github.com/langmaninternet/DialoIIISupport/archive/master.zip
 Mọi người copy vào các plugin đã fix lại thư mục TurboHUD\plugins\Default
 ------------
 
-+ EliteBarPlugin : Hiện thống kê về các Elite trong vòng 120yard
-
-+ EliteCirclePlugin : Vẽ vòng tròn dưới chân Elite
++ ElitePlugin : Vẽ vòng tròn dưới chân Elite, Hiện thống kê về các Elite trong vòng 120yard
+(Xóa EliteBarPlugin, MonsterCirclePlugin,DiadrasFirstGemPlugin, trước khi dùng plugin này)
 
 + MonstersCountPlugin : Đếm số quái vật trong 120yard/50yard ( Bấm Ctrl để đổi chế độ 120/50)
 
