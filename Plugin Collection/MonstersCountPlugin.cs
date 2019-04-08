@@ -3,10 +3,11 @@ using System.Linq;
 using System;
 using System.Collections.Generic;
 using Turbo.Plugins.Default;
+using System.Text;
 
 namespace Turbo.Plugins.Default
 {
-    using System.Text;
+
     public class MonstersCountPlugin : BasePlugin, IInGameTopPainter, IInGameWorldPainter, IKeyEventHandler
     {
         public IFont DefaultTextFont { get; set; }

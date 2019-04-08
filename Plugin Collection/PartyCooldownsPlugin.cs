@@ -29,6 +29,42 @@ namespace Turbo.Plugins.Default
         private Dictionary<HeroClass, string> _classShorts;
         private readonly int[] _skillOrder = { 2, 3, 4, 5, 0, 1 };
 
+
+        private bool IsZDPS(IPlayer player)
+        {
+            int Points = 0;
+
+            var IllusoryBoots = player.Powers.GetBuff(318761);
+            if (IllusoryBoots == null || !IllusoryBoots.Active) { } else { Points++; }
+
+            var LeoricsCrown = player.Powers.GetBuff(442353);
+            if (LeoricsCrown == null || !LeoricsCrown.Active) { } else { Points++; }
+
+            var EfficaciousToxin = player.Powers.GetBuff(403461);
+            if (EfficaciousToxin == null || !EfficaciousToxin.Active) { } else { Points++; }
+
+            var OculusRing = player.Powers.GetBuff(402461);
+            if (OculusRing == null || !OculusRing.Active) { } else { Points++; }
+
+            var ZodiacRing = player.Powers.GetBuff(402459);
+            if (ZodiacRing == null || !ZodiacRing.Active) { } else { Points++; }
+
+            if (player.Offense.SheetDps < 500000f) Points++;
+            if (player.Offense.SheetDps > 1500000f) Points--;
+
+            if (player.Defense.EhpMax > 80000000f) Points++;
+
+            var ConventionRing = player.Powers.GetBuff(430674);
+            if (ConventionRing == null || !ConventionRing.Active) { } else { Points--; }
+
+            var Stricken = player.Powers.GetBuff(428348);
+            if (Stricken == null || !Stricken.Active) { } else { Points--; }
+
+            if (Points >= 4) { return true; } else { return false; }
+
+        }
+
+
         public PartyCooldownsPlugin()
         {
             Enabled = true;
@@ -133,7 +169,7 @@ namespace Turbo.Plugins.Default
                     found = true;
                     if (firstIter)
                     {
-                        var layout = ClassFont.GetTextLayout(player.BattleTagAbovePortrait + "\n(" + _classShorts[player.HeroClassDefinition.HeroClass] + ")");
+                        var layout = ClassFont.GetTextLayout(player.BattleTagAbovePortrait + "\n(" + ((IsZDPS(player)) ? "Z" : "") + _classShorts[player.HeroClassDefinition.HeroClass] + ")");
                         ClassFont.DrawText(layout, xPos - (layout.Metrics.Width * 0.1f), HudHeight * StartYPos);
                         firstIter = false;
                     }
