@@ -53,17 +53,17 @@ namespace Turbo.Plugins.Default
                 //--- Necromancer
                 465350, //Simulacrum  
                 465839, //Land of the Dead
-                465952 , // Final Service
+                //465952 , // Final Service
 
                 //--- Barb
                 79528, //Ignore Pain
                 79607, //Wrath of the Berserker
                 375483, //Warcry
-                217819, // Nerves of Steel
+                //217819, // Nerves of Steel
 
                 //--- Monk
                 317076, //Inner Sanctuary
-                156484, //Near Death Experience
+                //156484, //Near Death Experience
 
                 //--- Witch Doctor
                 106237, //Spirit Walk
@@ -71,12 +71,12 @@ namespace Turbo.Plugins.Default
                 //--- Demon Hunter 
                 365311, //Companion
                 129217, //Sentry
-                324770, //Awareness
+                //324770, //Awareness
 
 
                 //--- Wizard
-                134872, //Archon - Needs testing, dont use for now
-                208474 // Unstable Anomaly
+               // 134872, //Archon - Needs testing, dont use for now
+               // 208474 // Unstable Anomaly
             };
 
             ClassFont = Hud.Render.CreateFont("tahoma", 7, 230, 255, 255, 255, true, false, 255, 0, 0, 0, true);
