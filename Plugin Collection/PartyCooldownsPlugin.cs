@@ -9,6 +9,10 @@ namespace Turbo.Plugins.Default
 {
     public class PartyCooldownsPlugin : BasePlugin, IInGameTopPainter
     {
+
+        /************************************************************************/
+        /* PartyCooldownsPlugin                                                 */
+        /************************************************************************/
         public SkillPainter SkillPainter { get; set; }
         public TopLabelDecorator Label { get; set; }
         public IFont ClassFont { get; set; }
@@ -28,19 +32,47 @@ namespace Turbo.Plugins.Default
         private float HudHeight { get { return Hud.Window.Size.Height; } }
         private Dictionary<HeroClass, string> _classShorts;
         private readonly int[] _skillOrder = { 2, 3, 4, 5, 0, 1 };
+        private readonly int[] _passiveOrder = { 0, 1, 2, 3 };
 
-        public PartyCooldownsPlugin()
+        private bool IsZDPS(IPlayer player)
         {
-            Enabled = true;
-        }
+            int Points = 0;
 
-        public override void Load(IController hud)
+            var IllusoryBoots = player.Powers.GetBuff(318761);
+            if (IllusoryBoots == null || !IllusoryBoots.Active) { } else { Points++; }
+
+            var LeoricsCrown = player.Powers.GetBuff(442353);
+            if (LeoricsCrown == null || !LeoricsCrown.Active) { } else { Points++; }
+
+            var EfficaciousToxin = player.Powers.GetBuff(403461);
+            if (EfficaciousToxin == null || !EfficaciousToxin.Active) { } else { Points++; }
+
+            var OculusRing = player.Powers.GetBuff(402461);
+            if (OculusRing == null || !OculusRing.Active) { } else { Points++; }
+
+            var ZodiacRing = player.Powers.GetBuff(402459);
+            if (ZodiacRing == null || !ZodiacRing.Active) { } else { Points++; }
+
+            if (player.Offense.SheetDps < 500000f) Points++;
+            if (player.Offense.SheetDps > 1500000f) Points--;
+
+            if (player.Defense.EhpMax > 80000000f) Points++;
+
+            var ConventionRing = player.Powers.GetBuff(430674);
+            if (ConventionRing == null || !ConventionRing.Active) { } else { Points--; }
+
+            var Stricken = player.Powers.GetBuff(428348);
+            if (Stricken == null || !Stricken.Active) { } else { Points--; }
+
+            if (Points >= 4) { return true; } else { return false; }
+
+        }
+        public void LoadPartyCooldownsPlugin()
         {
             ShowSelf = true;
             ShowInTown = true;
             OnlyInGR = false;
             ShowOnlyMe = false;
-            base.Load(hud);
             SizeRatio = 0.02f;
             StartYPos = 0.002f;
             StartXPos = 0.555f;
@@ -111,8 +143,7 @@ namespace Turbo.Plugins.Default
                 SkillDpsFont = Hud.Render.CreateFont("tahoma", 7, 222, 255, 255, 255, false, false, 0, 0, 0, 0, false),
             };
         }
-
-        public void PaintTopInGame(ClipState clipState)
+        public void PaintTopInGamePartyCooldownsPlugin(ClipState clipState)
         {
             if (clipState != ClipState.BeforeClip || !ShowInTown && Hud.Game.Me.IsInTown || OnlyInGR && Hud.Game.SpecialArea != SpecialArea.GreaterRift) return;
             if (_size <= 0)
@@ -122,8 +153,7 @@ namespace Turbo.Plugins.Default
 
             foreach (var player in Hud.Game.Players.OrderBy(p => p.HeroId))
             {
-                if (player.IsMe && !ShowSelf || !player.IsMe && ShowOnlyMe)
-                    continue;
+                if (player.IsMe && !ShowSelf || !player.IsMe && ShowOnlyMe) continue;
                 var found = false;
                 var firstIter = true;
                 foreach (var i in _skillOrder)
@@ -133,7 +163,7 @@ namespace Turbo.Plugins.Default
                     found = true;
                     if (firstIter)
                     {
-                        var layout = ClassFont.GetTextLayout(player.BattleTagAbovePortrait + "\n(" + _classShorts[player.HeroClassDefinition.HeroClass] + ")");
+                        var layout = ClassFont.GetTextLayout(player.BattleTagAbovePortrait + "\n(" + ((IsZDPS(player)) ? "Z" : "") + _classShorts[player.HeroClassDefinition.HeroClass] + ")");
                         ClassFont.DrawText(layout, xPos - (layout.Metrics.Width * 0.1f), HudHeight * StartYPos);
                         firstIter = false;
                     }
@@ -142,9 +172,60 @@ namespace Turbo.Plugins.Default
                     SkillPainter.Paint(skill, rect);
                     xPos += _size * 1.1f;
                 }
-                if (found)
-                    xPos += _size * 1.1f;
+
+                //      foreach (var i in _passiveOrder)
+                //      {
+                //          var passive = player.Powers.PassiveSlots[i];
+                //          if (passive == null || !WatchedSnos.Contains(passive.Sno)) continue;
+                //          found = true;
+                //          if (firstIter)
+                //          {
+                //              var layout = ClassFont.GetTextLayout(player.BattleTagAbovePortrait + "\n(" + ((IsZDPS(player)) ? "Z" : "") + _classShorts[player.HeroClassDefinition.HeroClass] + ")");
+                //              ClassFont.DrawText(layout, xPos - (layout.Metrics.Width * 0.1f), HudHeight * StartYPos);
+                //              firstIter = false;
+                //          }
+                //      
+                //          var rect = new RectangleF(xPos, HudHeight * (StartYPos + 0.03f), _size, _size);
+                //          //    SkillPainter.Paint(skill, rect);
+                //          xPos += _size * 1.1f;
+                //      }
+
+
+                if (found) xPos += _size * 1.1f;
             }
         }
+
+
+
+
+
+
+
+
+        /************************************************************************/
+        /* Total                                                                */
+        /************************************************************************/
+        public PartyCooldownsPlugin()
+        {
+            Enabled = true;
+        }
+        public override void Load(IController hud)
+        {
+            base.Load(hud);
+            LoadPartyCooldownsPlugin();
+
+        }
+        public void PaintTopInGame(ClipState clipState)
+        {
+            PaintTopInGamePartyCooldownsPlugin(clipState);
+
+
+        }
+        public void PaintWorld(WorldLayer layer)
+        {
+
+        }
+
+
     }
 }
