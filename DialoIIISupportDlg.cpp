@@ -164,7 +164,10 @@ void		ValidateD3Key(wchar_t & keyValue, const wchar_t defaultValue)
 		|| keyValue == ' '
 		|| keyValue == '~'
 		|| keyValue == VK_SHIFT
-		|| keyValue == VK_CONTROL))
+		|| keyValue == VK_CONTROL
+		|| keyValue == VK_LBUTTON
+		|| keyValue == VK_RBUTTON
+		))
 	{
 		keyValue = defaultValue;
 	}
