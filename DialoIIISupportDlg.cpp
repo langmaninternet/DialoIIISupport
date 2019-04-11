@@ -941,7 +941,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 			/************************************************************************/
 			/*                                                                      */
 			/************************************************************************/
-			static bool flagOnHoldRightMouse = 0;
+			//static bool flagOnHoldRightMouse = 0;
 			if (flagOnWizSingleShot)
 			{
 				if (d3Config.fullCycleEnable)
@@ -969,11 +969,11 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 				archonModeCooldown = 10000/*ms*/;
 				archonStartTime = GetTickCount64();
 				flagOnWizSingleShot = false;
-				if (d3Config.lightingBlastEnable)
-				{
-					mouse_event(MOUSEEVENTF_RIGHTDOWN, point.x, point.y, 0, 0);
-					flagOnHoldRightMouse = true;
-				}
+				//if (d3Config.lightingBlastEnable)
+				//{
+				//	mouse_event(MOUSEEVENTF_RIGHTDOWN, point.x, point.y, 0, 0);
+				//	flagOnHoldRightMouse = true;
+				//}
 			}
 			else if (archonModeCooldown > 0)
 			{
@@ -986,11 +986,11 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 				if (d3Config.lightingBlastEnable) 
 				{
 					SendD3Key(d3Config.keySKill01);
-					if (archonModeCooldown < 1000 && flagOnHoldRightMouse)
-					{
-						flagOnHoldRightMouse = false;
-						mouse_event(MOUSEEVENTF_RIGHTUP, point.x, point.y, 0, 0);
-					}
+					//if (archonModeCooldown < 1000 && flagOnHoldRightMouse)
+					//{
+					//	flagOnHoldRightMouse = false;
+					//	mouse_event(MOUSEEVENTF_RIGHTUP, point.x, point.y, 0, 0);
+					//}
 				}
 			}
 			else if (archonModeCooldown + mainTimerDelay >= 0)
