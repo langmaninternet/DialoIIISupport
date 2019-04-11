@@ -40,7 +40,7 @@ double		GetCurrentHealth(bool & flagAttackMode);
 
 
 
-const double DialoIIISupportVersion = 1.05;
+const double DialoIIISupportVersion = 1.06;
 const int defaultHeathLimit = 80;
 /************************************************************************/
 /* Struct                                                               */
@@ -243,12 +243,10 @@ void		ValidateD3Config(void)
 	ValidateD3Key(d3Config.keyForceStand, VK_SHIFT);
 	ValidateD3Key(d3Config.keyWaveOfForce, '1');
 	ValidateD3Key(d3Config.keyMeteor, '2');
-	ValidateD3Key(d3Config.keyPrimary, '3');
-	if (!isalnum(d3Config.keyPrimary)) d3Config.keyPrimary = '3';
-	ValidateD3Key(d3Config.keySecondary, '4');
-	if (!isalnum(d3Config.keySecondary)) d3Config.keySecondary = '4';
-	ValidateD3Key(d3Config.keyBlackHole, VK_LBUTTON);
-	ValidateD3Key(d3Config.keyArchon, VK_RBUTTON);
+	ValidateD3Key(d3Config.keyPrimary, VK_LBUTTON);
+	ValidateD3Key(d3Config.keySecondary, VK_RBUTTON);
+	ValidateD3Key(d3Config.keyBlackHole, '3');
+	ValidateD3Key(d3Config.keyArchon, '4');
 	ValidateD3Key(d3Config.keyWizSingleShot, '~');
 
 
@@ -943,6 +941,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 			/************************************************************************/
 			/*                                                                      */
 			/************************************************************************/
+			static bool flagOnHoldRightMouse = 0;
 			if (flagOnWizSingleShot)
 			{
 				if (d3Config.fullCycleEnable)
@@ -970,6 +969,11 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 				archonModeCooldown = 10000/*ms*/;
 				archonStartTime = GetTickCount64();
 				flagOnWizSingleShot = false;
+				if (d3Config.lightingBlastEnable)
+				{
+					mouse_event(MOUSEEVENTF_RIGHTDOWN, point.x, point.y, 0, 0);
+					flagOnHoldRightMouse = true;
+				}
 			}
 			else if (archonModeCooldown > 0)
 			{
@@ -978,7 +982,16 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 				GetDlgItem(IDC_SINGLESHOTHOTKEY)->EnableWindow(FALSE);
 				GetDlgItem(IDC_SINGLESHOTHOTKEY)->SetWindowText(bufferText);
 
-				if (d3Config.lightingBlastEnable) SendD3Key(d3Config.keySKill01);
+				
+				if (d3Config.lightingBlastEnable) 
+				{
+					SendD3Key(d3Config.keySKill01);
+					if (archonModeCooldown < 1000 && flagOnHoldRightMouse)
+					{
+						flagOnHoldRightMouse = false;
+						mouse_event(MOUSEEVENTF_RIGHTUP, point.x, point.y, 0, 0);
+					}
+				}
 			}
 			else if (archonModeCooldown + mainTimerDelay >= 0)
 			{
@@ -1046,7 +1059,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 					if (d3Config.healingEnable)
 					{
 						healingCooldown += mainTimerDelay;
-						if (healingCooldown >= d3Config.skillSlot04Time )
+						if (healingCooldown >= d3Config.skillSlot04Time)
 						{
 							if (currentHeath < defaultHeathLimit) SendD3Key(d3Config.keyHealing);
 							healingCooldown = 0;
@@ -1118,7 +1131,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 				if (d3Wnd != 0)
 				{
 					rightMouseCooldown += mainTimerDelay;
-					if (rightMouseCooldown >= d3Config.leftMouseTime )
+					if (rightMouseCooldown >= d3Config.leftMouseTime)
 					{
 						if (ValidToSendD3Click()) SendD3RightMouseClick();
 						else
@@ -1552,12 +1565,12 @@ void CDialoIIISupportDlg::OnKillFocusSkillKey(int changeID, wchar_t & keySkill)
 	}
 	else bufferText[1] = 0;
 
-	if ((changeID == IDC_PRIMARYSKILLKEY || changeID == IDC_SECONDARYSKILLKEY) && (newValue == VK_RBUTTON || newValue == VK_LBUTTON))
-	{
-		MessageBoxW(L"English : Channling Skill Only allow :\r\nABCDEFGHIJKLMNOPQRSTUVWXYZ\r\n0123456789\r\n\r\nVietnamese : Tạm thời các skill channling chưa hỗ trợ chuột trái chuột phải");
-		OnShowSkillKey(changeID, keySkill);
-		return;
-	}
+	//	if ((changeID == IDC_PRIMARYSKILLKEY || changeID == IDC_SECONDARYSKILLKEY) && (newValue == VK_RBUTTON || newValue == VK_LBUTTON))
+	//	{
+	//		MessageBoxW(L"English : Channling Skill Only allow :\r\nABCDEFGHIJKLMNOPQRSTUVWXYZ\r\n0123456789\r\n\r\nVietnamese : Tạm thời các skill channling chưa hỗ trợ chuột trái chuột phải");
+	//		OnShowSkillKey(changeID, keySkill);
+	//		return;
+	//	}
 
 
 	if (newValue >= 'a' && newValue <= 'z') newValue = 'A' + newValue - 'a';
