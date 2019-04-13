@@ -69,7 +69,7 @@ namespace Turbo.Plugins.Default
         }
         public void LoadPartyCooldownsPlugin()
         {
-            ShowSelf = true;
+            ShowSelf = false;
             ShowInTown = true;
             OnlyInGR = false;
             ShowOnlyMe = false;
