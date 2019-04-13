@@ -28,7 +28,7 @@ Features : Auto use skill over time
 
 F1 to on/off auto left mouse click
 
-F2 to on/off auto skill 1 2 3 4 an healing Q
+F2 to on/off auto skill 1 2 3 4 an healing Q (With Full-HD Gamemode : Only press skill when you in attack mode)
 
 F3 to on/off auto right mouse click
 
