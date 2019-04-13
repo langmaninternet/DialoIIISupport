@@ -65,23 +65,17 @@
 #define IDC_FORCESTANDKEY               1069
 #define IDC_SINGLESHOTHOTKEYTEXT        1071
 #define IDC_SINGLESHOTHOTKEY            1072
-#define IDC_MULTISHOTHOTKEYTEXT         1073
-#define IDC_MULTISHOTHOTKEY             1074
 #define IDC_SECONDARYSKILLKEYTEXT       1075
 #define IDC_SECONDARYSKILLKEY           1076
-#define IDC_LIGHTINGBLAST               1077
 #define IDC_FORCEMOVEKEYTEXT            1078
 #define IDC_FORCEMOVEKEY                1079
 #define IDC_BLACKHOLETEXT               1080
 #define IDC_BLACKHOLEKEY                1081
 #define IDC_WAVEOFFORCEKEYTEXT          1082
 #define IDC_WAVEOFFORCEKEY              1083
-#define IDC_LIGHTINGBLASTTEXT           1084
-#define IDC_LIGHTINGBLASTKEY            1085
 #define IDC_SINGLESHOTHOTCASTMETEORONLY 1086
 #define IDC_SINGLESHOTHOTCASTFULLCYCLE  1087
 #define IDC_SINGLESHOTHOTKEYFORTEXT     1088
-#define IDC_BUTTON1                     1089
 
 // Next default values for new objects
 // 

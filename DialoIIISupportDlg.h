@@ -71,7 +71,6 @@ public:
 	afx_msg void OnKillFocusWaveOfForceKey();
 	afx_msg void OnKillFocusPrimarySkillKey();
 	afx_msg void OnKillFocusSecondarySkillKey();
-	afx_msg void OnKillFocusLightingBlastKey();
 
 	afx_msg void OnClickedSkill01Check();
 	afx_msg void OnClickedSkill02Check();
@@ -80,7 +79,6 @@ public:
 	afx_msg void OnClickedHealingCheck();
 	afx_msg void OnBnClickedWizArchoncheck();
 	afx_msg void OnBnClickedWizFireBridCheck();
-	afx_msg void OnClickedLightingBlastCheck();
 
 
 
