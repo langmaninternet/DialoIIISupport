@@ -1,4 +1,4 @@
-# Dialo III Support tool
+# Diablo III Support tool
 An open-source Dialo III Support tool
 
 Link download (Source code + Tool)
