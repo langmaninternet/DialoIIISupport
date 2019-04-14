@@ -147,8 +147,8 @@ int						skillSlot03Cooldown;
 int						skillSlot04Cooldown;
 int						healingCooldown;
 HHOOK					hGlobalHook;
-double					currentHeath = 0.0;
-bool					flagAttackMode = true;
+//double				currentHeath = 0.0;
+//bool					flagAttackMode = true;
 
 /************************************************************************/
 /* Process Function                                                     */
@@ -708,7 +708,7 @@ BOOL		CDialoIIISupportDlg::OnInitDialog()
 
 	// TODO: Add extra initialization here
 	mainTimerID = CDialogEx::SetTimer(1, mainTimerDelay, NULL);
-	heathTimerID = CDialogEx::SetTimer(2, heathTimerDelay, NULL);
+	//heathTimerID = CDialogEx::SetTimer(2, heathTimerDelay, NULL);
 
 	if (configSavePath[0] == 0)
 	{
@@ -895,7 +895,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 			flagOnProcess = true;
 			WCHAR bufferActive[100] = L"Found";
 #ifdef _DEBUG
-			if (currentHeath > 0.0) swprintf_s(bufferActive, L"Found - HP : %0.0lf%% ", currentHeath);
+			//if (currentHeath > 0.0) swprintf_s(bufferActive, L"Found - HP : %0.0lf%% ", currentHeath);
 #endif 
 			HWND d3Wnd = GetD3Windows();
 			RECT d3Rect = { 0 };
@@ -991,7 +991,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 					if (d3Config.skill01Enable)
 					{
 						skillSlot01Cooldown += mainTimerDelay;
-						if (skillSlot01Cooldown >= d3Config.skillSlot01Time && flagAttackMode)
+						if (skillSlot01Cooldown >= d3Config.skillSlot01Time /*&& flagAttackMode*/)
 						{
 							SendD3Key(d3Config.keySKill01);
 							skillSlot01Cooldown = 0;
@@ -1000,7 +1000,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 					if (d3Config.skill02Enable)
 					{
 						skillSlot02Cooldown += mainTimerDelay;
-						if (skillSlot02Cooldown >= d3Config.skillSlot02Time && flagAttackMode)
+						if (skillSlot02Cooldown >= d3Config.skillSlot02Time /*&& flagAttackMode*/)
 						{
 							SendD3Key(d3Config.keySKill02);
 							skillSlot02Cooldown = 0;
@@ -1009,7 +1009,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 					if (d3Config.skill03Enable)
 					{
 						skillSlot03Cooldown += mainTimerDelay;
-						if (skillSlot03Cooldown >= d3Config.skillSlot03Time && flagAttackMode)
+						if (skillSlot03Cooldown >= d3Config.skillSlot03Time /*&& flagAttackMode*/)
 						{
 							SendD3Key(d3Config.keySKill03);
 							skillSlot03Cooldown = 0;
@@ -1018,7 +1018,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 					if (d3Config.skill04Enable)
 					{
 						skillSlot04Cooldown += mainTimerDelay;
-						if (skillSlot04Cooldown >= d3Config.skillSlot04Time && flagAttackMode)
+						if (skillSlot04Cooldown >= d3Config.skillSlot04Time /*&& flagAttackMode*/)
 						{
 							SendD3Key(d3Config.keySKill04);
 							skillSlot04Cooldown = 0;
@@ -1029,7 +1029,8 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 						healingCooldown += mainTimerDelay;
 						if (healingCooldown >= d3Config.skillSlot04Time)
 						{
-							if (currentHeath < defaultHeathLimit) SendD3Key(d3Config.keyHealing);
+							/*if (currentHeath < defaultHeathLimit) */
+							SendD3Key(d3Config.keyHealing);
 							healingCooldown = 0;
 						}
 					}
@@ -1050,15 +1051,15 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 
 
 
-				if (d3Config.healingEnable && currentHeath > 5.0 && currentHeath < 40.0)
-				{
-					healingCooldown += mainTimerDelay;
-					if (healingCooldown >= d3Config.skillSlot04Time)
-					{
-						SendD3Key(d3Config.keyHealing);
-						healingCooldown = 0;
-					}
-				}
+				//		if (d3Config.healingEnable && currentHeath > 5.0 && currentHeath < 40.0)
+				//		{
+				//			healingCooldown += mainTimerDelay;
+				//			if (healingCooldown >= d3Config.skillSlot04Time)
+				//			{
+				//				SendD3Key(d3Config.keyHealing);
+				//				healingCooldown = 0;
+				//			}
+				//		}
 			}
 			if (flagOnF1)
 			{
@@ -1334,8 +1335,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 	}
 	else if (heathTimerID == nIdEvent)
 	{
-		currentHeath = GetCurrentHealth(flagAttackMode);
-
+		//currentHeath = GetCurrentHealth(flagAttackMode);
 	}
 }
 void CDialoIIISupportDlg::OnLoadConfig()
