@@ -525,6 +525,8 @@ extern "C" __declspec(dllexport) LRESULT CALLBACK HookProc(int nCode, WPARAM wPa
 #ifdef _DEBUG
 			case VK_F5:
 				StarPactDumpData();
+
+				//skill 01 635 1005 - 682 1502 - 682 1029
 				break;
 #endif
 
@@ -708,7 +710,7 @@ BOOL		CDialoIIISupportDlg::OnInitDialog()
 
 	// TODO: Add extra initialization here
 	mainTimerID = CDialogEx::SetTimer(1, mainTimerDelay, NULL);
-	//heathTimerID = CDialogEx::SetTimer(2, heathTimerDelay, NULL);
+	heathTimerID = CDialogEx::SetTimer(2, heathTimerDelay, NULL);
 
 	if (configSavePath[0] == 0)
 	{
