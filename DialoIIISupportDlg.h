@@ -31,7 +31,7 @@ protected:
 	afx_msg HCURSOR OnQueryDragIcon();
 
 	UINT_PTR mainTimerID;
-	UINT_PTR heathTimerID;
+	UINT_PTR diabloIIIStatusTimerID;
 	
 
 

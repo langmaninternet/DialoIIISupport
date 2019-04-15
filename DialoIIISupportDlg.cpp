@@ -33,13 +33,19 @@ void		StartStarPact(void);
 void		StopStarPact(void);
 
 void		StarPactDumpData(void);
-double		GetCurrentHealth(bool & flagAttackMode);
+struct DiabloIIIStatusStruct
+{
+	bool	flagInAttackMode;
+	bool	flagLightingBlashReadyToUse;
+
+};
+void		GetCurrentDiabloIIStatus(DiabloIIIStatusStruct & gameStatus);
 
 
 
 
 
-
+DiabloIIIStatusStruct gameStatus;
 const double DialoIIISupportVersion = 1.07;
 const int defaultHeathLimit = 80;
 /************************************************************************/
@@ -145,7 +151,6 @@ int						skillSlot01Cooldown;
 int						skillSlot02Cooldown;
 int						skillSlot03Cooldown;
 int						skillSlot04Cooldown;
-int						healingCooldown;
 HHOOK					hGlobalHook;
 //double				currentHeath = 0.0;
 //bool					flagAttackMode = true;
@@ -500,7 +505,6 @@ extern "C" __declspec(dllexport) LRESULT CALLBACK HookProc(int nCode, WPARAM wPa
 				skillSlot02Cooldown = 99999;
 				skillSlot03Cooldown = 99999;
 				skillSlot04Cooldown = 99999;
-				healingCooldown = 99999;
 				break;
 			case VK_F3:
 				flagOnF3 = !flagOnF3;
@@ -592,7 +596,7 @@ extern "C" __declspec(dllexport) LRESULT CALLBACK HookProc(int nCode, WPARAM wPa
 						Sleep(10);
 						StartStarPact();
 						flagOnWizSingleShot = true;
-						
+
 					}
 				}
 				break;
@@ -710,7 +714,7 @@ BOOL		CDialoIIISupportDlg::OnInitDialog()
 
 	// TODO: Add extra initialization here
 	mainTimerID = CDialogEx::SetTimer(1, mainTimerDelay, NULL);
-	heathTimerID = CDialogEx::SetTimer(2, heathTimerDelay, NULL);
+	diabloIIIStatusTimerID = CDialogEx::SetTimer(2, heathTimerDelay, NULL);
 
 	if (configSavePath[0] == 0)
 	{
@@ -896,8 +900,13 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 		{
 			flagOnProcess = true;
 			WCHAR bufferActive[100] = L"Found";
+			if (gameStatus.flagInAttackMode)
+			{
+				swprintf_s(bufferActive, L" AttackMode");
+			}
+
 #ifdef _DEBUG
-			//if (currentHeath > 0.0) swprintf_s(bufferActive, L"Found - HP : %0.0lf%% ", currentHeath);
+			swprintf_s(bufferActive, L"%d %d", gameStatus.flagInAttackMode, gameStatus.flagLightingBlashReadyToUse);
 #endif 
 			HWND d3Wnd = GetD3Windows();
 			RECT d3Rect = { 0 };
@@ -1028,13 +1037,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 					}
 					if (d3Config.healingEnable)
 					{
-						healingCooldown += mainTimerDelay;
-						if (healingCooldown >= d3Config.skillSlot04Time)
-						{
-							/*if (currentHeath < defaultHeathLimit) */
-							SendD3Key(d3Config.keyHealing);
-							healingCooldown = 0;
-						}
+						SendD3Key(d3Config.keyHealing);
 					}
 				}
 			}
@@ -1050,18 +1053,6 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 				GetDlgItem(IDC_SKILL04CHECK)->EnableWindow(TRUE);
 				GetDlgItem(IDC_HEALINGCHECK)->EnableWindow(TRUE);
 				GetDlgItem(IDC_F2BIGFRAME)->SetWindowTextW(L"Skill (Hotkey F2)");
-
-
-
-				//		if (d3Config.healingEnable && currentHeath > 5.0 && currentHeath < 40.0)
-				//		{
-				//			healingCooldown += mainTimerDelay;
-				//			if (healingCooldown >= d3Config.skillSlot04Time)
-				//			{
-				//				SendD3Key(d3Config.keyHealing);
-				//				healingCooldown = 0;
-				//			}
-				//		}
 			}
 			if (flagOnF1)
 			{
@@ -1335,9 +1326,13 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 			flagOnProcess = false;
 		}
 	}
-	else if (heathTimerID == nIdEvent)
+	else if (diabloIIIStatusTimerID == nIdEvent)
 	{
-		//currentHeath = GetCurrentHealth(flagAttackMode);
+		GetCurrentDiabloIIStatus(gameStatus);
+		if (gameStatus.flagLightingBlashReadyToUse)
+		{
+			SendD3Key(d3Config.keySKill01);
+		}
 	}
 }
 void CDialoIIISupportDlg::OnLoadConfig()
