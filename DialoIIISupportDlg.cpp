@@ -36,7 +36,9 @@ void		StarPactDumpData(void);
 struct DiabloIIIStatusStruct
 {
 	bool	flagInAttackMode;
-	bool	flagLightingBlashReadyToUse;
+	bool	flagPotionReady;
+	int		flagLightingBlashReadyToUse;
+
 
 };
 void		GetCurrentDiabloIIStatus(DiabloIIIStatusStruct & gameStatus);
@@ -135,7 +137,7 @@ DialoIIISupportConfig	d3Config;
 wchar_t					configSavePath[3000] = { 0 };
 
 const int				mainTimerDelay = 50/*ms*/;
-const int				heathTimerDelay = 300/*ms*/;
+const int				heathTimerDelay = 200/*ms*/;
 bool					flagOnF1 = false;
 bool					flagOnF2 = false;
 bool					flagOnF3 = false;
@@ -906,7 +908,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 			}
 
 #ifdef _DEBUG
-			swprintf_s(bufferActive, L"%d %d", gameStatus.flagInAttackMode, gameStatus.flagLightingBlashReadyToUse);
+			swprintf_s(bufferActive, L"%d %d %d", gameStatus.flagInAttackMode, gameStatus.flagPotionReady, gameStatus.flagLightingBlashReadyToUse);
 #endif 
 			HWND d3Wnd = GetD3Windows();
 			RECT d3Rect = { 0 };
@@ -1035,7 +1037,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 							skillSlot04Cooldown = 0;
 						}
 					}
-					if (d3Config.healingEnable)
+					if (d3Config.healingEnable && gameStatus.flagPotionReady)
 					{
 						SendD3Key(d3Config.keyHealing);
 					}
