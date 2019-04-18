@@ -1004,10 +1004,11 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 				GetDlgItem(IDC_F2BIGFRAME)->SetWindowTextW(L"Skill (Hotkey F2) - Running");
 				if (d3Wnd != 0)
 				{
+
 					if (d3Config.skill01Enable)
 					{
 						skillSlot01Cooldown += mainTimerDelay;
-						if (skillSlot01Cooldown >= d3Config.skillSlot01Time /*&& flagAttackMode*/)
+						if (skillSlot01Cooldown >= d3Config.skillSlot01Time && gameStatus.flagInAttackMode)
 						{
 							SendD3Key(d3Config.keySKill01);
 							skillSlot01Cooldown = 0;
@@ -1016,7 +1017,7 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 					if (d3Config.skill02Enable)
 					{
 						skillSlot02Cooldown += mainTimerDelay;
-						if (skillSlot02Cooldown >= d3Config.skillSlot02Time /*&& flagAttackMode*/)
+						if (skillSlot02Cooldown >= d3Config.skillSlot02Time && gameStatus.flagInAttackMode)
 						{
 							SendD3Key(d3Config.keySKill02);
 							skillSlot02Cooldown = 0;
@@ -1025,7 +1026,7 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 					if (d3Config.skill03Enable)
 					{
 						skillSlot03Cooldown += mainTimerDelay;
-						if (skillSlot03Cooldown >= d3Config.skillSlot03Time /*&& flagAttackMode*/)
+						if (skillSlot03Cooldown >= d3Config.skillSlot03Time && gameStatus.flagInAttackMode)
 						{
 							SendD3Key(d3Config.keySKill03);
 							skillSlot03Cooldown = 0;
@@ -1034,7 +1035,7 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 					if (d3Config.skill04Enable)
 					{
 						skillSlot04Cooldown += mainTimerDelay;
-						if (skillSlot04Cooldown >= d3Config.skillSlot04Time /*&& flagAttackMode*/)
+						if (skillSlot04Cooldown >= d3Config.skillSlot04Time && gameStatus.flagInAttackMode)
 						{
 							SendD3Key(d3Config.keySKill04);
 							skillSlot04Cooldown = 0;
@@ -1341,7 +1342,7 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 			{
 				SendD3Key(d3Config.keySKill01);
 			}
-			
+
 		}
 	}
 }
