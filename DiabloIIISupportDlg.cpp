@@ -33,12 +33,21 @@ void		StartStarPact(void);
 void		StopStarPact(void);
 
 void		StarPactDumpData(void);
+
 struct DiabloIIIStatusStruct
 {
 	bool	flagInAttackMode;
 	bool	flagPotionReady;
 	bool	flagLightningBlastReadyToUse;
-	int		flagLightningBlastKey;
+
+	bool	flagSkill04IsEpiphanyAndReady;
+
+
+	int		skill01Key;
+	int		skill02Key;
+	int		skill03Key;
+	int		skill04Key;
+	int		healingKey;
 
 #ifdef _DEBUG
 	int		getStatusTime;
@@ -1337,12 +1346,16 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 		GetCurrentDiabloIIStatus(gameStatus);
 		if (gameStatus.flagLightningBlastReadyToUse)
 		{
-			if (gameStatus.flagLightningBlastKey) SendD3Key(gameStatus.flagLightningBlastKey);
+			if (gameStatus.skill01Key) SendD3Key(gameStatus.skill01Key);
 			else if (d3Config.profilemodeArchonEnable)
 			{
 				SendD3Key(d3Config.keySKill01);
 			}
 
+		}
+		if (gameStatus.flagSkill04IsEpiphanyAndReady && gameStatus.skill04Key && gameStatus.flagInAttackMode)
+		{
+			SendD3Key(gameStatus.skill04Key);
 		}
 	}
 }
