@@ -832,7 +832,7 @@ BOOL		CDiabloIIISupportDlg::OnInitDialog()
 
 
 		wchar_t bufferAbout[10000] = { 0 };
-		swprintf_s(bufferAbout, L"DiabloIIISupport is free, but [Wizard - Meteor Star Pact] feature is limited distribution.\r\nTo get Activation Key, please email to quangxengvn@gmail.com (It's free).\r\nYour DeviceID is [%ls].", buffer);
+		swprintf_s(bufferAbout, L"DiabloIIISupport is free, but [Wizard - Meteor Star Pact] feature is limited distribution.\r\nTo get Activation Key, please email to quangxengvn@gmail.com.\r\nYour DeviceID is [%ls].", buffer);
 		GetDlgItem(IDC_ABOUT)->SetWindowTextW(bufferAbout);
 	}
 
