@@ -56,6 +56,13 @@ Features : Wizard LoN32 Archon Macro
 Use 1 hotkey to call full-cycle of StarPact
 
 
+[Smart] Lightning Blast
+------------
+Note : Lightning Blast use Skill 01 key to call
+Only work on
++ Resolution is 1920x 1080 
++ Game is Fullscreen or Fullscreen Windows Mode
+
 
 
 
