@@ -16,9 +16,6 @@ Install Visual C++ Redistributable for Visual Studio 2015
 
 https://www.microsoft.com/en-gb/download/details.aspx?id=48145
 
-Source code
-------------
-https://github.com/langmaninternet/DialoIIISupport
 
 
 
@@ -58,7 +55,7 @@ Use 1 hotkey to call full-cycle of StarPact
 
 Features : [Smart] Lightning Blast
 ------------
-Note : Lightning Blast use Skill 01 key to call
+Auto cast Lightning Blast when it's ready. (Note : Lightning Blast use Skill 01 key to cast)
 
 Only work on
 
