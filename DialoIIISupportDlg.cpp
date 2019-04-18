@@ -37,9 +37,12 @@ struct DiabloIIIStatusStruct
 {
 	bool	flagInAttackMode;
 	bool	flagPotionReady;
-	int		flagLightingBlashReadyToUse;
+	bool	flagLightningBlastReadyToUse;
+	int		flagLightningBlastKey;
 
-
+#ifdef _DEBUG
+	int		getStatusTime;
+#endif
 };
 void		GetCurrentDiabloIIStatus(DiabloIIIStatusStruct & gameStatus);
 
@@ -837,6 +840,10 @@ BOOL		CDialoIIISupportDlg::OnInitDialog()
 	OnBnClickedWizArchoncheck();
 
 	hGlobalHook = SetWindowsHookEx(WH_KEYBOARD_LL, HookProc, GetModuleHandle(NULL), 0);
+
+
+
+
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
 void		CDialoIIISupportDlg::OnPaint()
@@ -887,10 +894,6 @@ void		CDialoIIISupportDlg::OnHelp()
 
 
 
-
-
-
-
 /************************************************************************/
 /*                                                                      */
 /************************************************************************/
@@ -908,7 +911,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 			}
 
 #ifdef _DEBUG
-			swprintf_s(bufferActive, L"%d %d %d", gameStatus.flagInAttackMode, gameStatus.flagPotionReady, gameStatus.flagLightingBlashReadyToUse);
+			swprintf_s(bufferActive, L"%d %d %d", gameStatus.flagInAttackMode, gameStatus.flagPotionReady, gameStatus.getStatusTime);
 #endif 
 			HWND d3Wnd = GetD3Windows();
 			RECT d3Rect = { 0 };
@@ -1331,9 +1334,14 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 	else if (diabloIIIStatusTimerID == nIdEvent)
 	{
 		GetCurrentDiabloIIStatus(gameStatus);
-		if (gameStatus.flagLightingBlashReadyToUse)
+		if (gameStatus.flagLightningBlastReadyToUse)
 		{
-			SendD3Key(d3Config.keySKill01);
+			if (gameStatus.flagLightningBlastKey) SendD3Key(gameStatus.flagLightningBlastKey);
+			else if (d3Config.profilemodeArchonEnable)
+			{
+				SendD3Key(d3Config.keySKill01);
+			}
+			
 		}
 	}
 }
