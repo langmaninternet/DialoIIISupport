@@ -1,5 +1,5 @@
 
-// DialoIIISupport.h : main header file for the PROJECT_NAME application
+// DiabloIIISupport.h : main header file for the PROJECT_NAME application
 //
 
 #pragma once
@@ -12,15 +12,15 @@
 
 
 // CDialoIIISupportApp:
-// See DialoIIISupport.cpp for the implementation of this class
+// See DiabloIIISupport.cpp for the implementation of this class
 //
 
 
 
-class CDialoIIISupportApp : public CWinApp
+class CDiabloIIISupportApp : public CWinApp
 {
 public:
-	CDialoIIISupportApp();
+	CDiabloIIISupportApp();
 
 // Overrides
 public:
@@ -31,4 +31,4 @@ public:
 	DECLARE_MESSAGE_MAP()
 };
 
-extern CDialoIIISupportApp theApp;
+extern CDiabloIIISupportApp theApp;

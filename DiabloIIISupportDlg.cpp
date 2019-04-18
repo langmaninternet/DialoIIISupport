@@ -3,8 +3,8 @@
 //
 
 #include "stdafx.h"
-#include "DialoIIISupport.h"
-#include "DialoIIISupportDlg.h"
+#include "DiabloIIISupport.h"
+#include "DiabloIIISupportDlg.h"
 #include "afxdialogex.h"
 #include <Windows.h>
 #ifdef _DEBUG
@@ -51,7 +51,7 @@ void		GetCurrentDiabloIIStatus(DiabloIIIStatusStruct & gameStatus);
 
 
 DiabloIIIStatusStruct gameStatus;
-const double DialoIIISupportVersion = 1.07;
+const double DiabloIIISupportVersion = 1.07;
 const int defaultHeathLimit = 80;
 /************************************************************************/
 /* Struct                                                               */
@@ -71,7 +71,7 @@ IDC_PROFILE08,
 IDC_PROFILE09,
 IDC_PROFILE10,
 };
-struct DialoIIISupportConfig
+struct DiabloIIISupportConfig
 {
 	int		leftMouseTime;
 	int		rightMouseTime;
@@ -128,7 +128,7 @@ struct DialoIIISupportConfig
 
 
 
-	double	saveDialoIIISupportVersion;
+	double	saveDiabloIIISupportVersion;
 };
 
 
@@ -136,7 +136,7 @@ struct DialoIIISupportConfig
 /************************************************************************/
 /* Variable                                                             */
 /************************************************************************/
-DialoIIISupportConfig	d3Config;
+DiabloIIISupportConfig	d3Config;
 wchar_t					configSavePath[3000] = { 0 };
 
 const int				mainTimerDelay = 50/*ms*/;
@@ -622,67 +622,67 @@ extern "C" __declspec(dllexport) LRESULT CALLBACK HookProc(int nCode, WPARAM wPa
 /************************************************************************/
 /* MFC                                                                  */
 /************************************************************************/
-/**/		CDialoIIISupportDlg::CDialoIIISupportDlg(CWnd* pParent /*=nullptr*/)
-	: CDialogEx(IDD_DIALOIIISUPPORT_DIALOG, pParent)
+/**/		CDiabloIIISupportDlg::CDiabloIIISupportDlg(CWnd* pParent /*=nullptr*/)
+	: CDialogEx(IDD_DIABLOIIISUPPORT_DIALOG, pParent)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
-void		CDialoIIISupportDlg::DoDataExchange(CDataExchange* pDX)
+void		CDiabloIIISupportDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 }
 
-BEGIN_MESSAGE_MAP(CDialoIIISupportDlg, CDialogEx)
+BEGIN_MESSAGE_MAP(CDiabloIIISupportDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_WM_TIMER()
-	ON_EN_KILLFOCUS(IDC_LEFTMOUSETIME, &CDialoIIISupportDlg::OnKillFocusLeftMouseTime)
-	ON_EN_KILLFOCUS(IDC_RIGHTMOUSETIME, &CDialoIIISupportDlg::OnKillFocusRightMouseTime)
-	ON_EN_KILLFOCUS(IDC_SKILL01TIME, &CDialoIIISupportDlg::OnKillFocusSkill01Time)
-	ON_EN_KILLFOCUS(IDC_SKILL02TIME, &CDialoIIISupportDlg::OnKillFocusSkill02Time)
-	ON_EN_KILLFOCUS(IDC_SKILL03TIME, &CDialoIIISupportDlg::OnKillFocusSkill03Time)
-	ON_EN_KILLFOCUS(IDC_SKILL04TIME, &CDialoIIISupportDlg::OnKillFocusSkill04Time)
+	ON_EN_KILLFOCUS(IDC_LEFTMOUSETIME, &CDiabloIIISupportDlg::OnKillFocusLeftMouseTime)
+	ON_EN_KILLFOCUS(IDC_RIGHTMOUSETIME, &CDiabloIIISupportDlg::OnKillFocusRightMouseTime)
+	ON_EN_KILLFOCUS(IDC_SKILL01TIME, &CDiabloIIISupportDlg::OnKillFocusSkill01Time)
+	ON_EN_KILLFOCUS(IDC_SKILL02TIME, &CDiabloIIISupportDlg::OnKillFocusSkill02Time)
+	ON_EN_KILLFOCUS(IDC_SKILL03TIME, &CDiabloIIISupportDlg::OnKillFocusSkill03Time)
+	ON_EN_KILLFOCUS(IDC_SKILL04TIME, &CDiabloIIISupportDlg::OnKillFocusSkill04Time)
 	//ON_EN_KILLFOCUS(IDC_HEALINGTIME, &CDialoIIISupportDlg::OnKillFocusHealingTime)
-	ON_BN_CLICKED(IDC_SKILL01CHECK, &CDialoIIISupportDlg::OnClickedSkill01Check)
-	ON_BN_CLICKED(IDC_SKILL02CHECK, &CDialoIIISupportDlg::OnClickedSkill02Check)
-	ON_BN_CLICKED(IDC_SKILL03CHECK, &CDialoIIISupportDlg::OnClickedSkill03Check)
-	ON_BN_CLICKED(IDC_SKILL04CHECK, &CDialoIIISupportDlg::OnClickedSkill04Check)
-	ON_BN_CLICKED(IDC_HEALINGCHECK, &CDialoIIISupportDlg::OnClickedHealingCheck)
+	ON_BN_CLICKED(IDC_SKILL01CHECK, &CDiabloIIISupportDlg::OnClickedSkill01Check)
+	ON_BN_CLICKED(IDC_SKILL02CHECK, &CDiabloIIISupportDlg::OnClickedSkill02Check)
+	ON_BN_CLICKED(IDC_SKILL03CHECK, &CDiabloIIISupportDlg::OnClickedSkill03Check)
+	ON_BN_CLICKED(IDC_SKILL04CHECK, &CDiabloIIISupportDlg::OnClickedSkill04Check)
+	ON_BN_CLICKED(IDC_HEALINGCHECK, &CDiabloIIISupportDlg::OnClickedHealingCheck)
 	//ON_BN_CLICKED(IDC_SPACECHECK, &CDialoIIISupportDlg::OnClickedSpaceCheck)
-	ON_COMMAND(ID_HELP, &CDialoIIISupportDlg::OnHelp)
-	ON_EN_KILLFOCUS(IDC_PROFILENAME, &CDialoIIISupportDlg::OnKillFocusProfileName)
-	ON_BN_CLICKED(IDC_PROFILE01, &CDialoIIISupportDlg::OnBnClickedProfile01)
-	ON_BN_CLICKED(IDC_PROFILE02, &CDialoIIISupportDlg::OnBnClickedProfile02)
-	ON_BN_CLICKED(IDC_PROFILE03, &CDialoIIISupportDlg::OnBnClickedProfile03)
-	ON_BN_CLICKED(IDC_PROFILE04, &CDialoIIISupportDlg::OnBnClickedProfile04)
-	ON_BN_CLICKED(IDC_PROFILE05, &CDialoIIISupportDlg::OnBnClickedProfile05)
-	ON_BN_CLICKED(IDC_PROFILE06, &CDialoIIISupportDlg::OnBnClickedProfile06)
-	ON_BN_CLICKED(IDC_PROFILE07, &CDialoIIISupportDlg::OnBnClickedProfile07)
-	ON_BN_CLICKED(IDC_PROFILE08, &CDialoIIISupportDlg::OnBnClickedProfile08)
-	ON_BN_CLICKED(IDC_PROFILE09, &CDialoIIISupportDlg::OnBnClickedProfile09)
-	ON_BN_CLICKED(IDC_PROFILE10, &CDialoIIISupportDlg::OnBnClickedProfile10)
-	ON_EN_KILLFOCUS(IDC_SKILLKEY01, &CDialoIIISupportDlg::OnKillFocusSkillKey01)
-	ON_EN_KILLFOCUS(IDC_SKILLKEY02, &CDialoIIISupportDlg::OnKillFocusSkillKey02)
-	ON_EN_KILLFOCUS(IDC_SKILLKEY03, &CDialoIIISupportDlg::OnKillFocusSkillKey03)
-	ON_EN_KILLFOCUS(IDC_SKILLKEY04, &CDialoIIISupportDlg::OnKillFocusSkillKey04)
-	ON_EN_KILLFOCUS(IDC_HEALINGKEY, &CDialoIIISupportDlg::OnKillfocusHealingKey)
-	ON_BN_CLICKED(IDC_WIZARCHONCHECK, &CDialoIIISupportDlg::OnBnClickedWizArchoncheck)
+	ON_COMMAND(ID_HELP, &CDiabloIIISupportDlg::OnHelp)
+	ON_EN_KILLFOCUS(IDC_PROFILENAME, &CDiabloIIISupportDlg::OnKillFocusProfileName)
+	ON_BN_CLICKED(IDC_PROFILE01, &CDiabloIIISupportDlg::OnBnClickedProfile01)
+	ON_BN_CLICKED(IDC_PROFILE02, &CDiabloIIISupportDlg::OnBnClickedProfile02)
+	ON_BN_CLICKED(IDC_PROFILE03, &CDiabloIIISupportDlg::OnBnClickedProfile03)
+	ON_BN_CLICKED(IDC_PROFILE04, &CDiabloIIISupportDlg::OnBnClickedProfile04)
+	ON_BN_CLICKED(IDC_PROFILE05, &CDiabloIIISupportDlg::OnBnClickedProfile05)
+	ON_BN_CLICKED(IDC_PROFILE06, &CDiabloIIISupportDlg::OnBnClickedProfile06)
+	ON_BN_CLICKED(IDC_PROFILE07, &CDiabloIIISupportDlg::OnBnClickedProfile07)
+	ON_BN_CLICKED(IDC_PROFILE08, &CDiabloIIISupportDlg::OnBnClickedProfile08)
+	ON_BN_CLICKED(IDC_PROFILE09, &CDiabloIIISupportDlg::OnBnClickedProfile09)
+	ON_BN_CLICKED(IDC_PROFILE10, &CDiabloIIISupportDlg::OnBnClickedProfile10)
+	ON_EN_KILLFOCUS(IDC_SKILLKEY01, &CDiabloIIISupportDlg::OnKillFocusSkillKey01)
+	ON_EN_KILLFOCUS(IDC_SKILLKEY02, &CDiabloIIISupportDlg::OnKillFocusSkillKey02)
+	ON_EN_KILLFOCUS(IDC_SKILLKEY03, &CDiabloIIISupportDlg::OnKillFocusSkillKey03)
+	ON_EN_KILLFOCUS(IDC_SKILLKEY04, &CDiabloIIISupportDlg::OnKillFocusSkillKey04)
+	ON_EN_KILLFOCUS(IDC_HEALINGKEY, &CDiabloIIISupportDlg::OnKillfocusHealingKey)
+	ON_BN_CLICKED(IDC_WIZARCHONCHECK, &CDiabloIIISupportDlg::OnBnClickedWizArchoncheck)
 	//ON_EN_KILLFOCUS(IDC_CLOSEPOPUPKEY, &CDialoIIISupportDlg::OnKillFocusClosePopupKey)
-	ON_EN_KILLFOCUS(IDC_METEORKEY, &CDialoIIISupportDlg::OnKillFocusMeteorKey)
-	ON_BN_CLICKED(IDC_WIZFIREBRIDCHECK, &CDialoIIISupportDlg::OnBnClickedWizFireBridCheck)
-	ON_EN_KILLFOCUS(IDC_FORCESTANDKEY, &CDialoIIISupportDlg::OnKillFocusForceStandKey)
-	ON_EN_KILLFOCUS(IDC_FORCEMOVEKEY, &CDialoIIISupportDlg::OnKillFocusForceMoveKey)
-	ON_EN_KILLFOCUS(IDC_ARCHONKEY, &CDialoIIISupportDlg::OnKillFocusArchonKey)
-	ON_EN_KILLFOCUS(IDC_SINGLESHOTHOTKEY, &CDialoIIISupportDlg::OnKillFocusSingleShotHotKey)
-	ON_EN_KILLFOCUS(IDC_BLACKHOLEKEY, &CDialoIIISupportDlg::OnKillFocusBlackHoleKey)
-	ON_EN_KILLFOCUS(IDC_WAVEOFFORCEKEY, &CDialoIIISupportDlg::OnKillFocusWaveOfForceKey)
-	ON_EN_KILLFOCUS(IDC_PRIMARYSKILLKEY, &CDialoIIISupportDlg::OnKillFocusPrimarySkillKey)
-	ON_EN_KILLFOCUS(IDC_SECONDARYSKILLKEY, &CDialoIIISupportDlg::OnKillFocusSecondarySkillKey)
-	ON_BN_CLICKED(IDC_SINGLESHOTHOTCASTMETEORONLY, &CDialoIIISupportDlg::OnBnClickedSingleshothotcastmeteoronly)
-	ON_BN_CLICKED(IDC_SINGLESHOTHOTCASTFULLCYCLE, &CDialoIIISupportDlg::OnBnClickedSingleshothotcastfullcycle)
+	ON_EN_KILLFOCUS(IDC_METEORKEY, &CDiabloIIISupportDlg::OnKillFocusMeteorKey)
+	ON_BN_CLICKED(IDC_WIZFIREBRIDCHECK, &CDiabloIIISupportDlg::OnBnClickedWizFireBridCheck)
+	ON_EN_KILLFOCUS(IDC_FORCESTANDKEY, &CDiabloIIISupportDlg::OnKillFocusForceStandKey)
+	ON_EN_KILLFOCUS(IDC_FORCEMOVEKEY, &CDiabloIIISupportDlg::OnKillFocusForceMoveKey)
+	ON_EN_KILLFOCUS(IDC_ARCHONKEY, &CDiabloIIISupportDlg::OnKillFocusArchonKey)
+	ON_EN_KILLFOCUS(IDC_SINGLESHOTHOTKEY, &CDiabloIIISupportDlg::OnKillFocusSingleShotHotKey)
+	ON_EN_KILLFOCUS(IDC_BLACKHOLEKEY, &CDiabloIIISupportDlg::OnKillFocusBlackHoleKey)
+	ON_EN_KILLFOCUS(IDC_WAVEOFFORCEKEY, &CDiabloIIISupportDlg::OnKillFocusWaveOfForceKey)
+	ON_EN_KILLFOCUS(IDC_PRIMARYSKILLKEY, &CDiabloIIISupportDlg::OnKillFocusPrimarySkillKey)
+	ON_EN_KILLFOCUS(IDC_SECONDARYSKILLKEY, &CDiabloIIISupportDlg::OnKillFocusSecondarySkillKey)
+	ON_BN_CLICKED(IDC_SINGLESHOTHOTCASTMETEORONLY, &CDiabloIIISupportDlg::OnBnClickedSingleshothotcastmeteoronly)
+	ON_BN_CLICKED(IDC_SINGLESHOTHOTCASTFULLCYCLE, &CDiabloIIISupportDlg::OnBnClickedSingleshothotcastfullcycle)
 END_MESSAGE_MAP()
 
-BOOL		CDialoIIISupportDlg::OnInitDialog()
+BOOL		CDiabloIIISupportDlg::OnInitDialog()
 {
 	// Create mutex
 	HANDLE hMutex = CreateMutex(NULL, TRUE, L"Diablo III Support");
@@ -728,7 +728,7 @@ BOOL		CDialoIIISupportDlg::OnInitDialog()
 		wchar_t bufferDir[2000] = { 0 };
 		swprintf_s(bufferDir, L"%ls\\DialoIIISupport\\", appdataPath);
 		CreateDirectoryW(bufferDir, 0);
-		swprintf_s(configSavePath, L"%ls\\DialoIIISupport\\DialoIIISupport.dat", appdataPath);
+		swprintf_s(configSavePath, L"%ls\\DialoIIISupport\\DiabloIIISupport.dat", appdataPath);
 	}
 
 	OnLoadConfig();
@@ -755,7 +755,7 @@ BOOL		CDialoIIISupportDlg::OnInitDialog()
 	GetDlgItem(IDC_SKILL04TIME)->SetWindowText(buffer);
 
 
-	swprintf_s(buffer, L"Dialo III Support Version %0.2lf", DialoIIISupportVersion);
+	swprintf_s(buffer, L"Diablo III Support Version %0.2lf", DiabloIIISupportVersion);
 	SetWindowTextW(buffer);
 
 
@@ -832,7 +832,7 @@ BOOL		CDialoIIISupportDlg::OnInitDialog()
 
 
 		wchar_t bufferAbout[10000] = { 0 };
-		swprintf_s(bufferAbout, L"DialoIIISupport is free, but [Wizard - Meteor Star Pact] feature is limited distribution.\r\nTo get Activation Key, please email to quangxengvn@gmail.com (It's free).\r\nYour DeviceID is [%ls].", buffer);
+		swprintf_s(bufferAbout, L"DiabloIIISupport is free, but [Wizard - Meteor Star Pact] feature is limited distribution.\r\nTo get Activation Key, please email to quangxengvn@gmail.com (It's free).\r\nYour DeviceID is [%ls].", buffer);
 		GetDlgItem(IDC_ABOUT)->SetWindowTextW(bufferAbout);
 	}
 
@@ -846,7 +846,7 @@ BOOL		CDialoIIISupportDlg::OnInitDialog()
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
-void		CDialoIIISupportDlg::OnPaint()
+void		CDiabloIIISupportDlg::OnPaint()
 {
 	if (IsIconic())
 	{
@@ -870,15 +870,15 @@ void		CDialoIIISupportDlg::OnPaint()
 		CDialogEx::OnPaint();
 	}
 }
-HCURSOR		CDialoIIISupportDlg::OnQueryDragIcon()
+HCURSOR		CDiabloIIISupportDlg::OnQueryDragIcon()
 {
 	return static_cast<HCURSOR>(m_hIcon);
 }
-void		CDialoIIISupportDlg::WinHelp(DWORD dwData, UINT nCmd)
+void		CDiabloIIISupportDlg::WinHelp(DWORD dwData, UINT nCmd)
 {//prevent help to use F1 
 
 }
-void		CDialoIIISupportDlg::OnHelp()
+void		CDiabloIIISupportDlg::OnHelp()
 {
 	// TODO: Add your command handler code here
 }
@@ -897,7 +897,7 @@ void		CDialoIIISupportDlg::OnHelp()
 /************************************************************************/
 /*                                                                      */
 /************************************************************************/
-void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
+void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 {
 	if (mainTimerID == nIdEvent)
 	{
@@ -1345,7 +1345,7 @@ void CDialoIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 		}
 	}
 }
-void CDialoIIISupportDlg::OnLoadConfig()
+void CDiabloIIISupportDlg::OnLoadConfig()
 {
 	CFile loadFile;
 	if (loadFile.Open(configSavePath, CFile::modeRead | CFile::typeBinary))
@@ -1357,16 +1357,16 @@ void CDialoIIISupportDlg::OnLoadConfig()
 		}
 		loadFile.Read(&d3Config, fileSize);
 		loadFile.Close();
-		if (d3Config.saveDialoIIISupportVersion != DialoIIISupportVersion)
+		if (d3Config.saveDiabloIIISupportVersion != DiabloIIISupportVersion)
 		{
 			memset(&d3Config, 0, sizeof(d3Config));
-			d3Config.saveDialoIIISupportVersion = DialoIIISupportVersion;
+			d3Config.saveDiabloIIISupportVersion = DiabloIIISupportVersion;
 			ValidateD3Config();
 			OnSaveConfig();
 		}
 	}
 }
-void CDialoIIISupportDlg::OnSaveConfig()
+void CDiabloIIISupportDlg::OnSaveConfig()
 {
 	CFile saveFile;
 	if (saveFile.Open(configSavePath, CFile::modeCreate | CFile::modeWrite | CFile::typeBinary))
@@ -1379,7 +1379,7 @@ void CDialoIIISupportDlg::OnSaveConfig()
 /************************************************************************/
 /*                                                                      */
 /************************************************************************/
-void CDialoIIISupportDlg::OnKillFocusLeftMouseTime()
+void CDiabloIIISupportDlg::OnKillFocusLeftMouseTime()
 {
 	wchar_t bufferText[1000] = { 0 };
 	GetDlgItem(IDC_LEFTMOUSETIME)->GetWindowTextW(bufferText, 999);
@@ -1395,7 +1395,7 @@ void CDialoIIISupportDlg::OnKillFocusLeftMouseTime()
 		OnSaveConfig();
 	}
 }
-void CDialoIIISupportDlg::OnKillFocusRightMouseTime()
+void CDiabloIIISupportDlg::OnKillFocusRightMouseTime()
 {
 	wchar_t bufferText[1000] = { 0 };
 	GetDlgItem(IDC_RIGHTMOUSETIME)->GetWindowTextW(bufferText, 999);
@@ -1411,7 +1411,7 @@ void CDialoIIISupportDlg::OnKillFocusRightMouseTime()
 		OnSaveConfig();
 	}
 }
-void CDialoIIISupportDlg::OnKillFocusSkill01Time()
+void CDiabloIIISupportDlg::OnKillFocusSkill01Time()
 {
 	wchar_t bufferText[1000] = { 0 };
 	GetDlgItem(IDC_SKILL01TIME)->GetWindowTextW(bufferText, 999);
@@ -1428,7 +1428,7 @@ void CDialoIIISupportDlg::OnKillFocusSkill01Time()
 		OnSaveConfig();
 	}
 }
-void CDialoIIISupportDlg::OnKillFocusSkill02Time()
+void CDiabloIIISupportDlg::OnKillFocusSkill02Time()
 {
 	wchar_t bufferText[1000] = { 0 };
 	GetDlgItem(IDC_SKILL02TIME)->GetWindowTextW(bufferText, 999);
@@ -1445,7 +1445,7 @@ void CDialoIIISupportDlg::OnKillFocusSkill02Time()
 		OnSaveConfig();
 	}
 }
-void CDialoIIISupportDlg::OnKillFocusSkill03Time()
+void CDiabloIIISupportDlg::OnKillFocusSkill03Time()
 {
 	wchar_t bufferText[1000] = { 0 };
 	GetDlgItem(IDC_SKILL03TIME)->GetWindowTextW(bufferText, 999);
@@ -1462,7 +1462,7 @@ void CDialoIIISupportDlg::OnKillFocusSkill03Time()
 		OnSaveConfig();
 	}
 }
-void CDialoIIISupportDlg::OnKillFocusSkill04Time()
+void CDiabloIIISupportDlg::OnKillFocusSkill04Time()
 {
 	wchar_t bufferText[1000] = { 0 };
 	GetDlgItem(IDC_SKILL04TIME)->GetWindowTextW(bufferText, 999);
@@ -1484,7 +1484,7 @@ void CDialoIIISupportDlg::OnKillFocusSkill04Time()
 /************************************************************************/
 /*                                                                      */
 /************************************************************************/
-void CDialoIIISupportDlg::OnShowSkillKey(int idW, wchar_t key)
+void CDiabloIIISupportDlg::OnShowSkillKey(int idW, wchar_t key)
 {
 	wchar_t buffer[100] = { 0 };
 	if (key == L' ') wcscpy(buffer, L"Space");
@@ -1494,7 +1494,7 @@ void CDialoIIISupportDlg::OnShowSkillKey(int idW, wchar_t key)
 	else swprintf_s(buffer, L"%lc", key);
 	GetDlgItem(idW)->SetWindowText(buffer);
 }
-void CDialoIIISupportDlg::OnKillFocusSkillKey(int changeID, wchar_t & keySkill)
+void CDiabloIIISupportDlg::OnKillFocusSkillKey(int changeID, wchar_t & keySkill)
 {
 	wchar_t bufferText[1001] = { 0 };
 	GetDlgItem(changeID)->GetWindowTextW(bufferText, 999);
@@ -1576,59 +1576,59 @@ void CDialoIIISupportDlg::OnKillFocusSkillKey(int changeID, wchar_t & keySkill)
 	}
 	OnShowSkillKey(changeID, keySkill);
 }
-void CDialoIIISupportDlg::OnKillFocusSkillKey01()
+void CDiabloIIISupportDlg::OnKillFocusSkillKey01()
 {
 	OnKillFocusSkillKey(IDC_SKILLKEY01, d3Config.keySKill01);
 }
-void CDialoIIISupportDlg::OnKillFocusSkillKey02()
+void CDiabloIIISupportDlg::OnKillFocusSkillKey02()
 {
 	OnKillFocusSkillKey(IDC_SKILLKEY02, d3Config.keySKill02);
 }
-void CDialoIIISupportDlg::OnKillFocusSkillKey03()
+void CDiabloIIISupportDlg::OnKillFocusSkillKey03()
 {
 	OnKillFocusSkillKey(IDC_SKILLKEY03, d3Config.keySKill03);
 }
-void CDialoIIISupportDlg::OnKillFocusSkillKey04()
+void CDiabloIIISupportDlg::OnKillFocusSkillKey04()
 {
 	OnKillFocusSkillKey(IDC_SKILLKEY04, d3Config.keySKill04);
 }
-void CDialoIIISupportDlg::OnKillfocusHealingKey()
+void CDiabloIIISupportDlg::OnKillfocusHealingKey()
 {
 	OnKillFocusSkillKey(IDC_HEALINGKEY, d3Config.keyHealing);
 }
-void CDialoIIISupportDlg::OnKillFocusForceStandKey()
+void CDiabloIIISupportDlg::OnKillFocusForceStandKey()
 {
 	OnKillFocusSkillKey(IDC_FORCESTANDKEY, d3Config.keyForceStand);
 }
-void CDialoIIISupportDlg::OnKillFocusForceMoveKey()
+void CDiabloIIISupportDlg::OnKillFocusForceMoveKey()
 {
 	OnKillFocusSkillKey(IDC_FORCEMOVEKEY, d3Config.keyForceMove);
 }
-void CDialoIIISupportDlg::OnKillFocusSingleShotHotKey()
+void CDiabloIIISupportDlg::OnKillFocusSingleShotHotKey()
 {
 	OnKillFocusSkillKey(IDC_SINGLESHOTHOTKEY, d3Config.keyWizSingleShot);
 }
-void CDialoIIISupportDlg::OnKillFocusMeteorKey()
+void CDiabloIIISupportDlg::OnKillFocusMeteorKey()
 {
 	OnKillFocusSkillKey(IDC_METEORKEY, d3Config.keyMeteor);
 }
-void CDialoIIISupportDlg::OnKillFocusArchonKey()
+void CDiabloIIISupportDlg::OnKillFocusArchonKey()
 {
 	OnKillFocusSkillKey(IDC_ARCHONKEY, d3Config.keyArchon);
 }
-void CDialoIIISupportDlg::OnKillFocusBlackHoleKey()
+void CDiabloIIISupportDlg::OnKillFocusBlackHoleKey()
 {
 	OnKillFocusSkillKey(IDC_BLACKHOLEKEY, d3Config.keyBlackHole);
 }
-void CDialoIIISupportDlg::OnKillFocusWaveOfForceKey()
+void CDiabloIIISupportDlg::OnKillFocusWaveOfForceKey()
 {
 	OnKillFocusSkillKey(IDC_WAVEOFFORCEKEY, d3Config.keyWaveOfForce);
 }
-void CDialoIIISupportDlg::OnKillFocusPrimarySkillKey()
+void CDiabloIIISupportDlg::OnKillFocusPrimarySkillKey()
 {
 	OnKillFocusSkillKey(IDC_PRIMARYSKILLKEY, d3Config.keyPrimary);
 }
-void CDialoIIISupportDlg::OnKillFocusSecondarySkillKey()
+void CDiabloIIISupportDlg::OnKillFocusSecondarySkillKey()
 {
 	OnKillFocusSkillKey(IDC_SECONDARYSKILLKEY, d3Config.keySecondary);
 }
@@ -1636,7 +1636,7 @@ void CDialoIIISupportDlg::OnKillFocusSecondarySkillKey()
 
 
 
-void CDialoIIISupportDlg::OnClickedSkill01Check()
+void CDiabloIIISupportDlg::OnClickedSkill01Check()
 {
 	d3Config.skill01Enable = !d3Config.skill01Enable;
 	d3Config.profileskill01Enable[d3Config.currentProfile] = d3Config.skill01Enable;
@@ -1646,7 +1646,7 @@ void CDialoIIISupportDlg::OnClickedSkill01Check()
 	GetDlgItem(IDC_SKILL01TEXTMS)->EnableWindow(d3Config.skill01Enable);
 	OnSaveConfig();
 }
-void CDialoIIISupportDlg::OnClickedSkill02Check()
+void CDiabloIIISupportDlg::OnClickedSkill02Check()
 {
 	d3Config.skill02Enable = !d3Config.skill02Enable;
 	d3Config.profileskill02Enable[d3Config.currentProfile] = d3Config.skill02Enable;
@@ -1656,7 +1656,7 @@ void CDialoIIISupportDlg::OnClickedSkill02Check()
 	GetDlgItem(IDC_SKILL02TEXTMS)->EnableWindow(d3Config.skill02Enable);
 	OnSaveConfig();
 }
-void CDialoIIISupportDlg::OnClickedSkill03Check()
+void CDiabloIIISupportDlg::OnClickedSkill03Check()
 {
 	d3Config.skill03Enable = !d3Config.skill03Enable;
 	d3Config.profileskill03Enable[d3Config.currentProfile] = d3Config.skill03Enable;
@@ -1666,7 +1666,7 @@ void CDialoIIISupportDlg::OnClickedSkill03Check()
 	GetDlgItem(IDC_SKILL03TEXTMS)->EnableWindow(d3Config.skill03Enable);
 	OnSaveConfig();
 }
-void CDialoIIISupportDlg::OnClickedSkill04Check()
+void CDiabloIIISupportDlg::OnClickedSkill04Check()
 {
 	d3Config.skill04Enable = !d3Config.skill04Enable;
 	d3Config.profileskill04Enable[d3Config.currentProfile] = d3Config.skill04Enable;
@@ -1676,7 +1676,7 @@ void CDialoIIISupportDlg::OnClickedSkill04Check()
 	GetDlgItem(IDC_SKILL04TEXTMS)->EnableWindow(d3Config.skill04Enable);
 	OnSaveConfig();
 }
-void CDialoIIISupportDlg::OnClickedHealingCheck()
+void CDiabloIIISupportDlg::OnClickedHealingCheck()
 {
 	d3Config.healingEnable = !d3Config.healingEnable;
 	d3Config.profilehealingEnable[d3Config.currentProfile] = d3Config.healingEnable;
@@ -1684,7 +1684,7 @@ void CDialoIIISupportDlg::OnClickedHealingCheck()
 	GetDlgItem(IDC_HEALINGTEXTMS)->EnableWindow(d3Config.healingEnable);
 	OnSaveConfig();
 }
-void CDialoIIISupportDlg::OnBnClickedWizArchoncheck()
+void CDiabloIIISupportDlg::OnBnClickedWizArchoncheck()
 {
 	d3Config.modeArchonEnable = !d3Config.modeArchonEnable;
 	d3Config.profilemodeArchonEnable[d3Config.currentProfile] = d3Config.modeArchonEnable;
@@ -1712,7 +1712,7 @@ void CDialoIIISupportDlg::OnBnClickedWizArchoncheck()
 	GetDlgItem(IDC_SINGLESHOTHOTKEY)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
 	OnSaveConfig();
 }
-void CDialoIIISupportDlg::OnBnClickedWizFireBridCheck()
+void CDiabloIIISupportDlg::OnBnClickedWizFireBridCheck()
 {
 	d3Config.modeFireBirdEnable = !d3Config.modeFireBirdEnable;
 	d3Config.profilemodeFireBirdEnable[d3Config.currentProfile] = !d3Config.modeFireBirdEnable;
@@ -1740,14 +1740,14 @@ void CDialoIIISupportDlg::OnBnClickedWizFireBridCheck()
 	GetDlgItem(IDC_SINGLESHOTHOTKEY)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
 	OnSaveConfig();
 }
-void CDialoIIISupportDlg::OnBnClickedSingleshothotcastmeteoronly()
+void CDiabloIIISupportDlg::OnBnClickedSingleshothotcastmeteoronly()
 {
 	d3Config.fullCycleEnable = !d3Config.fullCycleEnable;
 	((CButton*)GetDlgItem(IDC_SINGLESHOTHOTCASTMETEORONLY))->SetCheck(d3Config.fullCycleEnable == false);
 	((CButton*)GetDlgItem(IDC_SINGLESHOTHOTCASTFULLCYCLE))->SetCheck(d3Config.fullCycleEnable);
 	OnSaveConfig();
 }
-void CDialoIIISupportDlg::OnBnClickedSingleshothotcastfullcycle()
+void CDiabloIIISupportDlg::OnBnClickedSingleshothotcastfullcycle()
 {
 	d3Config.fullCycleEnable = !d3Config.fullCycleEnable;
 	((CButton*)GetDlgItem(IDC_SINGLESHOTHOTCASTMETEORONLY))->SetCheck(d3Config.fullCycleEnable == false);
@@ -1758,7 +1758,7 @@ void CDialoIIISupportDlg::OnBnClickedSingleshothotcastfullcycle()
 
 
 
-void CDialoIIISupportDlg::OnKillFocusProfileName()
+void CDiabloIIISupportDlg::OnKillFocusProfileName()
 {
 	wchar_t bufferProfileName[1000];
 	GetDlgItem(IDC_PROFILENAME)->GetWindowTextW(bufferProfileName, 999);
@@ -1770,7 +1770,7 @@ void CDialoIIISupportDlg::OnKillFocusProfileName()
 	currentProfileName += L"*";
 	GetDlgItem(profileID[d3Config.currentProfile])->SetWindowTextW(currentProfileName);
 }
-void CDialoIIISupportDlg::OnBnClickedProfile()
+void CDiabloIIISupportDlg::OnBnClickedProfile()
 {
 	d3Config.leftMouseTime = d3Config.profileleftMouseTime[d3Config.currentProfile];
 	d3Config.rightMouseTime = d3Config.profilerightMouseTime[d3Config.currentProfile];
@@ -1864,61 +1864,61 @@ void CDialoIIISupportDlg::OnBnClickedProfile()
 	GetDlgItem(IDC_PROFILENAME)->SetWindowTextW(d3Config.profileName[d3Config.currentProfile]);
 	OnSaveConfig();
 }
-void CDialoIIISupportDlg::OnBnClickedProfile01()
+void CDiabloIIISupportDlg::OnBnClickedProfile01()
 {
 	GetDlgItem(profileID[d3Config.currentProfile])->SetWindowTextW(d3Config.profileName[d3Config.currentProfile]);
 	d3Config.currentProfile = 0;
 	OnBnClickedProfile();
 }
-void CDialoIIISupportDlg::OnBnClickedProfile02()
+void CDiabloIIISupportDlg::OnBnClickedProfile02()
 {
 	GetDlgItem(profileID[d3Config.currentProfile])->SetWindowTextW(d3Config.profileName[d3Config.currentProfile]);
 	d3Config.currentProfile = 1;
 	OnBnClickedProfile();
 }
-void CDialoIIISupportDlg::OnBnClickedProfile03()
+void CDiabloIIISupportDlg::OnBnClickedProfile03()
 {
 	GetDlgItem(profileID[d3Config.currentProfile])->SetWindowTextW(d3Config.profileName[d3Config.currentProfile]);
 	d3Config.currentProfile = 2;
 	OnBnClickedProfile();
 }
-void CDialoIIISupportDlg::OnBnClickedProfile04()
+void CDiabloIIISupportDlg::OnBnClickedProfile04()
 {
 	GetDlgItem(profileID[d3Config.currentProfile])->SetWindowTextW(d3Config.profileName[d3Config.currentProfile]);
 	d3Config.currentProfile = 3;
 	OnBnClickedProfile();
 }
-void CDialoIIISupportDlg::OnBnClickedProfile05()
+void CDiabloIIISupportDlg::OnBnClickedProfile05()
 {
 	GetDlgItem(profileID[d3Config.currentProfile])->SetWindowTextW(d3Config.profileName[d3Config.currentProfile]);
 	d3Config.currentProfile = 4;
 	OnBnClickedProfile();
 }
-void CDialoIIISupportDlg::OnBnClickedProfile06()
+void CDiabloIIISupportDlg::OnBnClickedProfile06()
 {
 	GetDlgItem(profileID[d3Config.currentProfile])->SetWindowTextW(d3Config.profileName[d3Config.currentProfile]);
 	d3Config.currentProfile = 5;
 	OnBnClickedProfile();
 }
-void CDialoIIISupportDlg::OnBnClickedProfile07()
+void CDiabloIIISupportDlg::OnBnClickedProfile07()
 {
 	GetDlgItem(profileID[d3Config.currentProfile])->SetWindowTextW(d3Config.profileName[d3Config.currentProfile]);
 	d3Config.currentProfile = 6;
 	OnBnClickedProfile();
 }
-void CDialoIIISupportDlg::OnBnClickedProfile08()
+void CDiabloIIISupportDlg::OnBnClickedProfile08()
 {
 	GetDlgItem(profileID[d3Config.currentProfile])->SetWindowTextW(d3Config.profileName[d3Config.currentProfile]);
 	d3Config.currentProfile = 7;
 	OnBnClickedProfile();
 }
-void CDialoIIISupportDlg::OnBnClickedProfile09()
+void CDiabloIIISupportDlg::OnBnClickedProfile09()
 {
 	GetDlgItem(profileID[d3Config.currentProfile])->SetWindowTextW(d3Config.profileName[d3Config.currentProfile]);
 	d3Config.currentProfile = 8;
 	OnBnClickedProfile();
 }
-void CDialoIIISupportDlg::OnBnClickedProfile10()
+void CDiabloIIISupportDlg::OnBnClickedProfile10()
 {
 	GetDlgItem(profileID[d3Config.currentProfile])->SetWindowTextW(d3Config.profileName[d3Config.currentProfile]);
 	d3Config.currentProfile = 9;

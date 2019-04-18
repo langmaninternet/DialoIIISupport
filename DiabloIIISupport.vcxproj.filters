@@ -15,12 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DialoIIISupport.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DialoIIISupportDlg.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -30,33 +24,39 @@
     <ClInclude Include="Resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DiabloIIISupport.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DiabloIIISupportDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DialoIIISupport.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DialoIIISupportDlg.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DiabloIIISupport.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DiabloIIISupportDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="DialoIIISupport.rc">
+    <ResourceCompile Include="DiabloIIISupport.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\DialoIIISupport.rc2">
+    <None Include="res\DiabloIIISupport.rc2">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\DialoIIISupport.ico">
+    <Image Include="res\DiabloIIISupport.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="DialoIIISupport.png">
+    <Image Include="DiabloIIISupport.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

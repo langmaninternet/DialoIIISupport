@@ -1,10 +1,10 @@
 
-// DialoIIISupport.cpp : Defines the class behaviors for the application.
+// DiabloIIISupport.cpp : Defines the class behaviors for the application.
 //
 
 #include "stdafx.h"
-#include "DialoIIISupport.h"
-#include "DialoIIISupportDlg.h"
+#include "DiabloIIISupport.h"
+#include "DiabloIIISupportDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -13,14 +13,14 @@
 
 // CDialoIIISupportApp
 
-BEGIN_MESSAGE_MAP(CDialoIIISupportApp, CWinApp)
+BEGIN_MESSAGE_MAP(CDiabloIIISupportApp, CWinApp)
 	ON_COMMAND(ID_HELP, &CWinApp::OnHelp)
 END_MESSAGE_MAP()
 
 
 // CDialoIIISupportApp construction
 
-CDialoIIISupportApp::CDialoIIISupportApp()
+CDiabloIIISupportApp::CDiabloIIISupportApp()
 {
 	// support Restart Manager
 	m_dwRestartManagerSupportFlags = AFX_RESTART_MANAGER_SUPPORT_RESTART;
@@ -32,12 +32,12 @@ CDialoIIISupportApp::CDialoIIISupportApp()
 
 // The one and only CDialoIIISupportApp object
 
-CDialoIIISupportApp theApp;
+CDiabloIIISupportApp theApp;
 
 
 // CDialoIIISupportApp initialization
 
-BOOL CDialoIIISupportApp::InitInstance()
+BOOL CDiabloIIISupportApp::InitInstance()
 {
 	// InitCommonControlsEx() is required on Windows XP if an application
 	// manifest specifies use of ComCtl32.dll version 6 or later to enable
@@ -70,7 +70,7 @@ BOOL CDialoIIISupportApp::InitInstance()
 	// such as the name of your company or organization
 	SetRegistryKey(_T("Local AppWizard-Generated Applications"));
 
-	CDialoIIISupportDlg dlg;
+	CDiabloIIISupportDlg dlg;
 	m_pMainWnd = &dlg;
 	INT_PTR nResponse = dlg.DoModal();
 	if (nResponse == IDOK)

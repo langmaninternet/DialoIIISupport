@@ -23,11 +23,11 @@ bld/
 [Ll]og/
 *.bin
 Build/
-DialoIIISupport.exp
-DialoIIISupport.iobj
-DialoIIISupport.ipdb
-DialoIIISupport.lib
-DialoIIISupport.pdb
+DiabloIIISupport.exp
+DiabloIIISupport.iobj
+DiabloIIISupport.ipdb
+DiabloIIISupport.lib
+DiabloIIISupport.pdb
 
 DiabloIIISupport.exp
 DiabloIIISupport.iobj

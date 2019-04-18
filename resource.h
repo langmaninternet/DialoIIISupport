@@ -1,8 +1,8 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
-// Used by DialoIIISupport.rc
+// Used by DiabloIIISupport.rc
 //
-#define IDD_DIALOIIISUPPORT_DIALOG      102
+#define IDD_DIABLOIIISUPPORT_DIALOG      102
 #define IDR_MAINFRAME                   128
 #define IDC_ABOUT                       1000
 #define IDC_LEFTMOUSETIME               1006

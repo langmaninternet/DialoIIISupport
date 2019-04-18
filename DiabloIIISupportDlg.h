@@ -6,15 +6,15 @@
 
 
 // CDialoIIISupportDlg dialog
-class CDialoIIISupportDlg : public CDialogEx
+class CDiabloIIISupportDlg : public CDialogEx
 {
 // Construction
 public:
-	CDialoIIISupportDlg(CWnd* pParent = nullptr);	// standard constructor
+	CDiabloIIISupportDlg(CWnd* pParent = nullptr);	// standard constructor
 
 // Dialog Data
 #ifdef AFX_DESIGN_TIME
-	enum { IDD = IDD_DIALOIIISUPPORT_DIALOG };
+	enum { IDD = IDD_DIABLOIIISUPPORT_DIALOG };
 #endif
 
 	protected:
