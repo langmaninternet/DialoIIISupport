@@ -38,11 +38,11 @@ struct DiabloIIIStatusStruct
 {
 	bool	flagInAttackMode;
 	bool	flagPotionReady;
-	bool	flagLightningBlastReadyToUse;
-
-	bool	flagSkill04IsEpiphanyAndReady;
-
-
+	bool	flagSkill01IsLightningBlast;
+	bool	flagSkill01IsReadyToAndNeedAutoPress;
+	bool	flagSkill02IsReadyToAndNeedAutoPress;
+	bool	flagSkill03IsReadyToAndNeedAutoPress;
+	bool	flagSkill04IsReadyToAndNeedAutoPress;
 	int		skill01Key;
 	int		skill02Key;
 	int		skill03Key;
@@ -1344,16 +1344,23 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 	else if (diabloIIIStatusTimerID == nIdEvent)
 	{
 		GetCurrentDiabloIIStatus(gameStatus);
-		if (gameStatus.flagLightningBlastReadyToUse)
+		if (gameStatus.flagSkill01IsReadyToAndNeedAutoPress && gameStatus.skill01Key && gameStatus.flagInAttackMode)
 		{
-			if (gameStatus.skill01Key) SendD3Key(gameStatus.skill01Key);
-			else if (d3Config.profilemodeArchonEnable)
-			{
-				SendD3Key(d3Config.keySKill01);
-			}
-
+			SendD3Key(gameStatus.skill01Key);
 		}
-		if (gameStatus.flagSkill04IsEpiphanyAndReady && gameStatus.skill04Key && gameStatus.flagInAttackMode)
+		else if (d3Config.profilemodeArchonEnable && gameStatus.flagSkill01IsReadyToAndNeedAutoPress && gameStatus.flagSkill01IsLightningBlast)
+		{
+			SendD3Key(d3Config.keySKill01);
+		}
+		if (gameStatus.flagSkill02IsReadyToAndNeedAutoPress && gameStatus.skill02Key && gameStatus.flagInAttackMode)
+		{
+			SendD3Key(gameStatus.skill02Key);
+		}
+		if (gameStatus.flagSkill03IsReadyToAndNeedAutoPress && gameStatus.skill03Key && gameStatus.flagInAttackMode)
+		{
+			SendD3Key(gameStatus.skill03Key);
+		}
+		if (gameStatus.flagSkill04IsReadyToAndNeedAutoPress && gameStatus.skill04Key && gameStatus.flagInAttackMode)
 		{
 			SendD3Key(gameStatus.skill04Key);
 		}
