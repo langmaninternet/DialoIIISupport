@@ -110,7 +110,7 @@ Xong sử dụng:
 
 Screenshot
 ------------
-![](FinalRelease/Screen03.png)
+![](FinalRelease/Screen04.png)
 ![](FinalRelease/Cube02.png)
 ![](FinalRelease/Cube03.png)
 ![](FinalRelease/Cube04.png)
