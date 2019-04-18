@@ -18,8 +18,6 @@ https://www.microsoft.com/en-gb/download/details.aspx?id=48145
 
 
 
-# English
-
 Features : Auto use skill over time
 ------------
 
@@ -64,7 +62,6 @@ Only work on
 
 
 
-# Tiếng việt
 
 
 Ưu điểm so với macro của bàn phím hoặc các tool khác đã có
