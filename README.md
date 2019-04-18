@@ -56,7 +56,7 @@ Features : Wizard LoN32 Archon Macro
 Use 1 hotkey to call full-cycle of StarPact
 
 
-[Smart] Lightning Blast
+Features : [Smart] Lightning Blast
 ------------
 Note : Lightning Blast use Skill 01 key to call
 
@@ -89,12 +89,6 @@ Bật tool, vào game, bấm F1 để bật/tắt tự động bấm chuột tr�
 Bật tool, vào game, bấm F2 để bật/tắt tự động sử dụng skill ( dùng những skill mà bạn đã chọn Enable trong khung Skill của tool) 
 
 Bật tool, vào game, bấm F3 để bật/tắt tự động bấm chuột phải
-
-
-
-Tự động đóng các cửa sổ popup trong game
-------------
-Auto close popup Windows : Tự động bấm Space trước khi gọi skill để đóng các cửa sổ popup trong game (Không thích hợp với những người dùng Space cho force stand)
 
 
 Hỗ trợ craft đồ từ cube
