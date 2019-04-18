@@ -34,10 +34,18 @@ void		StopStarPact(void);
 
 void		StarPactDumpData(void);
 
+
+
+
 struct DiabloIIIStatusStruct
 {
 	bool	flagInAttackMode;
 	bool	flagPotionReady;
+	bool	flagIsOpenMap;
+	bool	flagIsOpenSkillTable;
+	bool	flagIsOpenKadala;
+	bool	flagIsOpenUrshi;
+	bool	flagIsOpenStash;
 	bool	flagSkill01IsLightningBlast;
 	bool	flagSkill01IsReadyToAndNeedAutoPress;
 	bool	flagSkill02IsReadyToAndNeedAutoPress;
@@ -149,7 +157,6 @@ DiabloIIISupportConfig	d3Config;
 wchar_t					configSavePath[3000] = { 0 };
 
 const int				mainTimerDelay = 50/*ms*/;
-const int				heathTimerDelay = 200/*ms*/;
 bool					flagOnF1 = false;
 bool					flagOnF2 = false;
 bool					flagOnF3 = false;
@@ -728,7 +735,6 @@ BOOL		CDiabloIIISupportDlg::OnInitDialog()
 
 	// TODO: Add extra initialization here
 	mainTimerID = CDialogEx::SetTimer(1, mainTimerDelay, NULL);
-	diabloIIIStatusTimerID = CDialogEx::SetTimer(2, heathTimerDelay, NULL);
 
 	if (configSavePath[0] == 0)
 	{
@@ -951,11 +957,10 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 				point.y
 			);
 			GetDlgItem(IDC_DEBUGINFO)->SetWindowTextW(debugInfo);
-
+		
 			/************************************************************************/
 			/*                                                                      */
 			/************************************************************************/
-			//static bool flagOnHoldRightMouse = 0;
 			if (flagOnWizSingleShot)
 			{
 				if (d3Config.fullCycleEnable)
@@ -993,142 +998,177 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 				GetDlgItem(IDC_SINGLESHOTHOTCASTFULLCYCLE)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
 				OnShowSkillKey(IDC_SINGLESHOTHOTKEY, d3Config.keyWizSingleShot);
 			}
-
+			GetCurrentDiabloIIStatus(gameStatus);
 
 
 			/************************************************************************/
 			/*                                                                      */
 			/************************************************************************/
-			if (flagOnF2)
+			if (gameStatus.flagIsOpenMap == false
+				&& gameStatus.flagIsOpenSkillTable == false
+				&& gameStatus.flagIsOpenUrshi == false
+				)
 			{
-				GetDlgItem(IDC_SKILL01TIME)->EnableWindow(FALSE);
-				GetDlgItem(IDC_SKILL02TIME)->EnableWindow(FALSE);
-				GetDlgItem(IDC_SKILL03TIME)->EnableWindow(FALSE);
-				GetDlgItem(IDC_SKILL04TIME)->EnableWindow(FALSE);
-				GetDlgItem(IDC_SKILL01CHECK)->EnableWindow(FALSE);
-				GetDlgItem(IDC_SKILL02CHECK)->EnableWindow(FALSE);
-				GetDlgItem(IDC_SKILL03CHECK)->EnableWindow(FALSE);
-				GetDlgItem(IDC_SKILL04CHECK)->EnableWindow(FALSE);
-				GetDlgItem(IDC_HEALINGCHECK)->EnableWindow(FALSE);
-				GetDlgItem(IDC_F2BIGFRAME)->SetWindowTextW(L"Skill (Hotkey F2) - Running");
-				if (d3Wnd != 0)
+				if (flagOnF2 && gameStatus.flagIsOpenKadala == false && gameStatus.flagIsOpenStash == false && gameStatus.flagInAttackMode)
 				{
+					GetDlgItem(IDC_SKILL01TIME)->EnableWindow(FALSE);
+					GetDlgItem(IDC_SKILL02TIME)->EnableWindow(FALSE);
+					GetDlgItem(IDC_SKILL03TIME)->EnableWindow(FALSE);
+					GetDlgItem(IDC_SKILL04TIME)->EnableWindow(FALSE);
+					GetDlgItem(IDC_SKILL01CHECK)->EnableWindow(FALSE);
+					GetDlgItem(IDC_SKILL02CHECK)->EnableWindow(FALSE);
+					GetDlgItem(IDC_SKILL03CHECK)->EnableWindow(FALSE);
+					GetDlgItem(IDC_SKILL04CHECK)->EnableWindow(FALSE);
+					GetDlgItem(IDC_HEALINGCHECK)->EnableWindow(FALSE);
+					GetDlgItem(IDC_F2BIGFRAME)->SetWindowTextW(L"Skill (Hotkey F2) - Running");
+					if (d3Wnd != 0)
+					{
 
-					if (d3Config.skill01Enable)
-					{
-						skillSlot01Cooldown += mainTimerDelay;
-						if (skillSlot01Cooldown >= d3Config.skillSlot01Time && gameStatus.flagInAttackMode)
+						if (d3Config.skill01Enable)
 						{
-							SendD3Key(d3Config.keySKill01);
-							skillSlot01Cooldown = 0;
+							skillSlot01Cooldown += mainTimerDelay;
+							if (skillSlot01Cooldown >= d3Config.skillSlot01Time && gameStatus.flagInAttackMode)
+							{
+								SendD3Key(d3Config.keySKill01);
+								skillSlot01Cooldown = 0;
+							}
 						}
-					}
-					if (d3Config.skill02Enable)
-					{
-						skillSlot02Cooldown += mainTimerDelay;
-						if (skillSlot02Cooldown >= d3Config.skillSlot02Time && gameStatus.flagInAttackMode)
+						if (d3Config.skill02Enable)
 						{
-							SendD3Key(d3Config.keySKill02);
-							skillSlot02Cooldown = 0;
+							skillSlot02Cooldown += mainTimerDelay;
+							if (skillSlot02Cooldown >= d3Config.skillSlot02Time && gameStatus.flagInAttackMode)
+							{
+								SendD3Key(d3Config.keySKill02);
+								skillSlot02Cooldown = 0;
+							}
 						}
-					}
-					if (d3Config.skill03Enable)
-					{
-						skillSlot03Cooldown += mainTimerDelay;
-						if (skillSlot03Cooldown >= d3Config.skillSlot03Time && gameStatus.flagInAttackMode)
+						if (d3Config.skill03Enable)
 						{
-							SendD3Key(d3Config.keySKill03);
-							skillSlot03Cooldown = 0;
+							skillSlot03Cooldown += mainTimerDelay;
+							if (skillSlot03Cooldown >= d3Config.skillSlot03Time && gameStatus.flagInAttackMode)
+							{
+								SendD3Key(d3Config.keySKill03);
+								skillSlot03Cooldown = 0;
+							}
 						}
-					}
-					if (d3Config.skill04Enable)
-					{
-						skillSlot04Cooldown += mainTimerDelay;
-						if (skillSlot04Cooldown >= d3Config.skillSlot04Time && gameStatus.flagInAttackMode)
+						if (d3Config.skill04Enable)
 						{
-							SendD3Key(d3Config.keySKill04);
-							skillSlot04Cooldown = 0;
+							skillSlot04Cooldown += mainTimerDelay;
+							if (skillSlot04Cooldown >= d3Config.skillSlot04Time && gameStatus.flagInAttackMode)
+							{
+								SendD3Key(d3Config.keySKill04);
+								skillSlot04Cooldown = 0;
+							}
 						}
-					}
-					if (d3Config.healingEnable && gameStatus.flagPotionReady)
-					{
-						SendD3Key(d3Config.keyHealing);
+						if (d3Config.healingEnable && gameStatus.flagPotionReady)
+						{
+							SendD3Key(d3Config.keyHealing);
+						}
 					}
 				}
-			}
-			else
-			{
-				if (d3Config.skill01Enable) GetDlgItem(IDC_SKILL01TIME)->EnableWindow(TRUE);
-				if (d3Config.skill02Enable) GetDlgItem(IDC_SKILL02TIME)->EnableWindow(TRUE);
-				if (d3Config.skill03Enable) GetDlgItem(IDC_SKILL03TIME)->EnableWindow(TRUE);
-				if (d3Config.skill04Enable) GetDlgItem(IDC_SKILL04TIME)->EnableWindow(TRUE);
-				GetDlgItem(IDC_SKILL01CHECK)->EnableWindow(TRUE);
-				GetDlgItem(IDC_SKILL02CHECK)->EnableWindow(TRUE);
-				GetDlgItem(IDC_SKILL03CHECK)->EnableWindow(TRUE);
-				GetDlgItem(IDC_SKILL04CHECK)->EnableWindow(TRUE);
-				GetDlgItem(IDC_HEALINGCHECK)->EnableWindow(TRUE);
-				GetDlgItem(IDC_F2BIGFRAME)->SetWindowTextW(L"Skill (Hotkey F2)");
-			}
-			if (flagOnF1)
-			{
-				GetDlgItem(IDC_LEFTMOUSETEXT)->SetWindowText(L"Left mouse (Hotkey F1): \r\n	Running");
-				GetDlgItem(IDC_LEFTMOUSETEXT)->EnableWindow(FALSE);
-				GetDlgItem(IDC_LEFTMOUSETEXTMS)->EnableWindow(FALSE);
-				GetDlgItem(IDC_LEFTMOUSETIME)->EnableWindow(FALSE);
-				if (d3Wnd != 0)
+				else
 				{
-					leftMouseCooldown += mainTimerDelay;
-					if (leftMouseCooldown >= d3Config.leftMouseTime)
-					{
-						if (ValidToSendD3Click()) SendD3LeftMouseClick();
-						else
-						{
-							::SendMessageW(d3Wnd, WM_KEYDOWN, d3Config.keyForceStand, 0);
-							Sleep(10);
-							SendD3LeftMouseClick();
-							::SendMessageW(d3Wnd, WM_KEYUP, d3Config.keyForceStand, 0);
-						}
-						leftMouseCooldown = 0;
-					}
+					if (d3Config.skill01Enable) GetDlgItem(IDC_SKILL01TIME)->EnableWindow(TRUE);
+					if (d3Config.skill02Enable) GetDlgItem(IDC_SKILL02TIME)->EnableWindow(TRUE);
+					if (d3Config.skill03Enable) GetDlgItem(IDC_SKILL03TIME)->EnableWindow(TRUE);
+					if (d3Config.skill04Enable) GetDlgItem(IDC_SKILL04TIME)->EnableWindow(TRUE);
+					GetDlgItem(IDC_SKILL01CHECK)->EnableWindow(TRUE);
+					GetDlgItem(IDC_SKILL02CHECK)->EnableWindow(TRUE);
+					GetDlgItem(IDC_SKILL03CHECK)->EnableWindow(TRUE);
+					GetDlgItem(IDC_SKILL04CHECK)->EnableWindow(TRUE);
+					GetDlgItem(IDC_HEALINGCHECK)->EnableWindow(TRUE);
+					GetDlgItem(IDC_F2BIGFRAME)->SetWindowTextW(L"Skill (Hotkey F2)");
 				}
-			}
-			else
-			{
-				GetDlgItem(IDC_LEFTMOUSETEXT)->SetWindowText(L"Left mouse (Hotkey F1): ");
-				GetDlgItem(IDC_LEFTMOUSETEXT)->EnableWindow(TRUE);
-				GetDlgItem(IDC_LEFTMOUSETEXTMS)->EnableWindow(TRUE);
-				GetDlgItem(IDC_LEFTMOUSETIME)->EnableWindow(TRUE);
-			}
-			if (flagOnF3)
-			{
-				GetDlgItem(IDC_RIGHTMOUSETEXT)->SetWindowText(L"Right Mouse (Hotkey F3): \r\n	Running");
-				GetDlgItem(IDC_RIGHTMOUSETEXT)->EnableWindow(FALSE);
-				GetDlgItem(IDC_RIGHTMOUSETEXTMS)->EnableWindow(FALSE);
-				GetDlgItem(IDC_RIGHTMOUSETIME)->EnableWindow(FALSE);
-				if (d3Wnd != 0)
+				if (flagOnF1 && gameStatus.flagIsOpenKadala == false && gameStatus.flagIsOpenStash == false)
 				{
-					rightMouseCooldown += mainTimerDelay;
-					if (rightMouseCooldown >= d3Config.leftMouseTime)
+					GetDlgItem(IDC_LEFTMOUSETEXT)->SetWindowText(L"Left mouse (Hotkey F1): \r\n	Running");
+					GetDlgItem(IDC_LEFTMOUSETEXT)->EnableWindow(FALSE);
+					GetDlgItem(IDC_LEFTMOUSETEXTMS)->EnableWindow(FALSE);
+					GetDlgItem(IDC_LEFTMOUSETIME)->EnableWindow(FALSE);
+					if (d3Wnd != 0)
 					{
-						if (ValidToSendD3Click()) SendD3RightMouseClick();
-						else
+						leftMouseCooldown += mainTimerDelay;
+						if (leftMouseCooldown >= d3Config.leftMouseTime)
 						{
-							::SendMessageW(d3Wnd, WM_KEYDOWN, d3Config.keyForceStand, 0);
-							Sleep(10);
-							SendD3RightMouseClick();
-							::SendMessageW(d3Wnd, WM_KEYUP, d3Config.keyForceStand, 0);
+							if (ValidToSendD3Click()) SendD3LeftMouseClick();
+							else
+							{
+								::SendMessageW(d3Wnd, WM_KEYDOWN, d3Config.keyForceStand, 0);
+								Sleep(10);
+								SendD3LeftMouseClick();
+								::SendMessageW(d3Wnd, WM_KEYUP, d3Config.keyForceStand, 0);
+							}
+							leftMouseCooldown = 0;
 						}
-						rightMouseCooldown = 0;
 					}
 				}
+				else
+				{
+					GetDlgItem(IDC_LEFTMOUSETEXT)->SetWindowText(L"Left mouse (Hotkey F1): ");
+					GetDlgItem(IDC_LEFTMOUSETEXT)->EnableWindow(TRUE);
+					GetDlgItem(IDC_LEFTMOUSETEXTMS)->EnableWindow(TRUE);
+					GetDlgItem(IDC_LEFTMOUSETIME)->EnableWindow(TRUE);
+				}
+				if (flagOnF3 && (gameStatus.flagInAttackMode || gameStatus.flagIsOpenKadala))
+				{
+					GetDlgItem(IDC_RIGHTMOUSETEXT)->SetWindowText(L"Right Mouse (Hotkey F3): \r\n	Running");
+					GetDlgItem(IDC_RIGHTMOUSETEXT)->EnableWindow(FALSE);
+					GetDlgItem(IDC_RIGHTMOUSETEXTMS)->EnableWindow(FALSE);
+					GetDlgItem(IDC_RIGHTMOUSETIME)->EnableWindow(FALSE);
+					if (d3Wnd != 0)
+					{
+						rightMouseCooldown += mainTimerDelay;
+						if (rightMouseCooldown >= d3Config.leftMouseTime)
+						{
+							if (ValidToSendD3Click()) SendD3RightMouseClick();
+							else
+							{
+								::SendMessageW(d3Wnd, WM_KEYDOWN, d3Config.keyForceStand, 0);
+								Sleep(10);
+								SendD3RightMouseClick();
+								::SendMessageW(d3Wnd, WM_KEYUP, d3Config.keyForceStand, 0);
+							}
+							rightMouseCooldown = 0;
+						}
+					}
+				}
+				else
+				{
+					GetDlgItem(IDC_RIGHTMOUSETEXT)->SetWindowText(L"Right Mouse (Hotkey F3): ");
+					GetDlgItem(IDC_RIGHTMOUSETEXT)->EnableWindow(TRUE);
+					GetDlgItem(IDC_RIGHTMOUSETEXTMS)->EnableWindow(TRUE);
+					GetDlgItem(IDC_RIGHTMOUSETIME)->EnableWindow(TRUE);
+				}
+
+
+				/************************************************************************/
+				/* Auto press                                                           */
+				/************************************************************************/
+				if (gameStatus.flagSkill01IsReadyToAndNeedAutoPress && gameStatus.skill01Key && gameStatus.flagInAttackMode)
+				{
+					SendD3Key(gameStatus.skill01Key);
+				}
+				else if (d3Config.profilemodeArchonEnable && gameStatus.flagSkill01IsReadyToAndNeedAutoPress && gameStatus.flagSkill01IsLightningBlast)
+				{
+					SendD3Key(d3Config.keySKill01);
+				}
+				if (gameStatus.flagSkill02IsReadyToAndNeedAutoPress && gameStatus.skill02Key && gameStatus.flagInAttackMode)
+				{
+					SendD3Key(gameStatus.skill02Key);
+				}
+				if (gameStatus.flagSkill03IsReadyToAndNeedAutoPress && gameStatus.skill03Key && gameStatus.flagInAttackMode)
+				{
+					SendD3Key(gameStatus.skill03Key);
+				}
+				if (gameStatus.flagSkill04IsReadyToAndNeedAutoPress && gameStatus.skill04Key && gameStatus.flagInAttackMode)
+				{
+					SendD3Key(gameStatus.skill04Key);
+				}
 			}
-			else
-			{
-				GetDlgItem(IDC_RIGHTMOUSETEXT)->SetWindowText(L"Right Mouse (Hotkey F3): ");
-				GetDlgItem(IDC_RIGHTMOUSETEXT)->EnableWindow(TRUE);
-				GetDlgItem(IDC_RIGHTMOUSETEXTMS)->EnableWindow(TRUE);
-				GetDlgItem(IDC_RIGHTMOUSETIME)->EnableWindow(TRUE);
-			}
+
+
+
+
 
 			/************************************************************************/
 			/*                                                                      */
@@ -1339,30 +1379,6 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 
 
 			flagOnProcess = false;
-		}
-	}
-	else if (diabloIIIStatusTimerID == nIdEvent)
-	{
-		GetCurrentDiabloIIStatus(gameStatus);
-		if (gameStatus.flagSkill01IsReadyToAndNeedAutoPress && gameStatus.skill01Key && gameStatus.flagInAttackMode)
-		{
-			SendD3Key(gameStatus.skill01Key);
-		}
-		else if (d3Config.profilemodeArchonEnable && gameStatus.flagSkill01IsReadyToAndNeedAutoPress && gameStatus.flagSkill01IsLightningBlast)
-		{
-			SendD3Key(d3Config.keySKill01);
-		}
-		if (gameStatus.flagSkill02IsReadyToAndNeedAutoPress && gameStatus.skill02Key && gameStatus.flagInAttackMode)
-		{
-			SendD3Key(gameStatus.skill02Key);
-		}
-		if (gameStatus.flagSkill03IsReadyToAndNeedAutoPress && gameStatus.skill03Key && gameStatus.flagInAttackMode)
-		{
-			SendD3Key(gameStatus.skill03Key);
-		}
-		if (gameStatus.flagSkill04IsReadyToAndNeedAutoPress && gameStatus.skill04Key && gameStatus.flagInAttackMode)
-		{
-			SendD3Key(gameStatus.skill04Key);
 		}
 	}
 }
