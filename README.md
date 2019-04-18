@@ -4,21 +4,18 @@ An open-source Dialo III Support tool
 Link download (Source code + Tool)
 ------------
 Latest stable version
+
 https://github.com/langmaninternet/DialoIIISupport/releases
 
-Current developing version
-https://github.com/langmaninternet/DialoIIISupport/archive/master.zip
 
 
-If you get error with mfc140u.dll : 
-
-Install Visual C++ Redistributable for Visual Studio 2015
+If you get error with mfc140u.dll , install Visual C++ Redistributable for Visual Studio 2015
 
 https://www.microsoft.com/en-gb/download/details.aspx?id=48145
 
 
 
-Features : Auto use skill over time
+Features : Auto use skill over time with smart handling situations
 ------------
 
 F1 to on/off auto left mouse click
@@ -27,7 +24,6 @@ F2 to on/off auto skill 1 2 3 4 an healing Q
 
 F3 to on/off auto right mouse click
 
-(Smart handling situations)
 
 
 Features : Cube converter
@@ -50,13 +46,9 @@ Features : Wizard LoN32 Archon Macro
 ------------
 Use 1 hotkey to call full-cycle of StarPact
 
-
-Features : [Smart] Lightning Blast
-------------
-Auto cast Lightning Blast when it's ready. (Note : Lightning Blast use Skill 01 key to cast)
+Auto cast Lightning Blast when it's ready. Note : **Lightning Blast use Skill 01 key to cast**.
 
 Only work on
-
 + Resolution is 1920x 1080 
 + Game is Fullscreen or Fullscreen Windows Mode
 
