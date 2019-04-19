@@ -857,7 +857,8 @@ BOOL		CDiabloIIISupportDlg::OnInitDialog()
 	hGlobalHook = SetWindowsHookEx(WH_KEYBOARD_LL, HookProc, GetModuleHandle(NULL), 0);
 
 
-
+	void CreateOverlay(void);
+	CreateOverlay();
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
