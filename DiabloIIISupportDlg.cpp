@@ -1343,7 +1343,7 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 						{
 							if (flagOnCtrl9) SetD3Mouse(xIventoryArray[iitem], yIventoryArray[iitem]);
 							if (flagOnCtrl9) SendD3LeftMouseClick();
-							if (flagOnCtrl9) Sleep(50 + (rand() % 5));
+							if (flagOnCtrl9) Sleep(70 + (rand() % 5));
 							bool		NeedConfirmWhenSalvage(void);
 							if (NeedConfirmWhenSalvage())
 							{
