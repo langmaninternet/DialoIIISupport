@@ -37,7 +37,6 @@
 #define IDC_WIZFIREBRIDCHECK            1038
 #define IDC_CTRL5TEXT                   1039
 #define IDC_CTRL6TEXT                   1040
-#define IDC_CTRL7TEXT                   1041
 #define IDC_CTRLESC                     1042
 #define IDC_CTRL9TEXT                   1043
 #define IDC_PROFILE01                   1045

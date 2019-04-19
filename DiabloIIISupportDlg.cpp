@@ -162,7 +162,6 @@ bool					flagOnF2 = false;
 bool					flagOnF3 = false;
 bool					flagOnCtrl5 = false;
 bool					flagOnCtrl6 = false;
-bool					flagOnCtrl7 = false;
 bool					flagOnCtrl9 = false;
 bool					flagOnWizSingleShot = false;
 bool					flagOnProcess = false;
@@ -511,7 +510,6 @@ extern "C" __declspec(dllexport) LRESULT CALLBACK HookProc(int nCode, WPARAM wPa
 				flagOnCtrl = false;
 				flagOnCtrl5 = false;
 				flagOnCtrl6 = false;
-				flagOnCtrl7 = false;
 				flagOnCtrl9 = false;
 				leftMouseCooldown = 99999;
 				break;
@@ -520,7 +518,6 @@ extern "C" __declspec(dllexport) LRESULT CALLBACK HookProc(int nCode, WPARAM wPa
 				flagOnCtrl = false;
 				flagOnCtrl5 = false;
 				flagOnCtrl6 = false;
-				flagOnCtrl7 = false;
 				flagOnCtrl9 = false;
 				skillSlot01Cooldown = 99999;
 				skillSlot02Cooldown = 99999;
@@ -532,7 +529,6 @@ extern "C" __declspec(dllexport) LRESULT CALLBACK HookProc(int nCode, WPARAM wPa
 				flagOnCtrl = false;
 				flagOnCtrl5 = false;
 				flagOnCtrl6 = false;
-				flagOnCtrl7 = false;
 				flagOnCtrl9 = false;
 				rightMouseCooldown = 99999;
 				break;
@@ -541,7 +537,6 @@ extern "C" __declspec(dllexport) LRESULT CALLBACK HookProc(int nCode, WPARAM wPa
 				flagOnCtrl = false;
 				flagOnCtrl5 = false;
 				flagOnCtrl6 = false;
-				flagOnCtrl7 = false;
 				flagOnCtrl9 = false;
 				flagOnWizSingleShot = false;
 				StopStarPact();
@@ -564,7 +559,6 @@ extern "C" __declspec(dllexport) LRESULT CALLBACK HookProc(int nCode, WPARAM wPa
 					flagOnF3 = false;
 					flagOnCtrl5 = true;
 					flagOnCtrl6 = false;
-					flagOnCtrl7 = false;
 					flagOnCtrl9 = false;
 				}
 				break;
@@ -576,22 +570,9 @@ extern "C" __declspec(dllexport) LRESULT CALLBACK HookProc(int nCode, WPARAM wPa
 					flagOnF3 = false;
 					flagOnCtrl5 = false;
 					flagOnCtrl6 = true;
-					flagOnCtrl7 = false;
 					flagOnCtrl9 = false;
 				}
-				break;
-			case 0x37/*'7'*/:
-				if (flagOnCtrl)
-				{
-					flagOnF1 = false;
-					flagOnF2 = false;
-					flagOnF3 = false;
-					flagOnCtrl5 = false;
-					flagOnCtrl6 = false;
-					flagOnCtrl7 = true;
-					flagOnCtrl9 = false;
-				}
-				break;
+				break;			
 			case 0x39/*'9'*/:
 				if (flagOnCtrl)
 				{
@@ -600,7 +581,6 @@ extern "C" __declspec(dllexport) LRESULT CALLBACK HookProc(int nCode, WPARAM wPa
 					flagOnF3 = false;
 					flagOnCtrl5 = false;
 					flagOnCtrl6 = false;
-					flagOnCtrl7 = false;
 					flagOnCtrl9 = true;
 				}
 				break;
@@ -1180,11 +1160,10 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 			/************************************************************************/
 			if (d3Wnd != 0 && IsD3WindowActive())
 			{
-				if ((flagOnCtrl5 || flagOnCtrl6 || flagOnCtrl7 || flagOnCtrl9))
+				if ((flagOnCtrl5 || flagOnCtrl6  || flagOnCtrl9))
 				{
 					GetDlgItem(IDC_CTRL5TEXT)->EnableWindow(FALSE);
 					GetDlgItem(IDC_CTRL6TEXT)->EnableWindow(FALSE);
-					GetDlgItem(IDC_CTRL7TEXT)->EnableWindow(FALSE);
 					GetDlgItem(IDC_CTRL9TEXT)->EnableWindow(FALSE);
 					double		d3Width = d3Rect.right - d3Rect.left;
 					double		d3Height = d3Rect.bottom - d3Rect.top;
@@ -1291,26 +1270,6 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 					}
 
 
-
-					/************************************************************************/
-					/* Drop                                                                 */
-					/************************************************************************/
-					if (flagOnCtrl7)
-					{
-						for (int iitem = 0; iitem < 60; iitem++)
-						{
-							if (flagOnCtrl7) SetD3Mouse(xIventoryArray[iitem], yIventoryArray[iitem]);
-							if (flagOnCtrl7) SendD3LeftMouseClick();
-							if (flagOnCtrl7) Sleep(50 + (rand() % 5));
-
-							if (flagOnCtrl7) SetD3Mouse(xCenter, yCenter);
-							if (flagOnCtrl7) SendD3LeftMouseClick();
-							if (flagOnCtrl7) Sleep(50 + (rand() % 5));
-						}
-						flagOnCtrl7 = false;
-					}
-
-
 					/************************************************************************/
 					/*                                                                      */
 					/************************************************************************/
@@ -1325,19 +1284,21 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 						if (flagOnCtrl9) SetD3Mouse(xSalvage, ySalvage);
 						if (flagOnCtrl9) SendD3LeftMouseClick();
 						if (flagOnCtrl9) Sleep(50 + (rand() % 5));
+
+						void		PreloadSalvageItem(int *preloadSalvageSlot, int preloadSalvageSlotSize);
+						PreloadSalvageItem(preloadSalvageSlot, 60);
 						for (int iitem = 0; iitem < 60; iitem++)
 						{
 							if (flagOnCtrl9) SetD3Mouse(xIventoryArray[iitem], yIventoryArray[iitem]);
+							if (flagOnCtrl9) SendD3LeftMouseClick();
+							if (flagOnCtrl9) Sleep(40 + (rand() % 5));
 							if (preloadSalvageSlot[iitem])
-							{
-								if (flagOnCtrl9) SendD3LeftMouseClick();
-								if (flagOnCtrl9) Sleep(70 + (rand() % 5));
+							{		
+								if (flagOnCtrl9) SendD3Key(VK_RETURN);
+								if (flagOnCtrl9) Sleep(40 + (rand() % 5));
 
 								if (flagOnCtrl9) SendD3Key(VK_RETURN);
-								if (flagOnCtrl9) Sleep(50 + (rand() % 5));
-
-								if (flagOnCtrl9) SendD3Key(VK_RETURN);
-								if (flagOnCtrl9) Sleep(50 + (rand() % 5));
+								if (flagOnCtrl9) Sleep(40 + (rand() % 5));
 							}
 						}
 
@@ -1352,7 +1313,6 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 
 					GetDlgItem(IDC_CTRL5TEXT)->EnableWindow(TRUE);
 					GetDlgItem(IDC_CTRL6TEXT)->EnableWindow(TRUE);
-					GetDlgItem(IDC_CTRL7TEXT)->EnableWindow(TRUE);
 					GetDlgItem(IDC_CTRL9TEXT)->EnableWindow(TRUE);
 
 
@@ -1362,7 +1322,6 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 			{
 				flagOnCtrl5 = false;
 				flagOnCtrl6 = false;
-				flagOnCtrl7 = false;
 			}
 
 
