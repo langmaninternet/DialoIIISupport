@@ -172,8 +172,9 @@ int						skillSlot02Cooldown;
 int						skillSlot03Cooldown;
 int						skillSlot04Cooldown;
 HHOOK					hGlobalHook;
-//double				currentHeath = 0.0;
-//bool					flagAttackMode = true;
+double					archonStartTimeCoolDown;
+bool					flagConfirmNextArchon;
+extern wchar_t			bufferShowArchon[1000];
 
 /************************************************************************/
 /* Process Function                                                     */
@@ -293,6 +294,10 @@ bool		IsD3WindowActive(void)
 		}
 	}
 	return false;
+}
+bool		IsEnableArchon(void)
+{
+	return d3Config.modeArchonEnable;
 }
 HWND		GetD3Windows(void)
 {
@@ -502,6 +507,17 @@ extern "C" __declspec(dllexport) LRESULT CALLBACK HookProc(int nCode, WPARAM wPa
 		}
 		else if (wParam == WM_KEYDOWN)
 		{
+			if (archonStartTimeCoolDown > 0 && flagConfirmNextArchon == false && keyParam->vkCode == 0x39/*'9'*/)
+			{
+				flagConfirmNextArchon = true;
+			}
+			if (flagConfirmNextArchon == true && keyParam->vkCode == 0x30/*'.'*/)
+			{
+				flagConfirmNextArchon = false;
+			}
+
+
+
 			switch (keyParam->vkCode)
 			{
 			case VK_F1:
@@ -540,6 +556,7 @@ extern "C" __declspec(dllexport) LRESULT CALLBACK HookProc(int nCode, WPARAM wPa
 				flagOnCtrl9 = false;
 				flagOnWizSingleShot = false;
 				StopStarPact();
+				flagConfirmNextArchon = false;
 				break;
 
 #ifdef _DEBUG
@@ -572,7 +589,7 @@ extern "C" __declspec(dllexport) LRESULT CALLBACK HookProc(int nCode, WPARAM wPa
 					flagOnCtrl6 = true;
 					flagOnCtrl9 = false;
 				}
-				break;			
+				break;
 			case 0x39/*'9'*/:
 				if (flagOnCtrl)
 				{
@@ -597,7 +614,6 @@ extern "C" __declspec(dllexport) LRESULT CALLBACK HookProc(int nCode, WPARAM wPa
 						Sleep(10);
 						StartStarPact();
 						flagOnWizSingleShot = true;
-
 					}
 				}
 				break;
@@ -836,8 +852,8 @@ BOOL		CDiabloIIISupportDlg::OnInitDialog()
 
 	hGlobalHook = SetWindowsHookEx(WH_KEYBOARD_LL, HookProc, GetModuleHandle(NULL), 0);
 
-	//void CreateOverlay(void);
-	//CreateOverlay();
+	void CreateOverlay(void);
+	CreateOverlay();
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -896,9 +912,60 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 {
 	if (mainTimerID == nIdEvent)
 	{
+		if (archonStartTimeCoolDown > -mainTimerDelay) archonStartTimeCoolDown -= mainTimerDelay;
 		if (flagOnProcess == false)
 		{
 			flagOnProcess = true;
+
+			/************************************************************************/
+			/* Archon                                                               */
+			/************************************************************************/
+			if (d3Config.modeArchonEnable)
+			{
+				wchar_t bufferWizKey[100] = { 0 };
+				if (d3Config.keyWizSingleShot == L' ') wcscpy(bufferWizKey, L"Space");
+				else if (d3Config.keyWizSingleShot == VK_SHIFT) wcscpy(bufferWizKey, L"Shift");
+				else if (d3Config.keyWizSingleShot == VK_LBUTTON) wcscpy(bufferWizKey, L"LeftMouse");
+				else if (d3Config.keyWizSingleShot == VK_RBUTTON) wcscpy(bufferWizKey, L"RightMouse");
+				else swprintf_s(bufferWizKey, L"%lc", d3Config.keyWizSingleShot);	
+				
+				if (archonStartTimeCoolDown <= mainTimerDelay)
+				{
+					if (flagConfirmNextArchon) 
+					{
+						StopStarPact();
+						Sleep(10);
+						StartStarPact();
+						flagOnWizSingleShot = true;
+						archonStartTimeCoolDown = 24000;						
+					}
+					else archonStartTimeCoolDown = 12000;
+				}
+				if (archonStartTimeCoolDown > 0)
+				{
+					CString buffer;
+					if (flagConfirmNextArchon == false)
+					{
+						if (archonStartTimeCoolDown > 0)
+						{
+							buffer.AppendFormat(L"Press %ls to cast new cycle rotation\r\nPress 9 to auto cast in %0.2lfs", bufferWizKey, archonStartTimeCoolDown / 1000.0);
+						}
+					}
+					else
+					{
+						buffer.AppendFormat(L"Auto cast in %0.3lfs (Press 0 to skip)", archonStartTimeCoolDown / 1000.0);
+					}
+					if (buffer.GetLength() == 0) buffer.AppendFormat(L"Press %ls to cast new cycle rotation", bufferWizKey);
+					wcscpy_s(bufferShowArchon, 999, buffer.GetBuffer());
+				}
+			}
+			else
+			{
+				bufferShowArchon[0] = NULL;
+			}
+
+
+
 			WCHAR bufferActive[100] = L"Found";
 			if (gameStatus.flagInAttackMode)
 			{
@@ -943,8 +1010,12 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 			/************************************************************************/
 			if (flagOnWizSingleShot)
 			{
+				archonStartTimeCoolDown = 24000;
+				flagConfirmNextArchon = false;
+				bufferShowArchon[0] = NULL;
 				if (d3Config.fullCycleEnable)
 				{
+
 					ArchonStarPactCycle(
 						d3Config.keyBlackHole,
 						d3Config.keyWaveOfForce,
@@ -966,11 +1037,7 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 					);
 				}
 				flagOnWizSingleShot = false;
-				//if (d3Config.lightingBlastEnable)
-				//{
-				//	mouse_event(MOUSEEVENTF_RIGHTDOWN, point.x, point.y, 0, 0);
-				//	flagOnHoldRightMouse = true;
-				//}
+
 
 				GetDlgItem(IDC_SINGLESHOTHOTKEYTEXT)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
 				GetDlgItem(IDC_SINGLESHOTHOTKEYFORTEXT)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
@@ -1160,7 +1227,7 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 			/************************************************************************/
 			if (d3Wnd != 0 && IsD3WindowActive())
 			{
-				if ((flagOnCtrl5 || flagOnCtrl6  || flagOnCtrl9))
+				if ((flagOnCtrl5 || flagOnCtrl6 || flagOnCtrl9))
 				{
 					GetDlgItem(IDC_CTRL5TEXT)->EnableWindow(FALSE);
 					GetDlgItem(IDC_CTRL6TEXT)->EnableWindow(FALSE);
@@ -1293,7 +1360,7 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 							if (flagOnCtrl9) SendD3LeftMouseClick();
 							if (flagOnCtrl9) Sleep(40 + (rand() % 5));
 							if (preloadSalvageSlot[iitem])
-							{		
+							{
 								if (flagOnCtrl9) SendD3Key(VK_RETURN);
 								if (flagOnCtrl9) Sleep(40 + (rand() % 5));
 
