@@ -864,7 +864,7 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 		if (archonShootStartTime > 0)
 		{
 			DWORD delayArchonTime = GetTickCount() - archonShootStartTime;
-			if (delayArchonTime < archonCycleTime && archonShootCoolDown > coeCycleTime) archonShootCoolDown = archonCycleTime - delayArchonTime;
+			if (delayArchonTime < archonCycleTime) archonShootCoolDown = archonCycleTime - delayArchonTime;
 		}
 
 		if (flagOnProcess == false)
@@ -971,7 +971,6 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 				archonShootStartTime = GetTickCount();
 				archonShootCoolDown = archonCycleTime;
 				flagConfirmNextArchon = false;
-				bufferShowArchon[0] = NULL;
 				startedArchonCyle = true;
 				if (d3Config.fullCycleEnable)
 				{
