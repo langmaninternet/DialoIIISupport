@@ -20,7 +20,7 @@ Features : Auto use skill over time with smart handling situations
 
 F1 to on/off auto left mouse click
 
-F2 to on/off auto skill 1 2 3 4 an healing Q
+F2 to on/off auto skill 1 2 3 4 an healing Q (On Full-HD Resolution, F2 auto stop at town)
 
 F3 to on/off auto right mouse click
 
@@ -54,52 +54,9 @@ Only work on
 
 
 
-
-
-Ưu điểm so với macro của bàn phím hoặc các tool khác đã có
-------------
-
-+ Các skill được gọi đều đặn có tính toán chống chồng lấp, nên không bị trôi/nuốt skill khi sử dụng nhiều skill.
-
-+ Có thêm tính năng bán và sửa đồ, rất tiện khi đi GR Speed. (Lúc về thành thì lọc đồ, đồ ngon cất vào Stash, xong ra thợ rèn, bấm Ctrl + 9 là tự bán đồ và sửa đồ)
-
-+ Nếu bạn di chuột ra khỏi game thì auto F1 sẽ trở thành giữ Force Stand + LeftMouse. Nếu bạn di chuột ra khỏi game thì auto F3 sẽ trở thành giữ Force Stand + RightMouse. (Rất tiện khi bạn chơi zmonk, bạn lỡ click chuột ra ngoài thì nhân vật bạn sẽ đứng im 1 chỗ và tank quái)
-
-
-
-Tự động bấm skill theo thời gian
-------------
-
-Bật tool, vào game, bấm F1 để bật/tắt tự động bấm chuột trái
-
-Bật tool, vào game, bấm F2 để bật/tắt tự động sử dụng skill ( dùng những skill mà bạn đã chọn Enable trong khung Skill của tool) 
-
-Bật tool, vào game, bấm F3 để bật/tắt tự động bấm chuột phải
-
-
-Hỗ trợ craft đồ từ cube
-------------
-Craft 60 đồ vàng 1 lỗ (rare item) hoặc 30 đồ vàng 2 lỗ (rare item), xong ra cube, mở page 3 lên. 
-
-Xong sử dụng:
-
- Ctrl + 5 để update đồ 1 lỗ
- 
- Ctrl + 6 để update đồ 2 lỗ
- 
- Ctrl + 7 để vất hết đồ ra sàn
- 
- Ctrl + 9 để đập hết đồ ở thợ rèn ( Cần phải ra thợ rèn trước)
- 
- ESC hoặc SPACE để stop lúc đang craft
-
-
-
-
-
 Screenshot
 ------------
-![](FinalRelease/Screen04.png)
+![](FinalRelease/Screen05.png)
 ![](FinalRelease/Cube02.png)
 ![](FinalRelease/Cube03.png)
 ![](FinalRelease/Cube04.png)
