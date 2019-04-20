@@ -120,8 +120,8 @@ HHOOK					hGlobalHook;
 DWORD					archonShootStartTime;
 int						archonShootCoolDown;
 bool					flagConfirmNextArchon;
-const int   			archonCycleTime = 24000/*ms*/;
-const int				coeCycleTime = 12000/*ms*/;
+const int   			archonCycleTime = 32000/*ms*/;
+const int				coeCycleTime = 16000/*ms*/;
 bool					startedArchonCyle = false;
 
 /************************************************************************/
@@ -864,7 +864,7 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 		if (archonShootStartTime > 0)
 		{
 			DWORD delayArchonTime = GetTickCount() - archonShootStartTime;
-			if (delayArchonTime < 24000 && archonShootCoolDown > coeCycleTime) archonShootCoolDown = 24000 - delayArchonTime;
+			if (delayArchonTime < archonCycleTime && archonShootCoolDown > coeCycleTime) archonShootCoolDown = archonCycleTime - delayArchonTime;
 		}
 
 		if (flagOnProcess == false)
