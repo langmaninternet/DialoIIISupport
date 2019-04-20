@@ -1264,7 +1264,7 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 					/************************************************************************/
 					if (flagOnCtrl6)
 					{
-						for (int iitem = 0; iitem < 60; iitem++)
+						for (int iitem = 0; iitem < 60; iitem += 2)
 						{
 							if (flagOnCtrl6) SetD3Mouse(xIventoryArray[iitem], yIventoryArray[iitem]);
 							if (flagOnCtrl6) SendD3RightMouseClick();
@@ -1287,11 +1287,6 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 							if (flagOnCtrl6) SetD3Mouse(xCubeRightPage, yCubeRightPage);
 							if (flagOnCtrl6) SendD3LeftMouseClick();
 							if (flagOnCtrl6) Sleep(50 + (rand() % 5));
-
-							if (iitem == 9 || iitem == 29 || iitem == 49)
-							{
-								iitem += 10;
-							}
 						}
 						flagOnCtrl6 = false;
 					}
