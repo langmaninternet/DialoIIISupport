@@ -62,7 +62,6 @@ public:
 	afx_msg void OnKillfocusHealingKey();
 
 	afx_msg void OnKillFocusForceStandKey();
-	afx_msg void OnKillFocusForceMoveKey();
 	afx_msg void OnKillFocusSingleShotHotKey();
 	afx_msg void OnKillFocusMeteorKey();
 	afx_msg void OnKillFocusArchonKey();

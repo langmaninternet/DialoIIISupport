@@ -66,8 +66,6 @@
 #define IDC_SINGLESHOTHOTKEY            1072
 #define IDC_SECONDARYSKILLKEYTEXT       1075
 #define IDC_SECONDARYSKILLKEY           1076
-#define IDC_FORCEMOVEKEYTEXT            1078
-#define IDC_FORCEMOVEKEY                1079
 #define IDC_BLACKHOLETEXT               1080
 #define IDC_BLACKHOLEKEY                1081
 #define IDC_WAVEOFFORCEKEYTEXT          1082

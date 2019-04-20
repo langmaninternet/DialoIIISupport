@@ -12,7 +12,7 @@
 
 
 
-const double DiabloIIISupportVersion = 1.07;
+const double DiabloIIISupportVersion = 2.00;
 /************************************************************************/
 /* Struct                                                               */
 /************************************************************************/
@@ -75,7 +75,6 @@ struct DiabloIIISupportConfig
 	wchar_t	keyHealing;
 	wchar_t keyForceClose;
 	wchar_t keyForceStand;
-	wchar_t keyForceMove;
 	wchar_t keyBlackHole;
 	wchar_t keyWaveOfForce;
 	wchar_t keyPrimary;
@@ -631,7 +630,6 @@ BEGIN_MESSAGE_MAP(CDiabloIIISupportDlg, CDialogEx)
 	ON_EN_KILLFOCUS(IDC_METEORKEY, &CDiabloIIISupportDlg::OnKillFocusMeteorKey)
 	ON_BN_CLICKED(IDC_WIZFIREBRIDCHECK, &CDiabloIIISupportDlg::OnBnClickedWizFireBridCheck)
 	ON_EN_KILLFOCUS(IDC_FORCESTANDKEY, &CDiabloIIISupportDlg::OnKillFocusForceStandKey)
-	ON_EN_KILLFOCUS(IDC_FORCEMOVEKEY, &CDiabloIIISupportDlg::OnKillFocusForceMoveKey)
 	ON_EN_KILLFOCUS(IDC_ARCHONKEY, &CDiabloIIISupportDlg::OnKillFocusArchonKey)
 	ON_EN_KILLFOCUS(IDC_SINGLESHOTHOTKEY, &CDiabloIIISupportDlg::OnKillFocusSingleShotHotKey)
 	ON_EN_KILLFOCUS(IDC_BLACKHOLEKEY, &CDiabloIIISupportDlg::OnKillFocusBlackHoleKey)
@@ -685,9 +683,9 @@ BOOL		CDiabloIIISupportDlg::OnInitDialog()
 		wchar_t appdataPath[2000] = { 0 };
 		GetEnvironmentVariable(L"AppData", appdataPath, 1999);
 		wchar_t bufferDir[2000] = { 0 };
-		swprintf_s(bufferDir, L"%ls\\DialoIIISupport\\", appdataPath);
+		swprintf_s(bufferDir, L"%ls\\DiabloIIISupport\\", appdataPath);
 		CreateDirectoryW(bufferDir, 0);
-		swprintf_s(configSavePath, L"%ls\\DialoIIISupport\\DiabloIIISupport.dat", appdataPath);
+		swprintf_s(configSavePath, L"%ls\\DiabloIIISupport\\DiabloIIISupport.dat", appdataPath);
 	}
 
 	OnLoadConfig();
@@ -791,7 +789,7 @@ BOOL		CDiabloIIISupportDlg::OnInitDialog()
 
 
 		wchar_t bufferAbout[10000] = { 0 };
-		swprintf_s(bufferAbout, L"DiabloIIISupport is free, but [Wizard - Meteor Star Pact] feature is limited distribution.\r\nTo get Activation Key, please email to quangxengvn@gmail.com.\r\nYour DeviceID is [%ls].", buffer);
+		swprintf_s(bufferAbout, L"Create by Bùi Tấn Quang\r\nhttps://github.com/langmaninternet\r\nYour DeviceID is [%ls]", buffer);
 		GetDlgItem(IDC_ABOUT)->SetWindowTextW(bufferAbout);
 	}
 
@@ -800,8 +798,7 @@ BOOL		CDiabloIIISupportDlg::OnInitDialog()
 
 	hGlobalHook = SetWindowsHookEx(WH_KEYBOARD_LL, HookProc, GetModuleHandle(NULL), 0);
 
-	void CreateOverlay(void);
-	CreateOverlay();
+
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -900,7 +897,8 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 					{
 						if (archonShootCoolDown > 0)
 						{
-							buffer.AppendFormat(L"Press %ls to cast new cycle rotation\r\nPress 9 to auto cast in %0.2lfs", bufferWizKey, archonShootCoolDown / 1000.0);
+							//buffer.AppendFormat(L"Press %ls to cast new cycle rotation\r\nPress 9 to auto cast in %0.2lfs", bufferWizKey, archonShootCoolDown / 1000.0);
+							buffer.AppendFormat(L"Press 9 to auto cast in %0.2lfs", archonShootCoolDown / 1000.0);
 						}
 						else
 						{
@@ -1035,6 +1033,11 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 				if (d3GameStatus.flagSkill04IsReadyToAndNeedAutoPress && d3GameStatus.skill04Key && d3GameStatus.flagInAttackMode)
 				{
 					SendD3Key(d3GameStatus.skill04Key);
+				}
+				if (d3GameStatus.flagIsDemonHunter && d3Config.modeArchonEnable)
+				{
+					OnBnClickedWizArchoncheck();
+					((CButton*)GetDlgItem(IDC_WIZARCHONCHECK))->SetCheck(d3Config.modeArchonEnable);
 				}
 
 				/************************************************************************/
@@ -1613,10 +1616,6 @@ void CDiabloIIISupportDlg::OnKillFocusForceStandKey()
 {
 	OnKillFocusSkillKey(IDC_FORCESTANDKEY, d3Config.keyForceStand);
 }
-void CDiabloIIISupportDlg::OnKillFocusForceMoveKey()
-{
-	OnKillFocusSkillKey(IDC_FORCEMOVEKEY, d3Config.keyForceMove);
-}
 void CDiabloIIISupportDlg::OnKillFocusSingleShotHotKey()
 {
 	OnKillFocusSkillKey(IDC_SINGLESHOTHOTKEY, d3Config.keyWizSingleShot);
@@ -1724,6 +1723,15 @@ void CDiabloIIISupportDlg::OnBnClickedWizArchoncheck()
 	GetDlgItem(IDC_SINGLESHOTHOTCASTFULLCYCLE)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
 	GetDlgItem(IDC_SINGLESHOTHOTKEY)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
 	OnSaveConfig();
+
+	if (d3Config.modeArchonEnable)
+	{
+		CreateOverlay();
+	}
+	else
+	{
+		DestroyOverlay();
+	}
 }
 void CDiabloIIISupportDlg::OnBnClickedWizFireBridCheck()
 {
