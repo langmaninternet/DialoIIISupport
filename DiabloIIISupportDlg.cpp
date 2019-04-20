@@ -887,8 +887,6 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 				{
 					if (flagConfirmNextArchon)
 					{
-						StopStarPact();
-						Sleep(10);
 						StartStarPact();
 						flagOnWizSingleShot = true;
 						archonShootCoolDown = archonCycleTime;
@@ -996,7 +994,7 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 					);
 				}
 				flagOnWizSingleShot = false;
-
+				StopStarPact();
 
 				GetDlgItem(IDC_SINGLESHOTHOTKEYTEXT)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
 				GetDlgItem(IDC_SINGLESHOTHOTKEYFORTEXT)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
