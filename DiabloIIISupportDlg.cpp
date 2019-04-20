@@ -1,8 +1,4 @@
-﻿
-// DialoIIISupportDlg.cpp : implementation file
-//
-
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "DiabloIIISupport.h"
 #include "DiabloIIISupportDlg.h"
 #include "afxdialogex.h"
@@ -10,66 +6,13 @@
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
-/************************************************************************/
-/* StarPact Engine                                                      */
-/************************************************************************/
-bool		InitStarPactEngine(const wchar_t * licenseID);
-void		GenDeviceIdentification(wchar_t * bufferDeviceID, int bufferDeviceIDSize);
-
-void		ArchonStarPactCastMeteor(const wchar_t meteorKey,
-	const wchar_t archonKey,
-	const wchar_t primaryKey,
-	const wchar_t secondaryKey,
-	const wchar_t forceStandKey);
-
-void		ArchonStarPactCycle(const wchar_t blackHoleKey,
-	const wchar_t wayOfForceKey,
-	const wchar_t meteorKey,
-	const wchar_t archonKey,
-	const wchar_t primaryKey,
-	const wchar_t secondaryKey,
-	const wchar_t forceStandKey);
-void		StartStarPact(void);
-void		StopStarPact(void);
-
-void		StarPactDumpData(void);
-
-
-
-
-struct DiabloIIIStatusStruct
-{
-	bool	flagInAttackMode;
-	bool	flagPotionReady;
-	bool	flagIsOpenMap;
-	bool	flagIsOpenSkillTable;
-	bool	flagIsOpenKadala;
-	bool	flagIsOpenUrshi;
-	bool	flagIsOpenStash;
-	bool	flagSkill01IsLightningBlast;
-	bool	flagSkill01IsReadyToAndNeedAutoPress;
-	bool	flagSkill02IsReadyToAndNeedAutoPress;
-	bool	flagSkill03IsReadyToAndNeedAutoPress;
-	bool	flagSkill04IsReadyToAndNeedAutoPress;
-	int		skill01Key;
-	int		skill02Key;
-	int		skill03Key;
-	int		skill04Key;
-	int		healingKey;
-
-#ifdef _DEBUG
-	int		getStatusTime;
-#endif
-};
-void		GetCurrentDiabloIIStatus(DiabloIIIStatusStruct & gameStatus);
+#include "../StarPact/StarPact.h"
 
 
 
 
 
-DiabloIIIStatusStruct gameStatus;
 const double DiabloIIISupportVersion = 1.07;
-const int defaultHeathLimit = 80;
 /************************************************************************/
 /* Struct                                                               */
 /************************************************************************/
@@ -172,9 +115,14 @@ int						skillSlot02Cooldown;
 int						skillSlot03Cooldown;
 int						skillSlot04Cooldown;
 HHOOK					hGlobalHook;
-double					archonStartTimeCoolDown;
+
+
+DWORD					archonShootStartTime;
+int						archonShootCoolDown;
 bool					flagConfirmNextArchon;
-extern wchar_t			bufferShowArchon[1000];
+const int   			archonCycleTime = 24000/*ms*/;
+const int				coeCycleTime = 12000/*ms*/;
+bool					startedArchonCyle = false;
 
 /************************************************************************/
 /* Process Function                                                     */
@@ -507,7 +455,7 @@ extern "C" __declspec(dllexport) LRESULT CALLBACK HookProc(int nCode, WPARAM wPa
 		}
 		else if (wParam == WM_KEYDOWN)
 		{
-			if (archonStartTimeCoolDown > 0 && flagConfirmNextArchon == false && keyParam->vkCode == 0x39/*'9'*/)
+			if (archonShootCoolDown > 0 && flagConfirmNextArchon == false && keyParam->vkCode == 0x39/*'9'*/)
 			{
 				flagConfirmNextArchon = true;
 			}
@@ -912,7 +860,13 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 {
 	if (mainTimerID == nIdEvent)
 	{
-		if (archonStartTimeCoolDown > -mainTimerDelay) archonStartTimeCoolDown -= mainTimerDelay;
+		if (archonShootCoolDown > -mainTimerDelay) archonShootCoolDown -= mainTimerDelay;
+		if (archonShootStartTime > 0)
+		{
+			DWORD delayArchonTime = GetTickCount() - archonShootStartTime;
+			if (delayArchonTime < 24000 && archonShootCoolDown > coeCycleTime) archonShootCoolDown = 24000 - delayArchonTime;
+		}
+
 		if (flagOnProcess == false)
 		{
 			flagOnProcess = true;
@@ -927,33 +881,37 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 				else if (d3Config.keyWizSingleShot == VK_SHIFT) wcscpy(bufferWizKey, L"Shift");
 				else if (d3Config.keyWizSingleShot == VK_LBUTTON) wcscpy(bufferWizKey, L"LeftMouse");
 				else if (d3Config.keyWizSingleShot == VK_RBUTTON) wcscpy(bufferWizKey, L"RightMouse");
-				else swprintf_s(bufferWizKey, L"%lc", d3Config.keyWizSingleShot);	
-				
-				if (archonStartTimeCoolDown <= mainTimerDelay)
+				else swprintf_s(bufferWizKey, L"%lc", d3Config.keyWizSingleShot);
+
+				if (archonShootCoolDown <= mainTimerDelay)
 				{
-					if (flagConfirmNextArchon) 
+					if (flagConfirmNextArchon)
 					{
 						StopStarPact();
 						Sleep(10);
 						StartStarPact();
 						flagOnWizSingleShot = true;
-						archonStartTimeCoolDown = 24000;						
+						archonShootCoolDown = archonCycleTime;
 					}
-					else archonStartTimeCoolDown = 12000;
+					else archonShootCoolDown = coeCycleTime;
 				}
-				if (archonStartTimeCoolDown > 0)
+				if (archonShootCoolDown > 0 && startedArchonCyle)
 				{
 					CString buffer;
 					if (flagConfirmNextArchon == false)
 					{
-						if (archonStartTimeCoolDown > 0)
+						if (archonShootCoolDown > 0)
 						{
-							buffer.AppendFormat(L"Press %ls to cast new cycle rotation\r\nPress 9 to auto cast in %0.2lfs", bufferWizKey, archonStartTimeCoolDown / 1000.0);
+							buffer.AppendFormat(L"Press %ls to cast new cycle rotation\r\nPress 9 to auto cast in %0.2lfs", bufferWizKey, archonShootCoolDown / 1000.0);
+						}
+						else
+						{
+							buffer.AppendFormat(L"Cast..");
 						}
 					}
 					else
 					{
-						buffer.AppendFormat(L"Auto cast in %0.3lfs (Press 0 to skip)", archonStartTimeCoolDown / 1000.0);
+						buffer.AppendFormat(L"Auto cast in %0.3lfs (Press 0 to skip)", archonShootCoolDown / 1000.0);
 					}
 					if (buffer.GetLength() == 0) buffer.AppendFormat(L"Press %ls to cast new cycle rotation", bufferWizKey);
 					wcscpy_s(bufferShowArchon, 999, buffer.GetBuffer());
@@ -967,13 +925,13 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 
 
 			WCHAR bufferActive[100] = L"Found";
-			if (gameStatus.flagInAttackMode)
+			if (d3GameStatus.flagInAttackMode)
 			{
 				swprintf_s(bufferActive, L" AttackMode");
 			}
 
 #ifdef _DEBUG
-			swprintf_s(bufferActive, L"%d %d %d", gameStatus.flagInAttackMode, gameStatus.flagPotionReady, gameStatus.getStatusTime);
+			swprintf_s(bufferActive, L"%d %d %d", d3GameStatus.flagInAttackMode, d3GameStatus.flagPotionReady, d3GameStatus.getStatusTime);
 #endif 
 			HWND d3Wnd = GetD3Windows();
 			RECT d3Rect = { 0 };
@@ -1010,9 +968,11 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 			/************************************************************************/
 			if (flagOnWizSingleShot)
 			{
-				archonStartTimeCoolDown = 24000;
+				archonShootStartTime = GetTickCount();
+				archonShootCoolDown = archonCycleTime;
 				flagConfirmNextArchon = false;
 				bufferShowArchon[0] = NULL;
+				startedArchonCyle = true;
 				if (d3Config.fullCycleEnable)
 				{
 
@@ -1045,45 +1005,45 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 				GetDlgItem(IDC_SINGLESHOTHOTCASTFULLCYCLE)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
 				OnShowSkillKey(IDC_SINGLESHOTHOTKEY, d3Config.keyWizSingleShot);
 			}
-			GetCurrentDiabloIIStatus(gameStatus);
+			GetCurrentDiabloIIStatus();
 
 
 			/************************************************************************/
 			/*                                                                      */
 			/************************************************************************/
-			if (gameStatus.flagIsOpenMap == false
-				&& gameStatus.flagIsOpenSkillTable == false
-				&& gameStatus.flagIsOpenUrshi == false
+			if (d3GameStatus.flagIsOpenMap == false
+				&& d3GameStatus.flagIsOpenSkillTable == false
+				&& d3GameStatus.flagIsOpenUrshi == false
 				)
 			{
 				/************************************************************************/
 				/* Auto press                                                           */
 				/************************************************************************/
-				if (gameStatus.flagSkill01IsReadyToAndNeedAutoPress && gameStatus.skill01Key && gameStatus.flagInAttackMode)
+				if (d3GameStatus.flagSkill01IsReadyToAndNeedAutoPress && d3GameStatus.skill01Key && d3GameStatus.flagInAttackMode)
 				{
-					SendD3Key(gameStatus.skill01Key);
+					SendD3Key(d3GameStatus.skill01Key);
 				}
-				else if (d3Config.profilemodeArchonEnable && gameStatus.flagSkill01IsReadyToAndNeedAutoPress && gameStatus.flagSkill01IsLightningBlast)
+				else if (d3Config.profilemodeArchonEnable && d3GameStatus.flagSkill01IsReadyToAndNeedAutoPress && d3GameStatus.flagSkill01IsLightningBlast)
 				{
 					SendD3Key(d3Config.keySKill01);
 				}
-				if (gameStatus.flagSkill02IsReadyToAndNeedAutoPress && gameStatus.skill02Key && gameStatus.flagInAttackMode)
+				if (d3GameStatus.flagSkill02IsReadyToAndNeedAutoPress && d3GameStatus.skill02Key && d3GameStatus.flagInAttackMode)
 				{
-					SendD3Key(gameStatus.skill02Key);
+					SendD3Key(d3GameStatus.skill02Key);
 				}
-				if (gameStatus.flagSkill03IsReadyToAndNeedAutoPress && gameStatus.skill03Key && gameStatus.flagInAttackMode)
+				if (d3GameStatus.flagSkill03IsReadyToAndNeedAutoPress && d3GameStatus.skill03Key && d3GameStatus.flagInAttackMode)
 				{
-					SendD3Key(gameStatus.skill03Key);
+					SendD3Key(d3GameStatus.skill03Key);
 				}
-				if (gameStatus.flagSkill04IsReadyToAndNeedAutoPress && gameStatus.skill04Key && gameStatus.flagInAttackMode)
+				if (d3GameStatus.flagSkill04IsReadyToAndNeedAutoPress && d3GameStatus.skill04Key && d3GameStatus.flagInAttackMode)
 				{
-					SendD3Key(gameStatus.skill04Key);
+					SendD3Key(d3GameStatus.skill04Key);
 				}
 
 				/************************************************************************/
 				/* Use custom                                                           */
 				/************************************************************************/
-				if (flagOnF2 && gameStatus.flagIsOpenKadala == false && gameStatus.flagIsOpenStash == false && gameStatus.flagInAttackMode)
+				if (flagOnF2 && d3GameStatus.flagIsOpenKadala == false && d3GameStatus.flagIsOpenStash == false && d3GameStatus.flagInAttackMode)
 				{
 					GetDlgItem(IDC_SKILL01TIME)->EnableWindow(FALSE);
 					GetDlgItem(IDC_SKILL02TIME)->EnableWindow(FALSE);
@@ -1101,7 +1061,7 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 						if (d3Config.skill01Enable)
 						{
 							skillSlot01Cooldown += mainTimerDelay;
-							if (skillSlot01Cooldown >= d3Config.skillSlot01Time && gameStatus.flagInAttackMode)
+							if (skillSlot01Cooldown >= d3Config.skillSlot01Time && d3GameStatus.flagInAttackMode)
 							{
 								SendD3Key(d3Config.keySKill01);
 								skillSlot01Cooldown = 0;
@@ -1110,7 +1070,7 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 						if (d3Config.skill02Enable)
 						{
 							skillSlot02Cooldown += mainTimerDelay;
-							if (skillSlot02Cooldown >= d3Config.skillSlot02Time && gameStatus.flagInAttackMode)
+							if (skillSlot02Cooldown >= d3Config.skillSlot02Time && d3GameStatus.flagInAttackMode)
 							{
 								SendD3Key(d3Config.keySKill02);
 								skillSlot02Cooldown = 0;
@@ -1119,7 +1079,7 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 						if (d3Config.skill03Enable)
 						{
 							skillSlot03Cooldown += mainTimerDelay;
-							if (skillSlot03Cooldown >= d3Config.skillSlot03Time && gameStatus.flagInAttackMode)
+							if (skillSlot03Cooldown >= d3Config.skillSlot03Time && d3GameStatus.flagInAttackMode)
 							{
 								SendD3Key(d3Config.keySKill03);
 								skillSlot03Cooldown = 0;
@@ -1128,13 +1088,13 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 						if (d3Config.skill04Enable)
 						{
 							skillSlot04Cooldown += mainTimerDelay;
-							if (skillSlot04Cooldown >= d3Config.skillSlot04Time && gameStatus.flagInAttackMode)
+							if (skillSlot04Cooldown >= d3Config.skillSlot04Time && d3GameStatus.flagInAttackMode)
 							{
 								SendD3Key(d3Config.keySKill04);
 								skillSlot04Cooldown = 0;
 							}
 						}
-						if (d3Config.healingEnable && gameStatus.flagPotionReady)
+						if (d3Config.healingEnable && d3GameStatus.flagPotionReady)
 						{
 							SendD3Key(d3Config.keyHealing);
 						}
@@ -1153,7 +1113,7 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 					GetDlgItem(IDC_HEALINGCHECK)->EnableWindow(TRUE);
 					GetDlgItem(IDC_F2BIGFRAME)->SetWindowTextW(L"Skill (Hotkey F2)");
 				}
-				if (flagOnF1 && gameStatus.flagIsOpenKadala == false && gameStatus.flagIsOpenStash == false)
+				if (flagOnF1 && d3GameStatus.flagIsOpenKadala == false && d3GameStatus.flagIsOpenStash == false)
 				{
 					GetDlgItem(IDC_LEFTMOUSETEXT)->SetWindowText(L"Left mouse (Hotkey F1): \r\n	Running");
 					GetDlgItem(IDC_LEFTMOUSETEXT)->EnableWindow(FALSE);
@@ -1183,7 +1143,7 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 					GetDlgItem(IDC_LEFTMOUSETEXTMS)->EnableWindow(TRUE);
 					GetDlgItem(IDC_LEFTMOUSETIME)->EnableWindow(TRUE);
 				}
-				if (flagOnF3 && (gameStatus.flagInAttackMode || gameStatus.flagIsOpenKadala))
+				if (flagOnF3 && (d3GameStatus.flagInAttackMode || d3GameStatus.flagIsOpenKadala))
 				{
 					GetDlgItem(IDC_RIGHTMOUSETEXT)->SetWindowText(L"Right Mouse (Hotkey F3): \r\n	Running");
 					GetDlgItem(IDC_RIGHTMOUSETEXT)->EnableWindow(FALSE);
@@ -1352,7 +1312,7 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 						if (flagOnCtrl9) SendD3LeftMouseClick();
 						if (flagOnCtrl9) Sleep(50 + (rand() % 5));
 
-						void		PreloadSalvageItem(int *preloadSalvageSlot, int preloadSalvageSlotSize);
+
 						PreloadSalvageItem(preloadSalvageSlot, 60);
 						for (int iitem = 0; iitem < 60; iitem++)
 						{
