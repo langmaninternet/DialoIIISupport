@@ -1034,7 +1034,7 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 				{
 					SendD3Key(d3GameStatus.skill04Key);
 				}
-				if (d3GameStatus.flagIsDemonHunter && d3Config.modeArchonEnable)
+				if ((d3GameStatus.flagIsDemonHunter || d3GameStatus.flagIsMonk) && d3Config.modeArchonEnable)
 				{
 					OnBnClickedWizArchoncheck();
 					((CButton*)GetDlgItem(IDC_WIZARCHONCHECK))->SetCheck(d3Config.modeArchonEnable);
