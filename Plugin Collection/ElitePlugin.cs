@@ -353,16 +353,16 @@ namespace Turbo.Plugins.Default
                         }
                         if (prevStacks > 0)
                         {
-                            int bossPerc = 0;
-                            if (monster.SnoMonster.Priority == MonsterPriority.boss) { bossPerc = 25; }
-                            else { bossPerc = 0; }
-                            //float StrickenDamagePercent = (float)(bossPerc + (prevStacks * gemMaths));
-                            //string percentDamageBonus = "+" + StrickenDamagePercent.ToString("0.00") + "%";
+                            //  int bossPerc = 0;
+                            //  if (monster.SnoMonster.Priority == MonsterPriority.boss) { bossPerc = 25; }
+                            //  else { bossPerc = 0; }
+                            //  float StrickenDamagePercent = (float)(bossPerc + (prevStacks * gemMaths));
+                            //  string percentDamageBonus = "+" + StrickenDamagePercent.ToString("0.00") + "%";
                             Texture.Draw(monsterScreenCoordinate.X + offsetX, monsterScreenCoordinate.Y + offsetY, propSquare, propSquare);
                             StrickenStackDecorator.TextFunc = () => prevStacks.ToString();
-                            //StrickenPercentDecorator.TextFunc = () => percentDamageBonus;
+                            //  StrickenPercentDecorator.TextFunc = () => percentDamageBonus;
                             StrickenStackDecorator.Paint(monsterScreenCoordinate.X + offsetX, monsterScreenCoordinate.Y + offsetY, propSquare, propSquare, HorizontalAlign.Center);
-                            //StrickenPercentDecorator.Paint(monsterScreenCoordinate.X + offsetX, (float)(monsterScreenCoordinate.Y + offsetY + (propSquare / 2.5)), propSquare, propSquare, HorizontalAlign.Right);
+                            //  StrickenPercentDecorator.Paint(monsterScreenCoordinate.X + offsetX, (float)(monsterScreenCoordinate.Y + offsetY + (propSquare / 2.5)), propSquare, propSquare, HorizontalAlign.Right);
 
                             var currentMonsterHealthPercent = monster.CurHealth * 100.0 / monster.MaxHealth;
                             if (currentMonsterHealthPercent < 30.0)
