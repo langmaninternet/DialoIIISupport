@@ -207,17 +207,19 @@ namespace Turbo.Plugins.Default
                         firstIter = false;
                     }
 
-                    var rect = new RectangleF(xPos, HudHeight * (StartYPos + 0.03f), _size, _size);
+                 
 
-                    if (skill != null && skill.SnoPower.Sno == 134872)
+                    //  if (skill != null && skill.SnoPower.Sno == 134872)
+                    //  {
+                    //      
+                    //  }
+                    //  else 
+                    if (skill != null)
                     {
-                        
-                    }
-                    else if (skill != null)
-                    {
+                        var rect = new RectangleF(xPos, HudHeight * (StartYPos + 0.03f), _size, _size);
                         SkillPainter.Paint(skill, rect);
-                        xPos += _size * 1.1f;
                     }
+                    xPos += _size * 1.1f;
                 }
 
                 //      foreach (var i in _passiveOrder)
