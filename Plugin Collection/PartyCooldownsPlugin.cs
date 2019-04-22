@@ -33,6 +33,8 @@ namespace Turbo.Plugins.Default
         private Dictionary<HeroClass, string> _classShorts;
         private readonly int[] _skillOrder = { 2, 3, 4, 5, 0, 1 };
         private readonly int[] _passiveOrder = { 0, 1, 2, 3 };
+        double archonTimeLeft;
+        double archonCooldown;
 
         private bool IsZDPS(IPlayer player)
         {
@@ -107,7 +109,7 @@ namespace Turbo.Plugins.Default
 
 
                 //--- Wizard
-               // 134872, //Archon - Needs testing, dont use for now
+                134872, //Archon - Needs testing, dont use for now
                // 208474 // Unstable Anomaly
             };
 
@@ -161,16 +163,61 @@ namespace Turbo.Plugins.Default
                     var skill = player.Powers.SkillSlots[i];
                     if (skill == null || !WatchedSnos.Contains(skill.SnoPower.Sno)) continue;
                     found = true;
+
+
+                    if (skill != null && skill.SnoPower.Sno == 134872)
+                    {
+                        archonCooldown = (skill.CooldownFinishTick - Hud.Game.CurrentGameTick) / 60.0d;
+                        var buff = player.Powers.GetBuff(Hud.Sno.SnoPowers.Wizard_Archon.Sno);
+                        if (buff != null)
+                        {
+                            archonTimeLeft = buff.TimeLeftSeconds[2];
+                            if (archonCooldown < 0)
+                            {
+                                if (skill.Rune == 3.0)
+                                {
+                                    archonCooldown = skill.CalculateCooldown(100) - 20 + archonTimeLeft;
+                                }
+                                else
+                                {
+                                    archonCooldown = skill.CalculateCooldown(120) - 20 + archonTimeLeft;
+                                }
+
+
+                                if (archonTimeLeft == 0)
+                                {
+                                    archonCooldown = 0;
+                                }
+                            }
+                        }
+                    }
+
                     if (firstIter)
                     {
-                        var layout = ClassFont.GetTextLayout(player.BattleTagAbovePortrait + "\n(" + ((IsZDPS(player)) ? "Z" : "") + _classShorts[player.HeroClassDefinition.HeroClass] + ")");
-                        ClassFont.DrawText(layout, xPos - (layout.Metrics.Width * 0.1f), HudHeight * StartYPos);
+                        if (archonCooldown > 0.0 && skill.SnoPower.Sno == 134872)
+                        {
+                            var layout = ClassFont.GetTextLayout(player.BattleTagAbovePortrait + "\nArchon " + ((int)(archonCooldown)) + "s");
+                            ClassFont.DrawText(layout, xPos - (layout.Metrics.Width * 0.1f), HudHeight * StartYPos);
+                        }
+                        else
+                        {
+                            var layout = ClassFont.GetTextLayout(player.BattleTagAbovePortrait + "\n(" + ((IsZDPS(player)) ? "Z" : "") + _classShorts[player.HeroClassDefinition.HeroClass] + ")");
+                            ClassFont.DrawText(layout, xPos - (layout.Metrics.Width * 0.1f), HudHeight * StartYPos);
+                        }
                         firstIter = false;
                     }
 
                     var rect = new RectangleF(xPos, HudHeight * (StartYPos + 0.03f), _size, _size);
-                    SkillPainter.Paint(skill, rect);
-                    xPos += _size * 1.1f;
+
+                    if (skill != null && skill.SnoPower.Sno == 134872)
+                    {
+                        
+                    }
+                    else if (skill != null)
+                    {
+                        SkillPainter.Paint(skill, rect);
+                        xPos += _size * 1.1f;
+                    }
                 }
 
                 //      foreach (var i in _passiveOrder)

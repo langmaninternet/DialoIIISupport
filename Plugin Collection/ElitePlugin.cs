@@ -7,7 +7,7 @@ namespace Turbo.Plugins.Default
 
     public class ElitePlugin : BasePlugin, IInGameWorldPainter
     {
-       
+
         /************************************************************************/
         /* EliteCirclePlugin                                                    */
         /************************************************************************/
@@ -290,7 +290,8 @@ namespace Turbo.Plugins.Default
 
             StrickenPercentDecorator = new TopLabelDecorator(Hud)
             {
-                TextFont = Hud.Render.CreateFont("tahoma", 6, 255, 255, 255, 255, false, false, 250, 0, 0, 0, true),
+                //TextFont = Hud.Render.CreateFont("tahoma", 6, 255, 255, 255, 255, false, false, 250, 0, 0, 0, true),
+                TextFont = Hud.Render.CreateFont("tahoma", 6, 255, 255, 36, 0, false, false, 250, 0, 0, 0, true),
             };
 
 
@@ -350,29 +351,31 @@ namespace Turbo.Plugins.Default
                                 MonsterStatus[monster.AcdId] = updateValues;
                             }
                         }
-
-
                         if (prevStacks > 0)
                         {
-
-
-
                             int bossPerc = 0;
                             if (monster.SnoMonster.Priority == MonsterPriority.boss) { bossPerc = 25; }
                             else { bossPerc = 0; }
-                            float StrickenDamagePercent = (float)(bossPerc + (prevStacks * gemMaths));
-                            string percentDamageBonus = "+" + StrickenDamagePercent.ToString("0.00") + "%";
+                            //float StrickenDamagePercent = (float)(bossPerc + (prevStacks * gemMaths));
+                            //string percentDamageBonus = "+" + StrickenDamagePercent.ToString("0.00") + "%";
                             Texture.Draw(monsterScreenCoordinate.X + offsetX, monsterScreenCoordinate.Y + offsetY, propSquare, propSquare);
                             StrickenStackDecorator.TextFunc = () => prevStacks.ToString();
-                            StrickenPercentDecorator.TextFunc = () => percentDamageBonus;
+                            //StrickenPercentDecorator.TextFunc = () => percentDamageBonus;
                             StrickenStackDecorator.Paint(monsterScreenCoordinate.X + offsetX, monsterScreenCoordinate.Y + offsetY, propSquare, propSquare, HorizontalAlign.Center);
                             //StrickenPercentDecorator.Paint(monsterScreenCoordinate.X + offsetX, (float)(monsterScreenCoordinate.Y + offsetY + (propSquare / 2.5)), propSquare, propSquare, HorizontalAlign.Right);
-                            if (cooldown)
-                            {
-                                StrickenPercentDecorator.TextFunc = () => "\u231B";
-                                StrickenPercentDecorator.Paint((float)(monsterScreenCoordinate.X + offsetX + (propSquare / 2)), monsterScreenCoordinate.Y + offsetY, propSquare, propSquare, HorizontalAlign.Center);
-                            }
 
+                            var currentMonsterHealthPercent = monster.CurHealth * 100.0 / monster.MaxHealth;
+                            if (currentMonsterHealthPercent < 30.0)
+                            {
+                                string monsterHealthPercentStr = "HP:" + currentMonsterHealthPercent.ToString("0.00") + "%";
+                                StrickenPercentDecorator.TextFunc = () => monsterHealthPercentStr;
+                                StrickenPercentDecorator.Paint(monsterScreenCoordinate.X + offsetX, (float)(monsterScreenCoordinate.Y + offsetY + (propSquare / 2.5)), propSquare, propSquare, HorizontalAlign.Right);
+                            }
+                            //      if (cooldown)
+                            //      {
+                            //          StrickenPercentDecorator.TextFunc = () => "\u231B";
+                            //          StrickenPercentDecorator.Paint((float)(monsterScreenCoordinate.X + offsetX + (propSquare / 2)), monsterScreenCoordinate.Y + offsetY, propSquare, propSquare, HorizontalAlign.Center);
+                            //      }
                         }
                     }
                     else
@@ -391,7 +394,7 @@ namespace Turbo.Plugins.Default
 
 
 
-        
+
 
 
 
@@ -423,7 +426,6 @@ namespace Turbo.Plugins.Default
         public string PercentageDescriptor { get; set; }
         public Dictionary<MonsterAffix, string> DisplayAffix;
         private float px, py, h, w2;
-
         public void LoadEliteBarPlugin()
         {
 
@@ -570,7 +572,9 @@ namespace Turbo.Plugins.Default
             }
             //iterate all alive monsters of pack and print healthbars
             foreach (IMonster m in p.MonstersAlive)
+            {
                 DrawHealthBar(layer, m, ref yref);
+            }
         }
         private bool HasAffix(IMonster m, MonsterAffix afx)
         {
@@ -602,7 +606,6 @@ namespace Turbo.Plugins.Default
         /************************************************************************/
         /*                                                                      */
         /************************************************************************/
-
         public ElitePlugin()
         {
             Enabled = true;

@@ -10,7 +10,7 @@ https://github.com/langmaninternet/DialoIIISupport/archive/master.zip
 Mọi người copy vào các plugin đã fix lại thư mục TurboHUD\plugins\Default
 ------------
 
-+ ElitePlugin : Vẽ vòng tròn dưới chân Elite, Hiện thống kê về các Elite trong vòng 120yard
++ ElitePlugin : Vẽ vòng tròn dưới chân Elite, Hiện thống kê về các Elite 
 (Xóa EliteBarPlugin, MonsterCirclePlugin,DiadrasFirstGemPlugin, trước khi dùng plugin này)
 
 + MonstersCountPlugin : Đếm số quái vật trong 120yard/50yard ( Bấm Ctrl để đổi chế độ 120/50)
@@ -89,7 +89,7 @@ Các hot-key trong TurboHUD
 + F5 bật/tắt bảng thống kê thông tin account
 + F6  bật/tắt bảng thông tin bounty
 + Ctrl + End : Exit TurboHUD
-
++ Alt + Ctrl + R : Reload
 
 
 
