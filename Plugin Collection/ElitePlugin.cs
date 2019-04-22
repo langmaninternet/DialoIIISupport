@@ -383,7 +383,6 @@ namespace Turbo.Plugins.Default
                         Tuple<double, int> valuesIn = new Tuple<double, int>(monster.CurHealth, (int)(0));
                         MonsterStatus.Add(monster.AcdId, valuesIn);
                     }
-
                 }
                 else
                 {
