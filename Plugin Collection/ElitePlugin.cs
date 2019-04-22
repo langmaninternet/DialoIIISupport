@@ -24,7 +24,7 @@ namespace Turbo.Plugins.Default
         {
             EliteHealthDecorator = new TopLabelDecorator(Hud)
             {
-                TextFont = Hud.Render.CreateFont("tahoma", 8, 200, 255, 36, 0, true, false, false),
+                TextFont = Hud.Render.CreateFont("tahoma", 10, 255, 255, 255, 255, true, false, false),
             };
             EliteHealthBlockSize = (int)(Hud.Window.Size.Width / 50);
 
@@ -245,11 +245,12 @@ namespace Turbo.Plugins.Default
                         else JuggernautDecorator.Paint(layer, monster, monster.FloorCoordinate, monster.SnoMonster.NameLocalized);
                     }
                     if (monster.Rarity == ActorRarity.Champion) ChampionDecorator.Paint(layer, monster, monster.FloorCoordinate, monster.SnoMonster.NameLocalized);
-                    if (currentMonsterHealthPercent < 30.0)
+                    if (currentMonsterHealthPercent < 40.0)
                     {
+                        var monsterScreenCoordinate = monster.FloorCoordinate.ToScreenCoordinate();
                         string monsterHealthPercentStr = "HP:" + currentMonsterHealthPercent.ToString("0.0") + "%";
                         EliteHealthDecorator.TextFunc = () => monsterHealthPercentStr;
-                        EliteHealthDecorator.Paint(monsterScreenCoordinate.X, monsterScreenCoordinate.Y + EliteHealthBlockSize / 2, EliteHealthBlockSize, EliteHealthBlockSize, HorizontalAlign.Center);
+                        EliteHealthDecorator.Paint(monsterScreenCoordinate.X, monsterScreenCoordinate.Y - EliteHealthBlockSize, EliteHealthBlockSize, EliteHealthBlockSize, HorizontalAlign.Center);
                     }
                 }
 
@@ -300,7 +301,6 @@ namespace Turbo.Plugins.Default
         }
         public void DrawStrickenPlugin(WorldLayer layer)
         {
-
             bool StrickenActive = false;
             var jewelsLocations = Hud.Game.Items.Where(x => x.Location == ItemLocation.LeftRing || x.Location == ItemLocation.RightRing || x.Location == ItemLocation.Neck);
             foreach (var StrickenLocation in jewelsLocations)
@@ -348,9 +348,9 @@ namespace Turbo.Plugins.Default
                         }
                         if (prevStacks > 0)
                         {
-                            Texture.Draw(monsterScreenCoordinate.X, monsterScreenCoordinate.Y , StrickenPropSquare, StrickenPropSquare);
+                            Texture.Draw(monsterScreenCoordinate.X, monsterScreenCoordinate.Y, StrickenPropSquare, StrickenPropSquare);
                             StrickenStackDecorator.TextFunc = () => prevStacks.ToString();
-                            StrickenStackDecorator.Paint(monsterScreenCoordinate.X, monsterScreenCoordinate.Y , StrickenPropSquare, StrickenPropSquare, HorizontalAlign.Center);
+                            StrickenStackDecorator.Paint(monsterScreenCoordinate.X, monsterScreenCoordinate.Y, StrickenPropSquare, StrickenPropSquare, HorizontalAlign.Center);
                         }
                     }
                     else
@@ -365,7 +365,6 @@ namespace Turbo.Plugins.Default
                 }
             }
         }
-
 
 
 
@@ -402,7 +401,6 @@ namespace Turbo.Plugins.Default
         private float px, py, h, w2;
         public void LoadEliteBarPlugin()
         {
-
             //Configuration
             MissingHighlight = true;
             JuggernautHighlight = true;
@@ -443,6 +441,8 @@ namespace Turbo.Plugins.Default
         {
             if (m.Rarity == ActorRarity.RareMinion && !ShowRareMinions) return;     //no minions
             if (m.SummonerAcdDynamicId != 0) return;                                //no clones
+
+
             var w = m.CurHealth * w2 / m.MaxHealth;
             var per = LightFont.GetTextLayout((m.CurHealth * 100 / m.MaxHealth).ToString(PercentageDescriptor) + "%");
             var y = YPos + py * 8 * yref;
