@@ -163,8 +163,6 @@ namespace Turbo.Plugins.Default
                     var skill = player.Powers.SkillSlots[i];
                     if (skill == null || !WatchedSnos.Contains(skill.SnoPower.Sno)) continue;
                     found = true;
-
-
                     if (skill != null && skill.SnoPower.Sno == 134872)
                     {
                         archonCooldown = (skill.CooldownFinishTick - Hud.Game.CurrentGameTick) / 60.0d;
@@ -182,16 +180,10 @@ namespace Turbo.Plugins.Default
                                 {
                                     archonCooldown = skill.CalculateCooldown(120) - 20 + archonTimeLeft;
                                 }
-
-
-                                if (archonTimeLeft == 0)
-                                {
-                                    archonCooldown = 0;
-                                }
+                                if (archonTimeLeft == 0) archonCooldown = 0;
                             }
                         }
                     }
-
                     if (firstIter)
                     {
                         if (archonCooldown > 0.0 && skill.SnoPower.Sno == 134872)
@@ -206,15 +198,7 @@ namespace Turbo.Plugins.Default
                         }
                         firstIter = false;
                     }
-
-                 
-
-                    //  if (skill != null && skill.SnoPower.Sno == 134872)
-                    //  {
-                    //      
-                    //  }
-                    //  else 
-                    if (skill != null)
+                    if (skill != null && skill.SnoPower.Sno != 134872)
                     {
                         var rect = new RectangleF(xPos, HudHeight * (StartYPos + 0.03f), _size, _size);
                         SkillPainter.Paint(skill, rect);
