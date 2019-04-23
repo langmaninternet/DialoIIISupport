@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 
-
 namespace Turbo.Plugins.Default
 {
     public class PartyCooldownsPlugin : BasePlugin, IInGameTopPainter
@@ -83,27 +82,27 @@ namespace Turbo.Plugins.Default
                 //Add skills to the watch list below
 
                 //--- Necromancer
-                Hud.Sno.SnoPowers.Necromancer_Simulacrum.sno,           //Simulacrum - 465350
-                Hud.Sno.SnoPowers.Necromancer_LandOfTheDead.sno,        //Land of the Dead - 465839
+                Hud.Sno.SnoPowers.Necromancer_Simulacrum.Sno,           //Simulacrum - 465350
+                Hud.Sno.SnoPowers.Necromancer_LandOfTheDead.Sno,        //Land of the Dead - 465839
 
                 //--- Barb
-                 Hud.Sno.SnoPowers.Barbarian_IgnorePain.sno,            //Ignore Pain - 79528
-                 Hud.Sno.SnoPowers.Barbarian_WrathOfTheBerserker.sno,   //Wrath of the Berserker - 79607
-                 Hud.Sno.SnoPowers.Barbarian_WarCry.sno,                //Warcry - 375483
+                 Hud.Sno.SnoPowers.Barbarian_IgnorePain.Sno,            //Ignore Pain - 79528
+                 Hud.Sno.SnoPowers.Barbarian_WrathOfTheBerserker.Sno,   //Wrath of the Berserker - 79607
+                 Hud.Sno.SnoPowers.Barbarian_WarCry.Sno,                //Warcry - 375483
 
                 //--- Monk
-                Hud.Sno.SnoPowers.Monk_InnerSanctuary.sno,              //Inner Sanctuary - 317076
+                Hud.Sno.SnoPowers.Monk_InnerSanctuary.Sno,              //Inner Sanctuary - 317076
 
                 //--- Witch Doctor
-                Hud.Sno.SnoPowers.WitchDoctor_SpiritWalk.sno,           //Spirit Walk - 106237
+                Hud.Sno.SnoPowers.WitchDoctor_SpiritWalk.Sno,           //Spirit Walk - 106237
 
                 //--- Demon Hunter 
-                 Hud.Sno.SnoPowers.DemonHunter_Companion.sno,           //Companion - 365311
-                 Hud.Sno.SnoPowers.DemonHunter_Sentry.sno,              //Sentry - 129217
+                 Hud.Sno.SnoPowers.DemonHunter_Companion.Sno,           //Companion - 365311
+                 Hud.Sno.SnoPowers.DemonHunter_Sentry.Sno,              //Sentry - 129217
 
 
                  //--- Wizard
-                Hud.Sno.SnoPowers.Wizard_Archon.sno,                    //Archon - 134872
+                Hud.Sno.SnoPowers.Wizard_Archon.Sno,                    //Archon - 134872
 
             };
 
@@ -191,32 +190,32 @@ namespace Turbo.Plugins.Default
                     }
                     if (flagIsFirstIterator)
                     {
-                        if (archonCooldown > 0.0 && skill.SnoPower.Sno == 134872)
-                        {
-                            var layout = ClassFont.GetTextLayout(player.BattleTagAbovePortrait + "\nArchon " + ((int)(archonCooldown)) + "s");
-                            ClassFont.DrawText(layout, xPos - (layout.Metrics.Width * 0.1f), HudHeight * StartYPos);
-                        }
-                        else
-                        {
-                            var layout = ClassFont.GetTextLayout(player.BattleTagAbovePortrait + "\n(" + ((IsZDPS(player)) ? "Z" : "") + _classShortName[player.HeroClassDefinition.HeroClass] + ")");
-                            ClassFont.DrawText(layout, xPos - (layout.Metrics.Width * 0.1f), HudHeight * StartYPos);
-                        }
+                        var layout = ClassFont.GetTextLayout(player.BattleTagAbovePortrait + "\n(" + ((IsZDPS(player)) ? "Z" : "") + _classShortName[player.HeroClassDefinition.HeroClass] + ")");
+                        ClassFont.DrawText(layout, xPos - (layout.Metrics.Width * 0.1f), HudHeight * StartYPos);
                         flagIsFirstIterator = false;
                     }
                     if (skill != null && skill.SnoPower.Sno != 134872)
                     {
-                        var rect = new RectangleF(xPos, HudHeight * (StartYPos + 0.03f), _size, _size);
+                        var rect = new SharpDX.RectangleF(xPos, HudHeight * (StartYPos + 0.03f), _size, _size);
                         SkillPainter.Paint(skill, rect);
                     }
                     else if (skill != null && skill.SnoPower.Sno == 134872)
                     {
-                        var Texture = Hud.Texture.GetTexture(Hud.Sno.SnoPowers.Wizard_Archon.Icons[1].TextureId);
-                        if (Texture != null) Texture.Draw(xPos, HudHeight * (StartYPos + 0.03f), _size, _size);
+                        foreach (var iicon in Hud.Sno.SnoPowers.Wizard_Archon.Icons)
+                        {
+                            var Texture = Hud.Texture.GetTexture(iicon.TextureId);
+                            if (Texture != null) Texture.Draw(xPos, HudHeight * (StartYPos + 0.03f), _size, _size);
+                            if (archonCooldown > 0.0)
+                            {
+                                var layout = ClassFont.GetTextLayout(archonCooldown.ToString("0.0") + "s");
+                                ClassFont.DrawText(layout, xPos, HudHeight * (StartYPos + 0.03f) + _size / 2);
+                            }
+                        }
                     }
                     xPos += _size * 1.1f;
 
                     switch (player.HeroClassDefinition.HeroClass)
-                    {            
+                    {
                         case HeroClass.WitchDoctor:
                             var wdCheatDeathBuff = player.Powers.GetBuff(Hud.Sno.SnoPowers.WitchDoctor_Passive_SpiritVessel.Sno);
                             if (wdCheatDeathBuff != null)
