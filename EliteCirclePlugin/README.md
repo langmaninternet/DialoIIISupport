@@ -2,6 +2,12 @@
 
 Modification and combination of MonsterCirclePlugin (https://github.com/coreyblackgh/HUD-Plugins) and DiadrasFirstGemPlugin (https://github.com/User5981/Resu)
 
+https://www.ownedcore.com/forums/diablo-3/turbohud/turbohud-community-plugins/612786-international-cb-monstercircleplugin.html
+
+https://www.ownedcore.com/forums/diablo-3/turbohud/turbohud-community-plugins/653210-v7-6-international-resu-diadrasfirstgemplugin.html
+
+
+
 
 Installation
 ------------

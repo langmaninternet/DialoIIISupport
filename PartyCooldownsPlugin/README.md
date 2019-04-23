@@ -1,7 +1,11 @@
 # PartyCooldownsPlugin
 
 Modification and combination of PartyCooldownsPlugin 
+
+
 https://github.com/RuneBarrett/ThudPlugins 
+
+
 https://www.ownedcore.com/forums/diablo-3/turbohud/turbohud-community-plugins/634515-v7-3-international-runeb-partycooldownsplugin.html
 
 
