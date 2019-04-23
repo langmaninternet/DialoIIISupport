@@ -36,9 +36,6 @@ namespace Turbo.Plugins.Default
         private double archonTimeLeft;
         private double archonCooldown;
 
-       // public BuffRuleCalculator ProcRuleCalculator { get; set; }
-
-
 
 
         private bool IsZDPS(IPlayer player)
@@ -180,20 +177,20 @@ namespace Turbo.Plugins.Default
             foreach (var player in Hud.Game.Players.OrderBy(p => p.HeroId))
             {
                 if (player.IsMe && !ShowSelf || !player.IsMe && ShowOnlyMe) continue;
-                var found = false;
-                var firstIter = true;
+                var foundCarrySkill = false;
+                var flagIsFirstIterator = true;
                 foreach (var i in _skillOrder)
                 {
                     var skill = player.Powers.SkillSlots[i];
                     if (skill == null || !WatchedSnos.Contains(skill.SnoPower.Sno)) continue;
-                    found = true;
+                    foundCarrySkill = true;
                     if (skill != null && skill.SnoPower.Sno == 134872)
                     {
                         archonCooldown = (skill.CooldownFinishTick - Hud.Game.CurrentGameTick) / 60.0d;
-                        var buff = player.Powers.GetBuff(Hud.Sno.SnoPowers.Wizard_Archon.Sno);
-                        if (buff != null)
+                        var archonBuff = player.Powers.GetBuff(Hud.Sno.SnoPowers.Wizard_Archon.Sno);
+                        if (archonBuff != null)
                         {
-                            archonTimeLeft = buff.TimeLeftSeconds[2];
+                            archonTimeLeft = archonBuff.TimeLeftSeconds[2];
                             if (archonCooldown < 0)
                             {
                                 if (skill.Rune == 3.0)
@@ -208,7 +205,7 @@ namespace Turbo.Plugins.Default
                             }
                         }
                     }
-                    if (firstIter)
+                    if (flagIsFirstIterator)
                     {
                         if (archonCooldown > 0.0 && skill.SnoPower.Sno == 134872)
                         {
@@ -220,35 +217,21 @@ namespace Turbo.Plugins.Default
                             var layout = ClassFont.GetTextLayout(player.BattleTagAbovePortrait + "\n(" + ((IsZDPS(player)) ? "Z" : "") + _classShortName[player.HeroClassDefinition.HeroClass] + ")");
                             ClassFont.DrawText(layout, xPos - (layout.Metrics.Width * 0.1f), HudHeight * StartYPos);
                         }
-                        firstIter = false;
+                        flagIsFirstIterator = false;
                     }
                     if (skill != null && skill.SnoPower.Sno != 134872)
                     {
                         var rect = new RectangleF(xPos, HudHeight * (StartYPos + 0.03f), _size, _size);
                         SkillPainter.Paint(skill, rect);
                     }
+                    else if (skill != null)
+                    {
+
+                    }
                     xPos += _size * 1.1f;
                 }
 
-                //      foreach (var i in _passiveOrder)
-                //      {
-                //          var passive = player.Powers.PassiveSlots[i];
-                //          if (passive == null || !WatchedSnos.Contains(passive.Sno)) continue;
-                //          found = true;
-                //          if (firstIter)
-                //          {
-                //              var layout = ClassFont.GetTextLayout(player.BattleTagAbovePortrait + "\n(" + ((IsZDPS(player)) ? "Z" : "") + _classShorts[player.HeroClassDefinition.HeroClass] + ")");
-                //              ClassFont.DrawText(layout, xPos - (layout.Metrics.Width * 0.1f), HudHeight * StartYPos);
-                //              firstIter = false;
-                //          }
-                //      
-                //          var rect = new RectangleF(xPos, HudHeight * (StartYPos + 0.03f), _size, _size);
-                //          //    SkillPainter.Paint(skill, rect);
-                //          xPos += _size * 1.1f;
-                //      }
-
-
-                if (found) xPos += _size * 1.1f;
+                if (foundCarrySkill) xPos += _size * 1.1f;
             }
         }
 
