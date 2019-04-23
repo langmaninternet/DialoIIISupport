@@ -2,6 +2,8 @@
 
 Modification and combination of MonsterCirclePlugin (https://github.com/coreyblackgh/HUD-Plugins) and DiadrasFirstGemPlugin (https://github.com/User5981/Resu)
 
+To use this plugin, you need remove original version of MonsterCirclePlugin and DiadrasFirstGemPlugin.
+
 Original Features
 ------------
 + Show circle at elite
