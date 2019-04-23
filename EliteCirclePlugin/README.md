@@ -2,7 +2,13 @@
 
 Modification and combination of MonsterCirclePlugin (https://github.com/coreyblackgh/HUD-Plugins) and DiadrasFirstGemPlugin (https://github.com/User5981/Resu)
 
+
+Installation
+------------
+Copy EliteCirclePlugin.cs to TurboHUD\plugins\Default\
+
 To use this plugin, you need remove original version of MonsterCirclePlugin and DiadrasFirstGemPlugin.
+
 
 Original Features
 ------------
@@ -16,6 +22,7 @@ Mod Features
 + Show HP of elite when Elite's HP < 40%
 + Show direction Direction Line to elite when Elite's HP < 20%
 + Code optimization
+
 
 
 Screenshot
