@@ -21,7 +21,6 @@ namespace Turbo.Plugins.Default
         public WorldDecoratorCollection GoblinDecorator { get; set; } // Goblin
         public WorldDecoratorCollection UniqueDecorator { get; set; }   //Purple
         public WorldDecoratorCollection BossDecorator { get; set; }   //Boss
-        public WorldDecoratorCollection LowHeathBossDirectionLineDecorator { get; set; }
         public TopLabelDecorator EliteHealthDecorator { get; set; }
         public int EliteHealthBlockSize;
         public int StrickenPropSquare { get; set; }
@@ -33,7 +32,7 @@ namespace Turbo.Plugins.Default
         {
             EliteHealthDecorator = new TopLabelDecorator(Hud)
             {
-                TextFont = Hud.Render.CreateFont("tahoma", 10, 255, 224, 17, 95, true, false, false),
+                TextFont = Hud.Render.CreateFont("tahoma", 10, 255, 255, 255, 255, true, false, true),
             };
             EliteHealthBlockSize = (int)(Hud.Window.Size.Width / 50);
 
@@ -192,21 +191,7 @@ namespace Turbo.Plugins.Default
                 TextFont = Hud.Render.CreateFont("tahoma", 7, 255, 0, 0, 0, true, false, 250, 255, 255, 255, true),
             };
 
-            LowHeathBossDirectionLineDecorator = new WorldDecoratorCollection(
-                new MapShapeDecorator(Hud)
-                {
-                    Brush = Hud.Render.CreateBrush(192, 255, 255, 55, -1),
-                    ShadowBrush = Hud.Render.CreateBrush(96, 0, 0, 0, 1),
-                    Radius = 10.0f,
-                    ShapePainter = new LineFromMeShapePainter(Hud),
-                },
-                new MapLabelDecorator(Hud)
-                {
-                    LabelFont = Hud.Render.CreateFont("tahoma", 6f, 200, 255, 255, 0, false, false, 128, 0, 0, 0, true),
-                    RadiusOffset = 10,
-                    Up = true,
-                }
-          );
+
 
         }
         public void OnNewAreaEliteCirclePlugin(bool newGame, ISnoArea area)
@@ -268,16 +253,17 @@ namespace Turbo.Plugins.Default
                         else JuggernautDecorator.Paint(layer, monster, monster.FloorCoordinate, monster.SnoMonster.NameLocalized);
                     }
                     if (monster.Rarity == ActorRarity.Champion) ChampionDecorator.Paint(layer, monster, monster.FloorCoordinate, monster.SnoMonster.NameLocalized);
+
+                    var monsterScreenCoordinate = monster.FloorCoordinate.ToScreenCoordinate();
                     if (currentMonsterHealthPercent < 40.0)
                     {
-                        var monsterScreenCoordinate = monster.FloorCoordinate.ToScreenCoordinate();
                         string monsterHealthPercentStr = "HP:" + currentMonsterHealthPercent.ToString("0.0") + "%";
                         EliteHealthDecorator.TextFunc = () => monsterHealthPercentStr;
                         EliteHealthDecorator.Paint(monsterScreenCoordinate.X, monsterScreenCoordinate.Y - EliteHealthBlockSize, EliteHealthBlockSize, EliteHealthBlockSize, HorizontalAlign.Center);
                     }
                     if (currentMonsterHealthPercent < 20.0)
                     {
-                        LowHeathBossDirectionLineDecorator.Paint(layer, null, monster.FloorCoordinate, null);
+                        Hud.Render.CreateBrush(192, 255, 255, 55, -1).DrawLine(monsterScreenCoordinate.X, monsterScreenCoordinate.Y, Hud.Game.Me.ScreenCoordinate.X, Hud.Game.Me.ScreenCoordinate.Y + 60, 1.0f);
                     }
                 }
             }

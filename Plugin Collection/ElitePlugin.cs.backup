@@ -23,7 +23,7 @@ namespace Turbo.Plugins.Default
         public WorldDecoratorCollection BossDecorator { get; set; }   //Boss
         public WorldDecoratorCollection LowHeathBossDirectionLineDecorator { get; set; }
         public TopLabelDecorator EliteHealthDecorator { get; set; }
-        public int EliteHealthBlockSize;
+        public int EliteHealthBlockSize { get; set; };
         public int StrickenPropSquare { get; set; }
         public bool StrickenInCooldown { get; set; }
         public int StrickenMonsterCount { get; set; }
