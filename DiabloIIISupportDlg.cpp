@@ -1197,17 +1197,11 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 
 
 					double		d3WidthScale = d3Width / 1920.0;
-
 					double		d3HeightScale = d3Height / 1080.0;
-
-					int xCenter = int(d3Width / 2);
-					int yCenter = int(d3Height / 2);
-					int xSalvage = (int)round(170.0 * d3WidthScale);
-					int ySalvage = (int)round(290.0 * d3HeightScale);
-					int xTransmute = (int)round(230.0 * d3WidthScale);
-					int yTransmute = (int)round(830.0 * d3HeightScale);
-					int xFill = (int)round(720.0 * d3WidthScale);
-					int yFill = (int)round(840.0 * d3HeightScale);
+					int			xTransmute = (int)round(230.0 * d3WidthScale);
+					int			yTransmute = (int)round(830.0 * d3HeightScale);
+					int			xFill = (int)round(720.0 * d3WidthScale);
+					int			yFill = (int)round(840.0 * d3HeightScale);
 					int			xIventoryArray[60] = { int(1428 * d3WidthScale), int(1428 * d3WidthScale), int(1428 * d3WidthScale), int(1428 * d3WidthScale), int(1428 * d3WidthScale), int(1428 * d3WidthScale), int(1478 * d3WidthScale), int(1478 * d3WidthScale), int(1478 * d3WidthScale), int(1478 * d3WidthScale), int(1478 * d3WidthScale), int(1478 * d3WidthScale), int(1529 * d3WidthScale), int(1529 * d3WidthScale), int(1529 * d3WidthScale), int(1529 * d3WidthScale), int(1529 * d3WidthScale), int(1529 * d3WidthScale), int(1579 * d3WidthScale), int(1579 * d3WidthScale), int(1579 * d3WidthScale), int(1579 * d3WidthScale), int(1579 * d3WidthScale), int(1579 * d3WidthScale), int(1630 * d3WidthScale), int(1630 * d3WidthScale), int(1630 * d3WidthScale), int(1630 * d3WidthScale), int(1630 * d3WidthScale), int(1630 * d3WidthScale), int(1680 * d3WidthScale), int(1680 * d3WidthScale), int(1680 * d3WidthScale), int(1680 * d3WidthScale), int(1680 * d3WidthScale), int(1680 * d3WidthScale), int(1731 * d3WidthScale), int(1731 * d3WidthScale), int(1731 * d3WidthScale), int(1731 * d3WidthScale), int(1731 * d3WidthScale), int(1731 * d3WidthScale), int(1781 * d3WidthScale), int(1781 * d3WidthScale), int(1781 * d3WidthScale), int(1781 * d3WidthScale), int(1781 * d3WidthScale), int(1781 * d3WidthScale), int(1831 * d3WidthScale), int(1831 * d3WidthScale), int(1831 * d3WidthScale), int(1831 * d3WidthScale), int(1831 * d3WidthScale), int(1831 * d3WidthScale), int(1881 * d3WidthScale), int(1881 * d3WidthScale), int(1881 * d3WidthScale), int(1881 * d3WidthScale), int(1881 * d3WidthScale), int(1881 * d3WidthScale) };
 					int			yIventoryArray[60] = { int(584 * d3HeightScale), int(634 * d3HeightScale), int(684 * d3HeightScale), int(734 * d3HeightScale), int(784 * d3HeightScale), int(833 * d3HeightScale), int(584 * d3HeightScale), int(634 * d3HeightScale), int(684 * d3HeightScale), int(734 * d3HeightScale), int(784 * d3HeightScale), int(833 * d3HeightScale), int(584 * d3HeightScale), int(634 * d3HeightScale), int(684 * d3HeightScale), int(734 * d3HeightScale), int(784 * d3HeightScale), int(833 * d3HeightScale), int(584 * d3HeightScale), int(634 * d3HeightScale), int(684 * d3HeightScale), int(734 * d3HeightScale), int(784 * d3HeightScale), int(833 * d3HeightScale), int(584 * d3HeightScale), int(634 * d3HeightScale), int(684 * d3HeightScale), int(734 * d3HeightScale), int(784 * d3HeightScale), int(833 * d3HeightScale), int(584 * d3HeightScale), int(634 * d3HeightScale), int(684 * d3HeightScale), int(734 * d3HeightScale), int(784 * d3HeightScale), int(833 * d3HeightScale), int(584 * d3HeightScale), int(634 * d3HeightScale), int(684 * d3HeightScale), int(734 * d3HeightScale), int(784 * d3HeightScale), int(833 * d3HeightScale), int(584 * d3HeightScale), int(634 * d3HeightScale), int(684 * d3HeightScale), int(734 * d3HeightScale), int(784 * d3HeightScale), int(833 * d3HeightScale), int(584 * d3HeightScale), int(634 * d3HeightScale), int(684 * d3HeightScale), int(734 * d3HeightScale), int(784 * d3HeightScale), int(833 * d3HeightScale), int(584 * d3HeightScale), int(634 * d3HeightScale), int(684 * d3HeightScale), int(734 * d3HeightScale), int(784 * d3HeightScale), int(833 * d3HeightScale) };
 					int			preloadSalvageSlot[60] = { 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 };
@@ -1219,11 +1213,35 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 					int			yForgeWeaponTable = 223 * d3HeightScale;
 					int			xSalvageTable = 517 * d3WidthScale;
 					int			ySalvageTable = 500 * d3HeightScale;
+					int			xSalvageButton = (int)round(170.0 * d3WidthScale);
+					int			ySalvageButton = (int)round(290.0 * d3HeightScale);
 					int			xRepairTable = 517 * d3WidthScale;
 					int			yRepairTable = 620 * d3HeightScale;
 					int			xRepairButton = 264 * d3WidthScale;
 					int			yRepairButton = 594 * d3HeightScale;
 
+
+					if (d3WidthScale == 1280 && d3Height == 1024)
+					{
+						xTransmute = 222;
+						yTransmute = 789;
+						xFill = 677;
+						yFill = 797;
+						xCubeLeftPage = 552;
+						yCubeLeftPage = 795;
+						xCubeRightPage = 805;
+						yCubeRightPage = 795;
+						xForgeWeaponTable = 484;
+						yForgeWeaponTable = 220;
+						xSalvageButton = 127;
+						ySalvageButton = 276;
+						xSalvageTable = 484;
+						ySalvageTable = 450;
+						xRepairTable = 484;
+						yRepairTable = 580;
+						xRepairButton = 250;
+						yRepairButton = 560;
+					}
 
 
 					/************************************************************************/
@@ -1233,6 +1251,11 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 					{
 						for (int iitem = 0; iitem < 60; iitem++)
 						{
+							if (d3WidthScale == 1280 && d3Height == 1024 && iitem == 0)
+							{
+								iitem = 24;
+							}
+
 							if (flagOnCtrl5) SetD3Mouse(xIventoryArray[iitem], yIventoryArray[iitem]);
 							if (flagOnCtrl5) SendD3RightMouseClick();
 							if (flagOnCtrl5) Sleep(50 + (rand() % 5));
@@ -1266,6 +1289,12 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 					{
 						for (int iitem = 0; iitem < 60; iitem += 2)
 						{
+							if (d3WidthScale == 1280 && d3Height == 1024 && iitem == 0)
+							{
+								iitem = 12;
+							}
+
+
 							if (flagOnCtrl6) SetD3Mouse(xIventoryArray[iitem], yIventoryArray[iitem]);
 							if (flagOnCtrl6) SendD3RightMouseClick();
 							if (flagOnCtrl6) Sleep(50 + (rand() % 5));
@@ -1303,7 +1332,7 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 						if (flagOnCtrl9) SetD3Mouse(xSalvageTable, ySalvageTable);
 						if (flagOnCtrl9) SendD3LeftMouseClick();
 
-						if (flagOnCtrl9) SetD3Mouse(xSalvage, ySalvage);
+						if (flagOnCtrl9) SetD3Mouse(xSalvageButton, ySalvageButton);
 						if (flagOnCtrl9) SendD3LeftMouseClick();
 						if (flagOnCtrl9) Sleep(50 + (rand() % 5));
 
