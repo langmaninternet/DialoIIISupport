@@ -35,8 +35,6 @@ Press CTRL + 5 for 1 slot items,
 
 CTRL + 6 for 2 slot items .
 
-CTRL + 7 to drop all item in Inventory to ground
-
 CTRL + 9 if you want to clear the Inventory at the Blacksmith
 
 ESC or SPACE to Stop 
