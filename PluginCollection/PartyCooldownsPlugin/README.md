@@ -1,7 +1,7 @@
 # PartyCooldownsPlugin
 
-Modification and combination of PartyCooldownsPlugin 
-
+Modification of PartyCooldownsPlugin 
+( **The original is not mine** )
 
 https://github.com/RuneBarrett/ThudPlugins 
 
