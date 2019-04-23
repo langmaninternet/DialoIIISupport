@@ -20,6 +20,7 @@ namespace Turbo.Plugins.Default
         public WorldDecoratorCollection JuggernautDecorator { get; set; }
         public WorldDecoratorCollection GoblinDecorator { get; set; } // Goblin
         public WorldDecoratorCollection UniqueDecorator { get; set; }   //Purple
+        public WorldDecoratorCollection BossDecorator { get; set; }   //Boss
         public TopLabelDecorator EliteHealthDecorator { get; set; }
         public int EliteHealthBlockSize;
         public int StrickenPropSquare { get; set; }
