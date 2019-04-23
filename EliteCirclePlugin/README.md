@@ -1,6 +1,6 @@
 # EliteCirclePlugin
 
-Best mod and combination of MonsterCirclePlugin (https://github.com/coreyblackgh/HUD-Plugins) and DiadrasFirstGemPlugin (https://github.com/User5981/Resu)
+Modification and combination of MonsterCirclePlugin (https://github.com/coreyblackgh/HUD-Plugins) and DiadrasFirstGemPlugin (https://github.com/User5981/Resu)
 
 Original Features
 ------------
