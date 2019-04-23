@@ -81,33 +81,30 @@ namespace Turbo.Plugins.Default
             WatchedSnos = new List<uint>
             {
                 //Add skills to the watch list below
+
                 //--- Necromancer
-                465350, //Simulacrum  
-                465839, //Land of the Dead
-                //465952 , // Final Service
+                Hud.Sno.SnoPowers.Necromancer_Simulacrum.sno,           //Simulacrum - 465350
+                Hud.Sno.SnoPowers.Necromancer_LandOfTheDead.sno,        //Land of the Dead - 465839
 
                 //--- Barb
-                79528, //Ignore Pain
-                79607, //Wrath of the Berserker
-                375483, //Warcry
-                //217819, // Nerves of Steel
+                 Hud.Sno.SnoPowers.Barbarian_IgnorePain.sno,            //Ignore Pain - 79528
+                 Hud.Sno.SnoPowers.Barbarian_WrathOfTheBerserker.sno,   //Wrath of the Berserker - 79607
+                 Hud.Sno.SnoPowers.Barbarian_WarCry.sno,                //Warcry - 375483
 
                 //--- Monk
-                317076, //Inner Sanctuary
-                //156484, //Near Death Experience
+                Hud.Sno.SnoPowers.Monk_InnerSanctuary.sno,              //Inner Sanctuary - 317076
 
                 //--- Witch Doctor
-                106237, //Spirit Walk
+                Hud.Sno.SnoPowers.WitchDoctor_SpiritWalk.sno,           //Spirit Walk - 106237
 
                 //--- Demon Hunter 
-                365311, //Companion
-                129217, //Sentry
-                //324770, //Awareness
+                 Hud.Sno.SnoPowers.DemonHunter_Companion.sno,           //Companion - 365311
+                 Hud.Sno.SnoPowers.DemonHunter_Sentry.sno,              //Sentry - 129217
 
 
-                //--- Wizard
-                134872, //Archon - Needs testing, dont use for now
-               // 208474 // Unstable Anomaly
+                 //--- Wizard
+                Hud.Sno.SnoPowers.Wizard_Archon.sno,                    //Archon - 134872
+
             };
 
             ClassFont = Hud.Render.CreateFont("tahoma", 7, 230, 255, 255, 255, true, false, 255, 0, 0, 0, true);
@@ -213,26 +210,123 @@ namespace Turbo.Plugins.Default
                     }
                     else if (skill != null && skill.SnoPower.Sno == 134872)
                     {
-                        if (archonTimeLeft > 0)
-                        {
-
-                        }
-
-                        //  var wizCheatDeath = player.Powers.GetBuff(Hud.Sno.SnoPowers.Wizard_Passive_UnstableAnomaly.Sno);
-                        //  if (wizCheatDeath != null)
-                        //  {
-                        //      var Texture = Hud.Texture.GetTexture(Hud.Sno.SnoPowers.Wizard_Passive_UnstableAnomaly.Icons[1].TextureId);
-                        //      if (Texture != null) Texture.Draw(xPos, HudHeight * (StartYPos + 0.03f), _size, _size);
-                        //      if (wizCheatDeath.TimeLeftSeconds[1] > 0.0)
-                        //      {
-                        //          var layout = ClassFont.GetTextLayout(wizCheatDeath.TimeLeftSeconds[1].ToString("0.0") + "s");
-                        //          ClassFont.DrawText(layout, xPos, HudHeight * (StartYPos + 0.03f) + _size / 2);
-                        //      }
-                        //  }
+                        var Texture = Hud.Texture.GetTexture(Hud.Sno.SnoPowers.Wizard_Archon.Icons[1].TextureId);
+                        if (Texture != null) Texture.Draw(xPos, HudHeight * (StartYPos + 0.03f), _size, _size);
                     }
                     xPos += _size * 1.1f;
-                }
 
+                    switch (player.HeroClassDefinition.HeroClass)
+                    {            
+                        case HeroClass.WitchDoctor:
+                            var wdCheatDeathBuff = player.Powers.GetBuff(Hud.Sno.SnoPowers.WitchDoctor_Passive_SpiritVessel.Sno);
+                            if (wdCheatDeathBuff != null)
+                            {
+                                if (wdCheatDeathBuff.TimeLeftSeconds[1] > 0.0)
+                                {
+                                    var Texture = Hud.Texture.GetTexture(Hud.Sno.SnoPowers.WitchDoctor_Passive_SpiritVessel.Icons[1].TextureId);
+                                    if (Texture != null) Texture.Draw(xPos, HudHeight * (StartYPos + 0.03f), _size, _size);
+
+                                    var layout = ClassFont.GetTextLayout(wdCheatDeathBuff.TimeLeftSeconds[1].ToString("0.0") + "s");
+                                    ClassFont.DrawText(layout, xPos, HudHeight * (StartYPos + 0.03f) + _size / 2);
+                                }
+                                xPos += _size * 1.1f;
+                            }
+                            break;
+                        case HeroClass.Crusader:
+                            var crusaderCheatDeathBuff = player.Powers.GetBuff(Hud.Sno.SnoPowers.Crusader_Passive_Indestructible.Sno);
+                            if (crusaderCheatDeathBuff != null)
+                            {
+                                if (crusaderCheatDeathBuff.TimeLeftSeconds[1] > 0.0)
+                                {
+                                    var Texture = Hud.Texture.GetTexture(Hud.Sno.SnoPowers.Crusader_Passive_Indestructible.Icons[1].TextureId);
+                                    if (Texture != null) Texture.Draw(xPos, HudHeight * (StartYPos + 0.03f), _size, _size);
+
+                                    var layout = ClassFont.GetTextLayout(crusaderCheatDeathBuff.TimeLeftSeconds[1].ToString("0.0") + "s");
+                                    ClassFont.DrawText(layout, xPos, HudHeight * (StartYPos + 0.03f) + _size / 2);
+                                }
+                                xPos += _size * 1.1f;
+                            }
+                            break;
+                        case HeroClass.Barbarian:
+                            var barbarCheatDeathBuff = player.Powers.GetBuff(Hud.Sno.SnoPowers.Barbarian_Passive_NervesOfSteel.Sno);
+                            if (barbarCheatDeathBuff != null)
+                            {
+                                if (barbarCheatDeathBuff.TimeLeftSeconds[1] > 0.0)
+                                {
+                                    var Texture = Hud.Texture.GetTexture(Hud.Sno.SnoPowers.Barbarian_Passive_NervesOfSteel.Icons[1].TextureId);
+                                    if (Texture != null) Texture.Draw(xPos, HudHeight * (StartYPos + 0.03f), _size, _size);
+
+                                    var layout = ClassFont.GetTextLayout(barbarCheatDeathBuff.TimeLeftSeconds[1].ToString("0.0") + "s");
+                                    ClassFont.DrawText(layout, xPos, HudHeight * (StartYPos + 0.03f) + _size / 2);
+                                }
+                                xPos += _size * 1.1f;
+                            }
+                            break;
+                        case HeroClass.Monk:
+                            var monkCheatDeathBuff = player.Powers.GetBuff(Hud.Sno.SnoPowers.Monk_Passive_NearDeathExperience.Sno);
+                            if (monkCheatDeathBuff != null)
+                            {
+                                if (monkCheatDeathBuff.TimeLeftSeconds[1] > 0.0)
+                                {
+                                    var Texture = Hud.Texture.GetTexture(Hud.Sno.SnoPowers.Monk_Passive_NearDeathExperience.Icons[1].TextureId);
+                                    if (Texture != null) Texture.Draw(xPos, HudHeight * (StartYPos + 0.03f), _size, _size);
+
+                                    var layout = ClassFont.GetTextLayout(monkCheatDeathBuff.TimeLeftSeconds[1].ToString("0.0") + "s");
+                                    ClassFont.DrawText(layout, xPos, HudHeight * (StartYPos + 0.03f) + _size / 2);
+                                }
+                                xPos += _size * 1.1f;
+                            }
+                            break;
+                        case HeroClass.Necromancer:
+                            var necCheatDeathBuff = player.Powers.GetBuff(Hud.Sno.SnoPowers.Necromancer_Passive_FinalService.Sno);
+                            if (necCheatDeathBuff != null)
+                            {
+                                if (necCheatDeathBuff.TimeLeftSeconds[1] > 0.0)
+                                {
+                                    var Texture = Hud.Texture.GetTexture(Hud.Sno.SnoPowers.Necromancer_Passive_FinalService.Icons[1].TextureId);
+                                    if (Texture != null) Texture.Draw(xPos, HudHeight * (StartYPos + 0.03f), _size, _size);
+
+                                    var layout = ClassFont.GetTextLayout(necCheatDeathBuff.TimeLeftSeconds[1].ToString("0.0") + "s");
+                                    ClassFont.DrawText(layout, xPos, HudHeight * (StartYPos + 0.03f) + _size / 2);
+                                }
+                                xPos += _size * 1.1f;
+                            }
+                            break;
+                        case HeroClass.DemonHunter:
+                            var dhCheatDeathBuff = player.Powers.GetBuff(Hud.Sno.SnoPowers.DemonHunter_Passive_Awareness.Sno);
+                            if (dhCheatDeathBuff != null)
+                            {
+                                if (dhCheatDeathBuff.TimeLeftSeconds[1] > 0.0)
+                                {
+                                    var Texture = Hud.Texture.GetTexture(Hud.Sno.SnoPowers.DemonHunter_Passive_Awareness.Icons[1].TextureId);
+                                    if (Texture != null) Texture.Draw(xPos, HudHeight * (StartYPos + 0.03f), _size, _size);
+
+                                    var layout = ClassFont.GetTextLayout(dhCheatDeathBuff.TimeLeftSeconds[1].ToString("0.0") + "s");
+                                    ClassFont.DrawText(layout, xPos, HudHeight * (StartYPos + 0.03f) + _size / 2);
+                                }
+                                xPos += _size * 1.1f;
+                            }
+                            break;
+                        case HeroClass.Wizard:
+                            var wizCheatDeathBuff = player.Powers.GetBuff(Hud.Sno.SnoPowers.Wizard_Passive_UnstableAnomaly.Sno);
+                            if (wizCheatDeathBuff != null)
+                            {
+                                if (wizCheatDeathBuff.TimeLeftSeconds[1] > 0.0)
+                                {
+                                    var Texture = Hud.Texture.GetTexture(Hud.Sno.SnoPowers.Wizard_Passive_UnstableAnomaly.Icons[1].TextureId);
+                                    if (Texture != null) Texture.Draw(xPos, HudHeight * (StartYPos + 0.03f), _size, _size);
+
+                                    var layout = ClassFont.GetTextLayout(wizCheatDeathBuff.TimeLeftSeconds[1].ToString("0.0") + "s");
+                                    ClassFont.DrawText(layout, xPos, HudHeight * (StartYPos + 0.03f) + _size / 2);
+                                }
+                                xPos += _size * 1.1f;
+                            }
+
+                            //359580
+                            break;
+                    }
+
+                }
                 if (foundCarrySkill) xPos += _size * 1.1f;
             }
         }
