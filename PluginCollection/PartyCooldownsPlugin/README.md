@@ -24,8 +24,8 @@ Original Features
 
 Mod Features
 ------------
-+ Shows Archon Skill ( without any bug and exceptions, i fixed all bug)
-+ Show Cheat Death with cooldown
++ Shows Archon Skill (without any bug and exceptions, i fixed all bug)
++ Show Cheat Death with cooldown (only show when it proc)
 
 
 
