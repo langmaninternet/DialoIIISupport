@@ -1403,6 +1403,7 @@ void CDiabloIIISupportDlg::OnKillFocusLeftMouseTime()
 	if (newValue != d3Config.leftMouseTime)
 	{
 		d3Config.leftMouseTime = newValue;
+		d3Config.profileleftMouseTime[d3Config.currentProfile] = newValue;
 		OnSaveConfig();
 	}
 }
@@ -1419,6 +1420,7 @@ void CDiabloIIISupportDlg::OnKillFocusRightMouseTime()
 	if (newValue != d3Config.rightMouseTime)
 	{
 		d3Config.rightMouseTime = newValue;
+		d3Config.profilerightMouseTime[d3Config.currentProfile] = newValue;
 		OnSaveConfig();
 	}
 }
