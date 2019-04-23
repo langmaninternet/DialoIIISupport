@@ -1,9 +1,8 @@
 using System;
-using System.Linq;
-using SharpDX.DirectInput;
-using SharpDX;
-using Turbo.Plugins.Default;
 using System.Collections.Generic;
+using System.Linq;
+using SharpDX;
+
 
 namespace Turbo.Plugins.Default
 {
@@ -34,8 +33,6 @@ namespace Turbo.Plugins.Default
         private Dictionary<HeroClass, string> _classShortName;
         private readonly int[] _skillOrder = { 2, 3, 4, 5, 0, 1 };
 
-
-        public BuffRuleCalculator RuleList { get; private set; }
 
 
         private bool IsZDPS(IPlayer player)
@@ -151,17 +148,7 @@ namespace Turbo.Plugins.Default
 
 
 
-            RuleList = new BuffRuleCalculator(Hud);
-            RuleList.Rules.Add(new BuffRule(156484) { IconIndex = 1, MinimumIconCount = 1, IconSizeMultiplier = 1.25f, }); // Near Death Experience
-            RuleList.Rules.Add(new BuffRule(208474) { IconIndex = 1, MinimumIconCount = 1, IconSizeMultiplier = 1.25f, }); // Unstable Anomaly
-            RuleList.Rules.Add(new BuffRule(359580) { IconIndex = 1, MinimumIconCount = 1, IconSizeMultiplier = 1.25f, }); // Firebird's Finery
-            RuleList.Rules.Add(new BuffRule(324770) { IconIndex = 1, MinimumIconCount = 1, IconSizeMultiplier = 1.25f, }); // Awareness
-            RuleList.Rules.Add(new BuffRule(218501) { IconIndex = 1, MinimumIconCount = 1, IconSizeMultiplier = 1.25f, }); // Spirit Vessel
-            RuleList.Rules.Add(new BuffRule(309830) { IconIndex = 1, MinimumIconCount = 1, IconSizeMultiplier = 1.25f, }); // Indestructible
-            RuleList.Rules.Add(new BuffRule(217819) { IconIndex = 1, MinimumIconCount = 1, IconSizeMultiplier = 1.25f, }); // Nerves of Steel
-            RuleList.Rules.Add(new BuffRule(465952) { IconIndex = 1, MinimumIconCount = 1, IconSizeMultiplier = 1.25f, }); // Final Service 
-
-
+      
 
 
         }
@@ -231,10 +218,11 @@ namespace Turbo.Plugins.Default
                         var wizCheatDeath = player.Powers.GetBuff(Hud.Sno.SnoPowers.Wizard_Passive_UnstableAnomaly.Sno);
                         if (wizCheatDeath != null)
                         {
-                            //var Texture = Hud.Texture.GetTexture(Hud.Sno.SnoPowers.Wizard_Passive_UnstableAnomaly.Sno);
+                            var Texture = Hud.Texture.GetTexture(Hud.Sno.SnoPowers.Wizard_Passive_UnstableAnomaly.Icons[1].TextureId);
+                            if (Texture != null) Texture.Draw(xPos, HudHeight * (StartYPos + 0.03f), _size, _size);
                             if (wizCheatDeath.TimeLeftSeconds[1] > 0.0)
                             {
-                                var layout = ClassFont.GetTextLayout("CheatDeath\n" + wizCheatDeath.TimeLeftSeconds[1].ToString("0.0") + "s\n");
+                                var layout = ClassFont.GetTextLayout(wizCheatDeath.TimeLeftSeconds[1].ToString("0.0") + "s");
                                 ClassFont.DrawText(layout, xPos, HudHeight * (StartYPos + 0.03f) + _size / 2);
                             }
                         }
