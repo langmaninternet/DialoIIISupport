@@ -11,7 +11,7 @@ https://www.ownedcore.com/forums/diablo-3/turbohud/turbohud-community-plugins/65
 
 Installation
 ------------
-Copy EliteCirclePlugin.cs to TurboHUD\plugins\Default\
+Copy ** EliteCirclePlugin.cs ** to ** TurboHUD\plugins\Default\ **
 
 To use this plugin, you need remove original version of MonsterCirclePlugin and DiadrasFirstGemPlugin.
 
