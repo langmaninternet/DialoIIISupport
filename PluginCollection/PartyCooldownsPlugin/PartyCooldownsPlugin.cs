@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using SharpDX;
 
 
 namespace Turbo.Plugins.Default
@@ -148,7 +146,7 @@ namespace Turbo.Plugins.Default
 
 
 
-      
+
 
 
         }
@@ -215,17 +213,22 @@ namespace Turbo.Plugins.Default
                     }
                     else if (skill != null && skill.SnoPower.Sno == 134872)
                     {
-                        var wizCheatDeath = player.Powers.GetBuff(Hud.Sno.SnoPowers.Wizard_Passive_UnstableAnomaly.Sno);
-                        if (wizCheatDeath != null)
+                        if (archonTimeLeft > 0)
                         {
-                            var Texture = Hud.Texture.GetTexture(Hud.Sno.SnoPowers.Wizard_Passive_UnstableAnomaly.Icons[1].TextureId);
-                            if (Texture != null) Texture.Draw(xPos, HudHeight * (StartYPos + 0.03f), _size, _size);
-                            if (wizCheatDeath.TimeLeftSeconds[1] > 0.0)
-                            {
-                                var layout = ClassFont.GetTextLayout(wizCheatDeath.TimeLeftSeconds[1].ToString("0.0") + "s");
-                                ClassFont.DrawText(layout, xPos, HudHeight * (StartYPos + 0.03f) + _size / 2);
-                            }
+
                         }
+
+                        //  var wizCheatDeath = player.Powers.GetBuff(Hud.Sno.SnoPowers.Wizard_Passive_UnstableAnomaly.Sno);
+                        //  if (wizCheatDeath != null)
+                        //  {
+                        //      var Texture = Hud.Texture.GetTexture(Hud.Sno.SnoPowers.Wizard_Passive_UnstableAnomaly.Icons[1].TextureId);
+                        //      if (Texture != null) Texture.Draw(xPos, HudHeight * (StartYPos + 0.03f), _size, _size);
+                        //      if (wizCheatDeath.TimeLeftSeconds[1] > 0.0)
+                        //      {
+                        //          var layout = ClassFont.GetTextLayout(wizCheatDeath.TimeLeftSeconds[1].ToString("0.0") + "s");
+                        //          ClassFont.DrawText(layout, xPos, HudHeight * (StartYPos + 0.03f) + _size / 2);
+                        //      }
+                        //  }
                     }
                     xPos += _size * 1.1f;
                 }
