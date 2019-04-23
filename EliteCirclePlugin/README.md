@@ -18,6 +18,6 @@ Mod Features
 
 Screenshot
 ------------
-![](FinalRelease/EliteCirclePluginSS.png)
+![](EliteCirclePluginSS.png)
 
 
