@@ -14,7 +14,6 @@ namespace Turbo.Plugins.Default
         /* PartyCooldownsPlugin                                                 */
         /************************************************************************/
         public SkillPainter SkillPainter { get; set; }
-        public TopLabelDecorator Label { get; set; }
         public IFont ClassFont { get; set; }
         public List<uint> WatchedSnos;
 
@@ -27,14 +26,20 @@ namespace Turbo.Plugins.Default
         public bool ShowInTown { get; set; }
         public bool OnlyInGR { get; set; }
 
-        private float _size = 0;
+
         private float HudWidth { get { return Hud.Window.Size.Width; } }
         private float HudHeight { get { return Hud.Window.Size.Height; } }
-        private Dictionary<HeroClass, string> _classShorts;
+        private float _size = 0;
+
+        private Dictionary<HeroClass, string> _classShortName;
         private readonly int[] _skillOrder = { 2, 3, 4, 5, 0, 1 };
-        private readonly int[] _passiveOrder = { 0, 1, 2, 3 };
-        double archonTimeLeft;
-        double archonCooldown;
+        private double archonTimeLeft;
+        private double archonCooldown;
+
+       // public BuffRuleCalculator ProcRuleCalculator { get; set; }
+
+
+
 
         private bool IsZDPS(IPlayer player)
         {
@@ -115,7 +120,7 @@ namespace Turbo.Plugins.Default
 
             ClassFont = Hud.Render.CreateFont("tahoma", 7, 230, 255, 255, 255, true, false, 255, 0, 0, 0, true);
 
-            _classShorts = new Dictionary<HeroClass, string>
+            _classShortName = new Dictionary<HeroClass, string>
             {
                 {HeroClass.Barbarian, "Barb"},
                 {HeroClass.Monk, "Monk"},
@@ -144,6 +149,25 @@ namespace Turbo.Plugins.Default
                 },
                 SkillDpsFont = Hud.Render.CreateFont("tahoma", 7, 222, 255, 255, 255, false, false, 0, 0, 0, 0, false),
             };
+
+
+
+
+
+            //      ProcRuleCalculator = new BuffRuleCalculator(Hud);
+            //      ProcRuleCalculator.SizeMultiplier = 0.65f;
+            //      ProcRuleCalculator.Rules.Add(new BuffRule(Hud.Sno.SnoPowers.Wizard_Passive_UnstableAnomaly.Sno) { IconIndex = 1, MinimumIconCount = 1, ShowTimeLeft = true, ShowStacks = false }); // Wizard_Passive_UnstableAnomaly (Cooldown)
+            //      ProcRuleCalculator.Rules.Add(new BuffRule(Hud.Sno.SnoPowers.Monk_Passive_NearDeathExperience.Sno) { IconIndex = 1, MinimumIconCount = 1, ShowTimeLeft = true, ShowStacks = false });        // Passive (downtime) 
+            //      ProcRuleCalculator.Rules.Add(new BuffRule(Hud.Sno.SnoPowers.Barbarian_Passive_NervesOfSteel.Sno) { IconIndex = 1, MinimumIconCount = 1, ShowTimeLeft = true, ShowStacks = false });        // Cooldown
+            //      ProcRuleCalculator.Rules.Add(new BuffRule(Hud.Sno.SnoPowers.Necromancer_Passive_FinalService.Sno) { IconIndex = 1, MinimumIconCount = 1, ShowTimeLeft = true, ShowStacks = false });        // Cooldown
+            //      ProcRuleCalculator.Rules.Add(new BuffRule(Hud.Sno.SnoPowers.Crusader_Passive_Indestructible.Sno) { IconIndex = 1, MinimumIconCount = 1, ShowTimeLeft = true, ShowStacks = false });        // passive (cooldown)
+            //      ProcRuleCalculator.Rules.Add(new BuffRule(Hud.Sno.SnoPowers.DemonHunter_Passive_Awareness.Sno) { IconIndex = 1, MinimumIconCount = 1, ShowTimeLeft = true, ShowStacks = false });        // Passive (cooldown)
+            //      ProcRuleCalculator.Rules.Add(new BuffRule(Hud.Sno.SnoPowers.WitchDoctor_Passive_SpiritVessel.Sno) { IconIndex = 1, MinimumIconCount = 1, ShowTimeLeft = true, ShowStacks = false });        // Passive (cooldown)
+
+
+
+
+
         }
         public void PaintTopInGamePartyCooldownsPlugin(ClipState clipState)
         {
@@ -193,7 +217,7 @@ namespace Turbo.Plugins.Default
                         }
                         else
                         {
-                            var layout = ClassFont.GetTextLayout(player.BattleTagAbovePortrait + "\n(" + ((IsZDPS(player)) ? "Z" : "") + _classShorts[player.HeroClassDefinition.HeroClass] + ")");
+                            var layout = ClassFont.GetTextLayout(player.BattleTagAbovePortrait + "\n(" + ((IsZDPS(player)) ? "Z" : "") + _classShortName[player.HeroClassDefinition.HeroClass] + ")");
                             ClassFont.DrawText(layout, xPos - (layout.Metrics.Width * 0.1f), HudHeight * StartYPos);
                         }
                         firstIter = false;
