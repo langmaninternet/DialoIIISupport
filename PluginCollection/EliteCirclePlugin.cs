@@ -332,7 +332,15 @@ namespace Turbo.Plugins.Default
             }
 
 
-
+            var shrines = Hud.Game.Shrines.Where(s => (s.Type == ShrineType.PoolOfReflection || s.Type == ShrineType.BanditShrine));
+            foreach (var shrine in shrines)
+            {
+                if (shrine.IsDisabled == false && shrine.IsOperated == false)
+                {
+                    var monsterScreenCoordinate = shrine.FloorCoordinate.ToScreenCoordinate();
+                    Hud.Render.CreateBrush(192, 255, 255, 55, -1).DrawLine(monsterScreenCoordinate.X, monsterScreenCoordinate.Y, Hud.Game.Me.ScreenCoordinate.X, Hud.Game.Me.ScreenCoordinate.Y + 60, 1.0f);
+                }
+            }
 
 
             monstersElite.Clear();
