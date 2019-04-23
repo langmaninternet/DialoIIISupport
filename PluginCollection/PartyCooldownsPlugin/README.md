@@ -13,7 +13,7 @@ Installation
 ------------
 Copy PartyCooldownsPlugin.cs to TurboHUD\plugins\Default\
 
-To use this plugin, you need remove original version of PartyCooldownsPlugin.
+To use this plugin, you need **remove original version of PartyCooldownsPlugin**.
 
 
 Original Features
