@@ -228,6 +228,7 @@ namespace Turbo.Plugins.Default
                                         ClassFont.DrawText(layout, xPos, HudHeight * (StartYPos + 0.03f) + _size / 2);
                                     }
                                     xPos += _size * 1.1f;
+                                    foundCarrySkill = true;
                                 }
                                 break;
                             case HeroClass.Crusader:
@@ -243,6 +244,7 @@ namespace Turbo.Plugins.Default
                                         ClassFont.DrawText(layout, xPos, HudHeight * (StartYPos + 0.03f) + _size / 2);
                                     }
                                     xPos += _size * 1.1f;
+                                    foundCarrySkill = true;
                                 }
                                 break;
                             case HeroClass.Barbarian:
@@ -258,6 +260,7 @@ namespace Turbo.Plugins.Default
                                         ClassFont.DrawText(layout, xPos, HudHeight * (StartYPos + 0.03f) + _size / 2);
                                     }
                                     xPos += _size * 1.1f;
+                                    foundCarrySkill = true;
                                 }
                                 break;
                             case HeroClass.Monk:
@@ -273,6 +276,7 @@ namespace Turbo.Plugins.Default
                                         ClassFont.DrawText(layout, xPos, HudHeight * (StartYPos + 0.03f) + _size / 2);
                                     }
                                     xPos += _size * 1.1f;
+                                    foundCarrySkill = true;
                                 }
                                 break;
                             case HeroClass.Necromancer:
@@ -288,6 +292,7 @@ namespace Turbo.Plugins.Default
                                         ClassFont.DrawText(layout, xPos, HudHeight * (StartYPos + 0.03f) + _size / 2);
                                     }
                                     xPos += _size * 1.1f;
+                                    foundCarrySkill = true;
                                 }
                                 break;
                             case HeroClass.DemonHunter:
@@ -303,6 +308,7 @@ namespace Turbo.Plugins.Default
                                         ClassFont.DrawText(layout, xPos, HudHeight * (StartYPos + 0.03f) + _size / 2);
                                     }
                                     xPos += _size * 1.1f;
+                                    foundCarrySkill = true;
                                 }
                                 break;
                             case HeroClass.Wizard:
@@ -318,6 +324,7 @@ namespace Turbo.Plugins.Default
                                         ClassFont.DrawText(layout, xPos, HudHeight * (StartYPos + 0.03f) + _size / 2);
                                     }
                                     xPos += _size * 1.1f;
+                                    foundCarrySkill = true;
                                 }
 
                                 //359580
