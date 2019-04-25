@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Turbo.Plugins.Default
 {
-    public class EliteCirclePlugin : BasePlugin, IInGameWorldPainter
+    public class EliteCirclePlugin : BasePlugin, IInGameWorldPainter, IAfterCollectHandler, ICustomizer
     {
         /************************************************************************/
         /* MonsterCirclePlugin                                                  */
@@ -201,6 +201,15 @@ namespace Turbo.Plugins.Default
                 StrickenMonsterStatus.Clear();
             }
         }
+
+        private IQuest riftQuest
+        {
+            get
+            {
+                return Hud.Game.Quests.FirstOrDefault(q => q.SnoQuest.Sno == 337492) ?? // rift
+                       Hud.Game.Quests.FirstOrDefault(q => q.SnoQuest.Sno == 382695);   // gr
+            }
+        }
         public bool IsGuardianAlive()
         {
             return riftQuest != null && (riftQuest.QuestStepId == 3 || riftQuest.QuestStepId == 16);
@@ -208,9 +217,9 @@ namespace Turbo.Plugins.Default
         public void DrawEliteCirclePlugin(WorldLayer layer)
         {
             bool flagNeedShowSteadyAimYard = false;
-            if (player.HeroClassDefinition.HeroClass == HeroClass.DemonHunter)
+            if (Hud.Game.Me.HeroClassDefinition.HeroClass == HeroClass.DemonHunter)
             {
-                var dhSteadyAimBuff = player.Powers.GetBuff(Hud.Sno.SnoPowers.DemonHunter_Passive_SteadyAim.Sno);
+                var dhSteadyAimBuff = Hud.Game.Me.Powers.GetBuff(Hud.Sno.SnoPowers.DemonHunter_Passive_SteadyAim.Sno);
                 if (dhSteadyAimBuff != null)
                 {
                     flagNeedShowSteadyAimYard = true;
@@ -396,6 +405,13 @@ namespace Turbo.Plugins.Default
         public void PaintWorld(WorldLayer layer)
         {
             DrawEliteCirclePlugin(layer);
+        }
+        public void AfterCollect()
+        {
+
+        }
+        public void Customize()
+        {
         }
     }
 }
