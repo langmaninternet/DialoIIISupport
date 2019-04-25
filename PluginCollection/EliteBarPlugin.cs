@@ -45,7 +45,7 @@ namespace Turbo.Plugins.Default
             MissingHighlight = true;
             JuggernautHighlight = true;
             CircleNonIllusion = true;
-            ShowRareMinions = true;
+            ShowRareMinions = false;
             ShowDebuffAndCC = true;
             ShowBossHitBox = true; 
             ShowMonsterType = true;
