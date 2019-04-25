@@ -32,7 +32,7 @@ namespace Turbo.Plugins.Default
         {
             EliteHealthDecorator = new TopLabelDecorator(Hud)
             {
-                TextFont = Hud.Render.CreateFont("tahoma", 10, 255, 255, 255, 255, true, false, true),
+                TextFont = Hud.Render.CreateFont("tahoma", 10, 255, 0, 0, 0, true, false, 250, 255, 255, 255, true),
             };
             EliteHealthBlockSize = (int)(Hud.Window.Size.Width / 50);
 
