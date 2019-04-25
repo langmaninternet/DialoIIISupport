@@ -201,24 +201,8 @@ namespace Turbo.Plugins.Default
                 StrickenMonsterStatus.Clear();
             }
         }
-        public bool IsGuardianAlive()
-        {
-            return riftQuest != null && (riftQuest.QuestStepId == 3 || riftQuest.QuestStepId == 16);
-        }
         public void DrawEliteCirclePlugin(WorldLayer layer)
         {
-            bool flagNeedShowSteadyAimYard = false;
-            if (player.HeroClassDefinition.HeroClass == HeroClass.DemonHunter)
-            {
-                var dhSteadyAimBuff = player.Powers.GetBuff(Hud.Sno.SnoPowers.DemonHunter_Passive_SteadyAim.Sno);
-                if (dhSteadyAimBuff != null)
-                {
-                    flagNeedShowSteadyAimYard = true;
-                }
-            }
-
-
-
             var alivemonsters = Hud.Game.AliveMonsters;
             var goblins = Hud.Game.AliveMonsters.Where(x => x.SnoMonster.Priority == MonsterPriority.goblin);
             foreach (var monster in goblins)
@@ -271,24 +255,11 @@ namespace Turbo.Plugins.Default
                     if (monster.Rarity == ActorRarity.Champion) ChampionDecorator.Paint(layer, monster, monster.FloorCoordinate, monster.SnoMonster.NameLocalized);
 
                     var monsterScreenCoordinate = monster.FloorCoordinate.ToScreenCoordinate();
-
-                    if (IsGuardianAlive())
+                    if (currentMonsterHealthPercent < 40.0)
                     {
-                        if (flagNeedShowSteadyAimYard)
-                        {
-                            string monsterHealthPercentStr = monster.NormalizedXyDistanceToMe.ToString("0") + "Yard";
-                            EliteHealthDecorator.TextFunc = () => monsterHealthPercentStr;
-                            EliteHealthDecorator.Paint(monsterScreenCoordinate.X, monsterScreenCoordinate.Y - EliteHealthBlockSize, EliteHealthBlockSize, EliteHealthBlockSize, HorizontalAlign.Center);
-                        }
-                    }
-                    else
-                    {
-                        if (currentMonsterHealthPercent < 40.0)
-                        {
-                            string monsterHealthPercentStr = "HP:" + currentMonsterHealthPercent.ToString("0.0") + "%";
-                            EliteHealthDecorator.TextFunc = () => monsterHealthPercentStr;
-                            EliteHealthDecorator.Paint(monsterScreenCoordinate.X, monsterScreenCoordinate.Y - EliteHealthBlockSize, EliteHealthBlockSize, EliteHealthBlockSize, HorizontalAlign.Center);
-                        }
+                        string monsterHealthPercentStr = "HP:" + currentMonsterHealthPercent.ToString("0.0") + "%";
+                        EliteHealthDecorator.TextFunc = () => monsterHealthPercentStr;
+                        EliteHealthDecorator.Paint(monsterScreenCoordinate.X, monsterScreenCoordinate.Y - EliteHealthBlockSize, EliteHealthBlockSize, EliteHealthBlockSize, HorizontalAlign.Center);
                     }
                     if (currentMonsterHealthPercent < 20.0)
                     {
@@ -370,7 +341,6 @@ namespace Turbo.Plugins.Default
                     Hud.Render.CreateBrush(192, 255, 255, 55, -1).DrawLine(monsterScreenCoordinate.X, monsterScreenCoordinate.Y, Hud.Game.Me.ScreenCoordinate.X, Hud.Game.Me.ScreenCoordinate.Y + 60, 1.0f);
                 }
             }
-
 
 
             monstersElite.Clear();
