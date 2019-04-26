@@ -285,8 +285,8 @@ namespace Turbo.Plugins.Default
                     {
                         if (flagNeedShowSteadyAimYard)
                         {
-                            string monsterHealthPercentStr = monster.NormalizedXyDistanceToMe.ToString("0") + "Yard";
-                            EliteHealthDecorator.TextFunc = () => monsterHealthPercentStr;
+                            string yardStr = monster.NormalizedXyDistanceToMe.ToString("0") + "Yard";
+                            EliteHealthDecorator.TextFunc = () => yardStr;
                             EliteHealthDecorator.Paint(monsterScreenCoordinate.X, monsterScreenCoordinate.Y - EliteHealthBlockSize, EliteHealthBlockSize, EliteHealthBlockSize, HorizontalAlign.Center);
                         }
                     }
@@ -381,7 +381,12 @@ namespace Turbo.Plugins.Default
             }
 
 
-
+            var actors = Hud.Game.Actors.Where(x => x.SnoActor.Sno == ActorSnoEnum._generic_proxy && x.GetAttributeValueAsInt(Hud.Sno.Attributes.Power_Buff_1_Visual_Effect_None, Hud.Sno.SnoPowers.OculusRing.Sno) == 1);
+            foreach (var actor in actors)
+            {
+                var actorScreenCoordinate = actor.FloorCoordinate.ToScreenCoordinate();
+                Hud.Render.CreateBrush(192, 234, 60, 83, -1).DrawLine(actorScreenCoordinate.X, actorScreenCoordinate.Y, Hud.Game.Me.ScreenCoordinate.X, Hud.Game.Me.ScreenCoordinate.Y + 60, 1.0f);
+            }
             monstersElite.Clear();
         }
 
