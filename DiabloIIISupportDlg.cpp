@@ -960,7 +960,7 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 			GetDlgItem(IDC_DEBUGINFO)->SetWindowTextW(debugInfo);
 
 			/************************************************************************/
-			/*                                                                      */
+			/* Wiz                                                                  */
 			/************************************************************************/
 			if (flagOnWizSingleShot)
 			{
@@ -1006,7 +1006,7 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 
 
 			/************************************************************************/
-			/*                                                                      */
+			/* Skill Press                                                          */
 			/************************************************************************/
 			if (d3GameStatus.flagIsOpenMap == false
 				&& d3GameStatus.flagIsOpenSkillTable == false
@@ -1185,13 +1185,12 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 
 
 			/************************************************************************/
-			/*                                                                      */
+			/* Craft                                                                */
 			/************************************************************************/
 			if (d3Wnd != 0 && IsD3WindowActive()
 				//&& d3Rect.right - d3Rect.top == 1920 && d3Rect.bottom - d3Rect.left == 1080
 				)
 			{
-
 				if ((flagOnCtrl5 || flagOnCtrl6 || flagOnCtrl9))
 				{
 					GetDlgItem(IDC_CTRL5TEXT)->EnableWindow(FALSE);
@@ -1254,34 +1253,36 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 					/************************************************************************/
 					if (flagOnCtrl5)
 					{
+						PreloadSalvageItem(preloadSalvageSlot, 60);
 						for (int iitem = 0; iitem < 60; iitem++)
 						{
 							if (d3WidthScale == 1280 && d3Height == 1024 && iitem == 0)
 							{
 								iitem = 24;
 							}
-
 							if (flagOnCtrl5) SetD3Mouse(xIventoryArray[iitem], yIventoryArray[iitem]);
 							if (flagOnCtrl5) SendD3RightMouseClick();
 							if (flagOnCtrl5) Sleep(50 + (rand() % 5));
+							if (preloadSalvageSlot[iitem])
+							{
+								if (flagOnCtrl5) SetD3Mouse(xFill, yFill);
+								if (flagOnCtrl5) SendD3LeftMouseClick();
+								if (flagOnCtrl5) Sleep(50 + (rand() % 5));
 
-							if (flagOnCtrl5) SetD3Mouse(xFill, yFill);
-							if (flagOnCtrl5) SendD3LeftMouseClick();
-							if (flagOnCtrl5) Sleep(50 + (rand() % 5));
+								if (flagOnCtrl5) SetD3Mouse(xTransmute, yTransmute);
+								if (flagOnCtrl5) SendD3LeftMouseClick();
+								if (flagOnCtrl5) Sleep(50 + (rand() % 5));
 
-							if (flagOnCtrl5) SetD3Mouse(xTransmute, yTransmute);
-							if (flagOnCtrl5) SendD3LeftMouseClick();
-							if (flagOnCtrl5) Sleep(50 + (rand() % 5));
+								Sleep(250 + (rand() % 10));
 
-							Sleep(250 + (rand() % 10));
+								if (flagOnCtrl5) SetD3Mouse(xCubeLeftPage, yCubeLeftPage);
+								if (flagOnCtrl5) SendD3LeftMouseClick();
+								if (flagOnCtrl5) Sleep(50 + (rand() % 5));
 
-							if (flagOnCtrl5) SetD3Mouse(xCubeLeftPage, yCubeLeftPage);
-							if (flagOnCtrl5) SendD3LeftMouseClick();
-							if (flagOnCtrl5) Sleep(50 + (rand() % 5));
-
-							if (flagOnCtrl5) SetD3Mouse(xCubeRightPage, yCubeRightPage);
-							if (flagOnCtrl5) SendD3LeftMouseClick();
-							if (flagOnCtrl5) Sleep(50 + (rand() % 5));
+								if (flagOnCtrl5) SetD3Mouse(xCubeRightPage, yCubeRightPage);
+								if (flagOnCtrl5) SendD3LeftMouseClick();
+								if (flagOnCtrl5) Sleep(50 + (rand() % 5));
+							}
 						}
 						flagOnCtrl5 = false;
 					}
@@ -1292,6 +1293,7 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 					/************************************************************************/
 					if (flagOnCtrl6)
 					{
+						PreloadSalvageItem(preloadSalvageSlot, 60);
 						for (int iitem = 0; iitem < 60; iitem += 2)
 						{
 							if (d3WidthScale == 1280 && d3Height == 1024 && iitem == 0)
@@ -1299,28 +1301,30 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 								iitem = 12;
 							}
 
-
 							if (flagOnCtrl6) SetD3Mouse(xIventoryArray[iitem], yIventoryArray[iitem]);
 							if (flagOnCtrl6) SendD3RightMouseClick();
 							if (flagOnCtrl6) Sleep(50 + (rand() % 5));
 
-							if (flagOnCtrl6) SetD3Mouse(xFill, yFill);
-							if (flagOnCtrl6) SendD3LeftMouseClick();
-							if (flagOnCtrl6) Sleep(50 + (rand() % 5));
+							if (preloadSalvageSlot[iitem] || preloadSalvageSlot[iitem + 1])
+							{
+								if (flagOnCtrl6) SetD3Mouse(xFill, yFill);
+								if (flagOnCtrl6) SendD3LeftMouseClick();
+								if (flagOnCtrl6) Sleep(50 + (rand() % 5));
 
-							if (flagOnCtrl6) SetD3Mouse(xTransmute, yTransmute);
-							if (flagOnCtrl6) SendD3LeftMouseClick();
-							if (flagOnCtrl6) Sleep(50 + (rand() % 5));
+								if (flagOnCtrl6) SetD3Mouse(xTransmute, yTransmute);
+								if (flagOnCtrl6) SendD3LeftMouseClick();
+								if (flagOnCtrl6) Sleep(50 + (rand() % 5));
 
-							Sleep(250 + (rand() % 10));
+								Sleep(250 + (rand() % 10));
 
-							if (flagOnCtrl6) SetD3Mouse(xCubeLeftPage, yCubeLeftPage);
-							if (flagOnCtrl6) SendD3LeftMouseClick();
-							if (flagOnCtrl6) Sleep(50 + (rand() % 5));
+								if (flagOnCtrl6) SetD3Mouse(xCubeLeftPage, yCubeLeftPage);
+								if (flagOnCtrl6) SendD3LeftMouseClick();
+								if (flagOnCtrl6) Sleep(50 + (rand() % 5));
 
-							if (flagOnCtrl6) SetD3Mouse(xCubeRightPage, yCubeRightPage);
-							if (flagOnCtrl6) SendD3LeftMouseClick();
-							if (flagOnCtrl6) Sleep(50 + (rand() % 5));
+								if (flagOnCtrl6) SetD3Mouse(xCubeRightPage, yCubeRightPage);
+								if (flagOnCtrl6) SendD3LeftMouseClick();
+								if (flagOnCtrl6) Sleep(50 + (rand() % 5));
+							}
 						}
 						flagOnCtrl6 = false;
 					}
