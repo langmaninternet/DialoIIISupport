@@ -971,7 +971,7 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 				if (d3Config.fullCycleEnable)
 				{
 
-					ArchonStarPactCycle(
+					ArchonStarPactFullCycle(
 						d3Config.keyBlackHole,
 						d3Config.keyWaveOfForce,
 						d3Config.keyMeteor,
@@ -983,7 +983,9 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 				}
 				else
 				{
-					ArchonStarPactCastMeteor(
+					ArchonStarPactSCycle(
+						d3Config.keyBlackHole,
+						d3Config.keyWaveOfForce,
 						d3Config.keyMeteor,
 						d3Config.keyArchon,
 						d3Config.keyPrimary,
@@ -1185,8 +1187,11 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 			/************************************************************************/
 			/*                                                                      */
 			/************************************************************************/
-			if (d3Wnd != 0 && IsD3WindowActive())
+			if (d3Wnd != 0 && IsD3WindowActive()
+				//&& d3Rect.right - d3Rect.top == 1920 && d3Rect.bottom - d3Rect.left == 1080
+				)
 			{
+
 				if ((flagOnCtrl5 || flagOnCtrl6 || flagOnCtrl9))
 				{
 					GetDlgItem(IDC_CTRL5TEXT)->EnableWindow(FALSE);
