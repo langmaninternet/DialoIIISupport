@@ -380,13 +380,29 @@ namespace Turbo.Plugins.Default
                 }
             }
 
-
-            var actors = Hud.Game.Actors.Where(x => x.SnoActor.Sno == ActorSnoEnum._generic_proxy && x.GetAttributeValueAsInt(Hud.Sno.Attributes.Power_Buff_1_Visual_Effect_None, Hud.Sno.SnoPowers.OculusRing.Sno) == 1);
-            foreach (var actor in actors)
+            double minDistanceToMe = 999999.0;
+            var oculusActors = Hud.Game.Actors.Where(x => x.SnoActor.Sno == ActorSnoEnum._generic_proxy && x.GetAttributeValueAsInt(Hud.Sno.Attributes.Power_Buff_1_Visual_Effect_None, Hud.Sno.SnoPowers.OculusRing.Sno) == 1);
+            foreach (var actor in oculusActors)
             {
-                var actorScreenCoordinate = actor.FloorCoordinate.ToScreenCoordinate();
-                Hud.Render.CreateBrush(192, 234, 60, 83, -1).DrawLine(actorScreenCoordinate.X, actorScreenCoordinate.Y, Hud.Game.Me.ScreenCoordinate.X, Hud.Game.Me.ScreenCoordinate.Y + 60, 1.0f);
+                if (minDistanceToMe > actor.NormalizedXyDistanceToMe)
+                {
+                    minDistanceToMe = actor.NormalizedXyDistanceToMe;
+                }
             }
+            foreach (var actor in oculusActors)
+            {
+                if (minDistanceToMe == actor.NormalizedXyDistanceToMe && actor.NormalizedXyDistanceToMe < 100)
+                {
+                    var actorScreenCoordinate = actor.FloorCoordinate.ToScreenCoordinate();
+                    Hud.Render.CreateBrush(192, 234, 60, 83, -1).DrawLine(actorScreenCoordinate.X, actorScreenCoordinate.Y, Hud.Game.Me.ScreenCoordinate.X, Hud.Game.Me.ScreenCoordinate.Y + 60, 1.0f);
+
+
+                    //  StrickenStackDecorator.TextFunc = () => ("(" + (int)(actorScreenCoordinate.X) + "," + (int)(actorScreenCoordinate.Y) + ")");
+                    //  StrickenStackDecorator.Paint(actorScreenCoordinate.X, actorScreenCoordinate.Y, StrickenPropSquare, StrickenPropSquare, HorizontalAlign.Center);
+
+                }
+            }
+
             monstersElite.Clear();
         }
 
