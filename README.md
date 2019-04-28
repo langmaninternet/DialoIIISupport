@@ -9,9 +9,9 @@ https://github.com/langmaninternet/DialoIIISupport/releases
 
 
 
-If you get error with mfc140u.dll , install Visual C++ Redistributable for Visual Studio 2015
+If you get error with mfc140u.dll , install Visual C++ Redistributable for Visual Studio 2017
 
-https://www.microsoft.com/en-gb/download/details.aspx?id=48145
+https://aka.ms/vs/15/release/vc_redist.x86.exe
 
 
 
