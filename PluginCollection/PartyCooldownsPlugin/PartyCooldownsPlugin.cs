@@ -191,6 +191,7 @@ namespace Turbo.Plugins.Default
                     {
                         var layout = ClassFont.GetTextLayout(player.BattleTagAbovePortrait + "\n(" + ((IsZDPS(player)) ? "Z" : "") + _classShortName[player.HeroClassDefinition.HeroClass] + ")");
                         ClassFont.DrawText(layout, xPos - (layout.Metrics.Width * 0.1f), HudHeight * StartYPos);
+                        flagIsFirstIterator = false;
                     }
                     if (skill != null && skill.SnoPower.Sno != 134872)
                     {
