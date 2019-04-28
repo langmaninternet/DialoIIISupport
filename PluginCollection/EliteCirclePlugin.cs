@@ -210,10 +210,15 @@ namespace Turbo.Plugins.Default
                        Hud.Game.Quests.FirstOrDefault(q => q.SnoQuest.Sno == 382695);   // gr
             }
         }
-        public bool IsGuardianAlive()
+        private bool IsGuardianAlive
         {
-            return riftQuest != null && (riftQuest.QuestStepId == 3 || riftQuest.QuestStepId == 16);
+            get
+            {
+                return riftQuest != null && (riftQuest.QuestStepId == 3 || riftQuest.QuestStepId == 16);
+            }
         }
+
+
         public void DrawEliteCirclePlugin(WorldLayer layer)
         {
             bool flagNeedShowSteadyAimYard = false;
@@ -281,12 +286,12 @@ namespace Turbo.Plugins.Default
 
                     var monsterScreenCoordinate = monster.FloorCoordinate.ToScreenCoordinate();
 
-                    if (IsGuardianAlive())
+                    if (IsGuardianAlive)
                     {
                         if (flagNeedShowSteadyAimYard)
                         {
-                            string monsterHealthPercentStr = monster.NormalizedXyDistanceToMe.ToString("0") + "Yard";
-                            EliteHealthDecorator.TextFunc = () => monsterHealthPercentStr;
+                            string yardStr = monster.NormalizedXyDistanceToMe.ToString("0") + "Yard";
+                            EliteHealthDecorator.TextFunc = () => yardStr;
                             EliteHealthDecorator.Paint(monsterScreenCoordinate.X, monsterScreenCoordinate.Y - EliteHealthBlockSize, EliteHealthBlockSize, EliteHealthBlockSize, HorizontalAlign.Center);
                         }
                     }
@@ -380,7 +385,28 @@ namespace Turbo.Plugins.Default
                 }
             }
 
+            double minDistanceToMe = 999999.0;
+            var oculusActors = Hud.Game.Actors.Where(x => x.SnoActor.Sno == ActorSnoEnum._generic_proxy && x.GetAttributeValueAsInt(Hud.Sno.Attributes.Power_Buff_1_Visual_Effect_None, Hud.Sno.SnoPowers.OculusRing.Sno) == 1);
+            foreach (var actor in oculusActors)
+            {
+                if (minDistanceToMe > actor.NormalizedXyDistanceToMe)
+                {
+                    minDistanceToMe = actor.NormalizedXyDistanceToMe;
+                }
+            }
+            foreach (var actor in oculusActors)
+            {
+                if (minDistanceToMe == actor.NormalizedXyDistanceToMe && actor.NormalizedXyDistanceToMe < 100)
+                {
+                    var actorScreenCoordinate = actor.FloorCoordinate.ToScreenCoordinate();
+                    Hud.Render.CreateBrush(192, 234, 60, 83, -1).DrawLine(actorScreenCoordinate.X, actorScreenCoordinate.Y, Hud.Game.Me.ScreenCoordinate.X, Hud.Game.Me.ScreenCoordinate.Y + 60, 1.0f);
 
+
+                    //  StrickenStackDecorator.TextFunc = () => ("(" + (int)(actorScreenCoordinate.X) + "," + (int)(actorScreenCoordinate.Y) + ")");
+                    //  StrickenStackDecorator.Paint(actorScreenCoordinate.X, actorScreenCoordinate.Y, StrickenPropSquare, StrickenPropSquare, HorizontalAlign.Center);
+
+                }
+            }
 
             monstersElite.Clear();
         }
