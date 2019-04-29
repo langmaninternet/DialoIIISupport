@@ -13,8 +13,7 @@ namespace Turbo.Plugins.Default
         /* DiadrasFirstGemPlugin                                                */
         /* https://github.com/User5981/Resu                                     */
         /************************************************************************/
-        public Dictionary<MonsterAffix, WorldDecoratorCollection> AffixDecorators { get; set; }
-        public Dictionary<MonsterAffix, string> CustomAffixNames { get; set; }
+        //public WorldDecoratorCollection ReflectDecorator { get; set; }
         public WorldDecoratorCollection RareDecorator { get; set; }
         public WorldDecoratorCollection ChampionDecorator { get; set; }
         public WorldDecoratorCollection JuggernautDecorator { get; set; }
@@ -30,6 +29,8 @@ namespace Turbo.Plugins.Default
         public Dictionary<uint, Tuple<double, int>> StrickenMonsterStatus { get; set; }  // AcdId, Health, Stacks
         public void LoadEliteCirclePlugin()
         {
+
+
             EliteHealthDecorator = new TopLabelDecorator(Hud)
             {
                 TextFont = Hud.Render.CreateFont("tahoma", 10, 255, 0, 0, 0, true, false, 250, 255, 255, 255, true),
@@ -174,10 +175,21 @@ namespace Turbo.Plugins.Default
                 }
             );
 
-            CustomAffixNames = new Dictionary<MonsterAffix, string>();
 
-            AffixDecorators = new Dictionary<MonsterAffix, WorldDecoratorCollection>();
+            var importantBorderBrush = Hud.Render.CreateBrush(128, 0, 0, 0, 2);
+            var importantLabelFont = Hud.Render.CreateFont("tahoma", 6f, 255, 255, 255, 255, true, false, false);
 
+
+
+
+            //  ReflectDecorator = new WorldDecoratorCollection(
+            //     new GroundLabelDecorator(Hud)
+            //     {
+            //         BackgroundBrush = Hud.Render.CreateBrush(255, 50, 50, 50, 0),
+            //         BorderBrush = Hud.Render.CreateBrush(128, 0, 0, 0, 2),
+            //         TextFont = Hud.Render.CreateFont("tahoma", 5f, 200, 220, 120, 0, false, false, false)
+            //     }
+            //  );
 
 
 
@@ -261,16 +273,8 @@ namespace Turbo.Plugins.Default
                     foreach (var snoMonsterAffix in monster.AffixSnoList)
                     {
                         string affixName = null;
-                        if (CustomAffixNames.ContainsKey(snoMonsterAffix.Affix))
-                        {
-                            affixName = CustomAffixNames[snoMonsterAffix.Affix];
-                        }
-                        else affixName = snoMonsterAffix.NameLocalized;
+                         affixName = snoMonsterAffix.NameLocalized;
                         if (snoMonsterAffix.Affix == MonsterAffix.Juggernaut) flagIsNotJuggernaut = false;
-
-                        WorldDecoratorCollection decorator;
-                        if (!AffixDecorators.TryGetValue(snoMonsterAffix.Affix, out decorator)) continue;
-                        decorator.Paint(layer, monster, monster.FloorCoordinate, affixName);
                     }
                     if (monster.Rarity == ActorRarity.Rare)
                     {
@@ -402,6 +406,13 @@ namespace Turbo.Plugins.Default
 
                 }
             }
+
+
+
+
+
+
+
 
             monstersElite.Clear();
         }
