@@ -236,6 +236,8 @@ namespace Turbo.Plugins.Default
                 {
                     flagNeedShowSteadyAimYard = true;
                 }
+
+                //??
             }
 
 
@@ -408,13 +410,15 @@ namespace Turbo.Plugins.Default
             }
 
 
+            foreach (var actor in Hud.Game.Actors)
+            {
+            }
 
 
 
 
 
-
-            monstersElite.Clear();
+                monstersElite.Clear();
         }
 
 
