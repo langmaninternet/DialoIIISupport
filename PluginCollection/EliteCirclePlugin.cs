@@ -21,6 +21,8 @@ namespace Turbo.Plugins.Default
         public WorldDecoratorCollection UniqueDecorator { get; set; }   //Purple
         public WorldDecoratorCollection BossDecorator { get; set; }   //Boss
         public TopLabelDecorator EliteHealthDecorator { get; set; }
+        public WorldDecoratorCollection WormholeDecorator { get; set; }
+        public WorldDecoratorCollection WormholeWarningDecorator { get; set; }
         public int EliteHealthBlockSize;
         public int StrickenPropSquare { get; set; }
         public bool StrickenInCooldown { get; set; }
@@ -204,6 +206,42 @@ namespace Turbo.Plugins.Default
             };
 
 
+            WormholeWarningDecorator = new WorldDecoratorCollection(
+                 new GroundCircleDecorator(Hud)
+                 {
+                     Brush = Hud.Render.CreateBrush(205, 255, 50, 255, 3, SharpDX.Direct2D1.DashStyle.Dash),
+                     Radius = 5f,
+                 },
+                 new GroundCircleDecorator(Hud)
+                 {
+                     Brush = Hud.Render.CreateBrush(205, 255, 50, 255, 0),
+                     Radius = 4f,
+                 },
+                 new GroundLabelDecorator(Hud)
+                 {
+                     BackgroundBrush = Hud.Render.CreateBrush(0, 0, 0, 0, 0),
+                     TextFont = Hud.Render.CreateFont("tahoma", 20, 255, 255, 255, 255, true, true, true),
+                 }
+             );
+
+            WormholeDecorator = new WorldDecoratorCollection(
+                new GroundCircleDecorator(Hud)
+                {
+                    Brush = Hud.Render.CreateBrush(160, 255, 50, 255, 3, SharpDX.Direct2D1.DashStyle.Dash),
+                    Radius = 5f,
+                },
+                new GroundCircleDecorator(Hud)
+                {
+                    Brush = Hud.Render.CreateBrush(160, 255, 50, 255, 0),
+                    Radius = 4f,
+                },
+                new GroundLabelDecorator(Hud)
+                {
+                    TextFont = Hud.Render.CreateFont("tahoma", 9, 255, 255, 255, 255, true, false, 128, 0, 0, 0, true),
+                }
+            );
+
+
 
         }
         public void OnNewAreaEliteCirclePlugin(bool newGame, ISnoArea area)
@@ -275,7 +313,7 @@ namespace Turbo.Plugins.Default
                     foreach (var snoMonsterAffix in monster.AffixSnoList)
                     {
                         string affixName = null;
-                         affixName = snoMonsterAffix.NameLocalized;
+                        affixName = snoMonsterAffix.NameLocalized;
                         if (snoMonsterAffix.Affix == MonsterAffix.Juggernaut) flagIsNotJuggernaut = false;
                     }
                     if (monster.Rarity == ActorRarity.Rare)
@@ -412,13 +450,20 @@ namespace Turbo.Plugins.Default
 
             foreach (var actor in Hud.Game.Actors)
             {
+                switch (actor.SnoActor.Sno)
+                {
+                    case ActorSnoEnum._x1_monsteraffix_teleportmines:
+                        if (actor.NormalizedXyDistanceToMe <= 6) WormholeWarningDecorator.Paint(layer, actor, actor.FloorCoordinate, "Wormhole!");
+                        else WormholeDecorator.Paint(layer, actor, actor.FloorCoordinate, "Wormhole");
+                        break;
+                }
             }
 
 
 
 
 
-                monstersElite.Clear();
+            monstersElite.Clear();
         }
 
 
