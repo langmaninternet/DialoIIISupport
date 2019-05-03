@@ -38,7 +38,7 @@ Mọi người copy vào các plugin đã fix lại thư mục TurboHUD\plugins\
 
 
 
-Thông tin về 1 số plugin có sẵn
+Thông tin về 1 số plugin có sẵn nên xóa bỏ (nếu muốn)
 ------------
 
 + (Nếu muốn) Bỏ chụp ảnh khi lên level cho đỡ chật ổ 
