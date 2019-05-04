@@ -1045,7 +1045,8 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 				/************************************************************************/
 				/* Use custom                                                           */
 				/************************************************************************/
-				if (flagOnF2 && d3GameStatus.flagIsOpenKadala == false && d3GameStatus.flagIsOpenStash == false && d3GameStatus.flagInAttackMode)
+				if (flagOnF2) GetDlgItem(IDC_F2BIGFRAME)->SetWindowTextW(L"Skill (Hotkey F2) - Running");
+				if (flagOnF2 && d3GameStatus.flagIsOpenKadala == false && d3GameStatus.flagIsOpenStash == false)
 				{
 					GetDlgItem(IDC_SKILL01TIME)->EnableWindow(FALSE);
 					GetDlgItem(IDC_SKILL02TIME)->EnableWindow(FALSE);
@@ -1056,14 +1057,14 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 					GetDlgItem(IDC_SKILL03CHECK)->EnableWindow(FALSE);
 					GetDlgItem(IDC_SKILL04CHECK)->EnableWindow(FALSE);
 					GetDlgItem(IDC_HEALINGCHECK)->EnableWindow(FALSE);
-					GetDlgItem(IDC_F2BIGFRAME)->SetWindowTextW(L"Skill (Hotkey F2) - Running");
+
 					if (d3Wnd != 0)
 					{
 
 						if (d3Config.skill01Enable)
 						{
 							skillSlot01Cooldown += mainTimerDelay;
-							if (skillSlot01Cooldown >= d3Config.skillSlot01Time && d3GameStatus.flagInAttackMode)
+							if (skillSlot01Cooldown >= d3Config.skillSlot01Time)
 							{
 								SendD3Key(d3Config.keySKill01);
 								skillSlot01Cooldown = 0;
@@ -1072,7 +1073,7 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 						if (d3Config.skill02Enable)
 						{
 							skillSlot02Cooldown += mainTimerDelay;
-							if (skillSlot02Cooldown >= d3Config.skillSlot02Time && d3GameStatus.flagInAttackMode)
+							if (skillSlot02Cooldown >= d3Config.skillSlot02Time)
 							{
 								SendD3Key(d3Config.keySKill02);
 								skillSlot02Cooldown = 0;
@@ -1081,7 +1082,7 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 						if (d3Config.skill03Enable)
 						{
 							skillSlot03Cooldown += mainTimerDelay;
-							if (skillSlot03Cooldown >= d3Config.skillSlot03Time && d3GameStatus.flagInAttackMode)
+							if (skillSlot03Cooldown >= d3Config.skillSlot03Time)
 							{
 								SendD3Key(d3Config.keySKill03);
 								skillSlot03Cooldown = 0;
@@ -1090,7 +1091,7 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 						if (d3Config.skill04Enable)
 						{
 							skillSlot04Cooldown += mainTimerDelay;
-							if (skillSlot04Cooldown >= d3Config.skillSlot04Time && d3GameStatus.flagInAttackMode)
+							if (skillSlot04Cooldown >= d3Config.skillSlot04Time)
 							{
 								SendD3Key(d3Config.keySKill04);
 								skillSlot04Cooldown = 0;
@@ -1115,9 +1116,10 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 					GetDlgItem(IDC_HEALINGCHECK)->EnableWindow(TRUE);
 					GetDlgItem(IDC_F2BIGFRAME)->SetWindowTextW(L"Skill (Hotkey F2)");
 				}
+
+				if (flagOnF1) GetDlgItem(IDC_LEFTMOUSETEXT)->SetWindowText(L"Left mouse (Hotkey F1): \r\n	Running");
 				if (flagOnF1 && d3GameStatus.flagIsOpenKadala == false && d3GameStatus.flagIsOpenStash == false)
 				{
-					GetDlgItem(IDC_LEFTMOUSETEXT)->SetWindowText(L"Left mouse (Hotkey F1): \r\n	Running");
 					GetDlgItem(IDC_LEFTMOUSETEXT)->EnableWindow(FALSE);
 					GetDlgItem(IDC_LEFTMOUSETEXTMS)->EnableWindow(FALSE);
 					GetDlgItem(IDC_LEFTMOUSETIME)->EnableWindow(FALSE);
@@ -1145,9 +1147,11 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 					GetDlgItem(IDC_LEFTMOUSETEXTMS)->EnableWindow(TRUE);
 					GetDlgItem(IDC_LEFTMOUSETIME)->EnableWindow(TRUE);
 				}
-				if (flagOnF3 && (d3GameStatus.flagInAttackMode || d3GameStatus.flagIsOpenKadala))
+
+
+				if (flagOnF3) GetDlgItem(IDC_RIGHTMOUSETEXT)->SetWindowText(L"Right Mouse (Hotkey F3): \r\n	Running");
+				if (flagOnF3 && (d3GameStatus.flagIsOpenKadala || d3GameStatus.flagIsOpenStash == false))
 				{
-					GetDlgItem(IDC_RIGHTMOUSETEXT)->SetWindowText(L"Right Mouse (Hotkey F3): \r\n	Running");
 					GetDlgItem(IDC_RIGHTMOUSETEXT)->EnableWindow(FALSE);
 					GetDlgItem(IDC_RIGHTMOUSETEXTMS)->EnableWindow(FALSE);
 					GetDlgItem(IDC_RIGHTMOUSETIME)->EnableWindow(FALSE);
@@ -1175,7 +1179,6 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 					GetDlgItem(IDC_RIGHTMOUSETEXTMS)->EnableWindow(TRUE);
 					GetDlgItem(IDC_RIGHTMOUSETIME)->EnableWindow(TRUE);
 				}
-
 
 
 			}
