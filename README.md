@@ -44,9 +44,12 @@ ESC or SPACE to Stop
 
 Features : Wizard LoN32 Archon Macro
 ------------
-Use 1 hotkey to call full-cycle of StarPact
+Use 1 hotkey to call cycle of StarPact
 
-Auto cast Lightning Blast when it's ready. Note : **Lightning Blast use Skill 01 key to cast**.
+S-Cycle : Design for ping 100-300
+
+
+
 
 Only work on
 + Resolution is 1920x 1080 
