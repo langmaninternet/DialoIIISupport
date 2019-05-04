@@ -46,7 +46,7 @@ Features : Wizard LoN32 Archon Macro
 ------------
 Use 1 hotkey to call cycle of StarPact
 
-S-Cycle : Design for ping 100-300
+S-Cycle more better than Full-Cycle, can work at ping 200-300
 
 
 
