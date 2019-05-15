@@ -228,29 +228,24 @@ void		ValidateD3Config(void)
 	/************************************************************************/
 	d3Config.healingTime = 50;
 }
-bool		IsD3WindowActive(void)
-{
-	HWND		currentHWD = GetForegroundWindow();
-	if (currentHWD)
-	{
-		wchar_t		buffer[1024] = { 0 };
-		GetWindowTextW(currentHWD, buffer, 1023);
-		if (wcscmp(buffer, L"Diablo III") == 0)
-		{
-			return true;
-		}
-	}
-	return false;
-}
+
 bool		IsEnableArchon(void)
 {
 	return d3Config.modeArchonEnable;
 }
 HWND		GetD3Windows(void)
 {
-	return FindWindowW(L"D3 Main Window Class", L"Diablo III");
+	HWND d3Wnd = FindWindowW(L"D3 Main Window Class", L"Diablo III");
+	if (d3Wnd == NULL) d3Wnd = FindWindowW(L"D3 Main Window Class", NULL);
+	if (d3Wnd == NULL) d3Wnd = FindWindowW(NULL, L"Diablo III");
+	return d3Wnd;
 }
-
+bool		IsD3WindowActive(void)
+{
+	HWND		currentHWD = GetForegroundWindow();
+	if (currentHWD == GetD3Windows()) return true;
+	return false;
+}
 void		SendD3LeftMouseClick()
 {
 	HWND d3Wnd = GetD3Windows();
