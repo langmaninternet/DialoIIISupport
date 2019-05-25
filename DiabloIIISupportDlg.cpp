@@ -98,7 +98,7 @@ struct DiabloIIISupportConfig
 DiabloIIISupportConfig	d3Config;
 wchar_t					configSavePath[3000] = { 0 };
 
-const int				mainTimerDelay = 50/*ms*/;
+const int				mainTimerDelay = 10/*ms*/;
 bool					flagOnF1 = false;
 bool					flagOnF2 = false;
 bool					flagOnF3 = false;
@@ -144,20 +144,20 @@ void		ValidateD3Key(wchar_t & keyValue, const wchar_t defaultValue)
 }
 void		ValidateD3Config(void)
 {
-	d3Config.leftMouseTime = int(round(d3Config.leftMouseTime / 50.0) * 50);
-	d3Config.rightMouseTime = int(round(d3Config.rightMouseTime / 50.0) * 50);
-	d3Config.skillSlot01Time = int(round(d3Config.skillSlot01Time / 50.0) * 50);
-	d3Config.skillSlot02Time = int(round(d3Config.skillSlot02Time / 50.0) * 50);
-	d3Config.skillSlot03Time = int(round(d3Config.skillSlot03Time / 50.0) * 50);
-	d3Config.skillSlot04Time = int(round(d3Config.skillSlot04Time / 50.0) * 50);
-	d3Config.healingTime = int(round(d3Config.healingTime / 50.0) * 50);
-	if (d3Config.leftMouseTime < 50) d3Config.leftMouseTime = 50;
-	if (d3Config.rightMouseTime < 50) d3Config.rightMouseTime = 50;
-	if (d3Config.skillSlot01Time < 50) d3Config.skillSlot01Time = 50;
-	if (d3Config.skillSlot02Time < 50) d3Config.skillSlot02Time = 50;
-	if (d3Config.skillSlot03Time < 50) d3Config.skillSlot03Time = 50;
-	if (d3Config.skillSlot04Time < 50) d3Config.skillSlot04Time = 50;
-	if (d3Config.healingTime < 50) d3Config.healingTime = 50;
+	d3Config.leftMouseTime = int(round(d3Config.leftMouseTime / double(mainTimerDelay)) * mainTimerDelay);
+	d3Config.rightMouseTime = int(round(d3Config.rightMouseTime / double(mainTimerDelay)) * mainTimerDelay);
+	d3Config.skillSlot01Time = int(round(d3Config.skillSlot01Time / double(mainTimerDelay)) * mainTimerDelay);
+	d3Config.skillSlot02Time = int(round(d3Config.skillSlot02Time / double(mainTimerDelay)) * mainTimerDelay);
+	d3Config.skillSlot03Time = int(round(d3Config.skillSlot03Time / double(mainTimerDelay)) * mainTimerDelay);
+	d3Config.skillSlot04Time = int(round(d3Config.skillSlot04Time / double(mainTimerDelay)) * mainTimerDelay);
+	d3Config.healingTime = int(round(d3Config.healingTime / double(mainTimerDelay)) * mainTimerDelay);
+	if (d3Config.leftMouseTime < mainTimerDelay) d3Config.leftMouseTime = mainTimerDelay;
+	if (d3Config.rightMouseTime < mainTimerDelay) d3Config.rightMouseTime = mainTimerDelay;
+	if (d3Config.skillSlot01Time < mainTimerDelay) d3Config.skillSlot01Time = mainTimerDelay;
+	if (d3Config.skillSlot02Time < mainTimerDelay) d3Config.skillSlot02Time = mainTimerDelay;
+	if (d3Config.skillSlot03Time < mainTimerDelay) d3Config.skillSlot03Time = mainTimerDelay;
+	if (d3Config.skillSlot04Time < mainTimerDelay) d3Config.skillSlot04Time = mainTimerDelay;
+	if (d3Config.healingTime < mainTimerDelay) d3Config.healingTime = mainTimerDelay;
 
 
 	if (d3Config.skill01Enable != 0) d3Config.skill01Enable = 1;
@@ -176,20 +176,20 @@ void		ValidateD3Config(void)
 		{
 			swprintf_s(d3Config.profileName[iprofile], L"Profile %02d", iprofile);
 		}
-		d3Config.profileleftMouseTime[iprofile] = int(round(d3Config.profileleftMouseTime[iprofile] / 50.0) * 50);
-		d3Config.profilerightMouseTime[iprofile] = int(round(d3Config.profilerightMouseTime[iprofile] / 50.0) * 50);
-		d3Config.profileskillSlot01Time[iprofile] = int(round(d3Config.profileskillSlot01Time[iprofile] / 50.0) * 50);
-		d3Config.profileskillSlot02Time[iprofile] = int(round(d3Config.profileskillSlot02Time[iprofile] / 50.0) * 50);
-		d3Config.profileskillSlot03Time[iprofile] = int(round(d3Config.profileskillSlot03Time[iprofile] / 50.0) * 50);
-		d3Config.profileskillSlot04Time[iprofile] = int(round(d3Config.profileskillSlot04Time[iprofile] / 50.0) * 50);
-		d3Config.profilehealingTime[iprofile] = int(round(d3Config.profilehealingTime[iprofile] / 50.0) * 50);
-		if (d3Config.profileleftMouseTime[iprofile] < 50) d3Config.profileleftMouseTime[iprofile] = 50;
-		if (d3Config.profilerightMouseTime[iprofile] < 50) d3Config.profilerightMouseTime[iprofile] = 50;
-		if (d3Config.profileskillSlot01Time[iprofile] < 50) d3Config.profileskillSlot01Time[iprofile] = 50;
-		if (d3Config.profileskillSlot02Time[iprofile] < 50) d3Config.profileskillSlot02Time[iprofile] = 50;
-		if (d3Config.profileskillSlot03Time[iprofile] < 50) d3Config.profileskillSlot03Time[iprofile] = 50;
-		if (d3Config.profileskillSlot04Time[iprofile] < 50) d3Config.profileskillSlot04Time[iprofile] = 50;
-		if (d3Config.profilehealingTime[iprofile] < 50) d3Config.profilehealingTime[iprofile] = 50;
+		d3Config.profileleftMouseTime[iprofile] = int(round(d3Config.profileleftMouseTime[iprofile] / double(mainTimerDelay)) * mainTimerDelay);
+		d3Config.profilerightMouseTime[iprofile] = int(round(d3Config.profilerightMouseTime[iprofile] / double(mainTimerDelay)) * mainTimerDelay);
+		d3Config.profileskillSlot01Time[iprofile] = int(round(d3Config.profileskillSlot01Time[iprofile] / double(mainTimerDelay)) * mainTimerDelay);
+		d3Config.profileskillSlot02Time[iprofile] = int(round(d3Config.profileskillSlot02Time[iprofile] / double(mainTimerDelay)) * mainTimerDelay);
+		d3Config.profileskillSlot03Time[iprofile] = int(round(d3Config.profileskillSlot03Time[iprofile] / double(mainTimerDelay)) * mainTimerDelay);
+		d3Config.profileskillSlot04Time[iprofile] = int(round(d3Config.profileskillSlot04Time[iprofile] / double(mainTimerDelay)) * mainTimerDelay);
+		d3Config.profilehealingTime[iprofile] = int(round(d3Config.profilehealingTime[iprofile] / double(mainTimerDelay)) * mainTimerDelay);
+		if (d3Config.profileleftMouseTime[iprofile] < mainTimerDelay) d3Config.profileleftMouseTime[iprofile] = mainTimerDelay;
+		if (d3Config.profilerightMouseTime[iprofile] < mainTimerDelay) d3Config.profilerightMouseTime[iprofile] = mainTimerDelay;
+		if (d3Config.profileskillSlot01Time[iprofile] < mainTimerDelay) d3Config.profileskillSlot01Time[iprofile] = mainTimerDelay;
+		if (d3Config.profileskillSlot02Time[iprofile] < mainTimerDelay) d3Config.profileskillSlot02Time[iprofile] = mainTimerDelay;
+		if (d3Config.profileskillSlot03Time[iprofile] < mainTimerDelay) d3Config.profileskillSlot03Time[iprofile] = mainTimerDelay;
+		if (d3Config.profileskillSlot04Time[iprofile] < mainTimerDelay) d3Config.profileskillSlot04Time[iprofile] = mainTimerDelay;
+		if (d3Config.profilehealingTime[iprofile] < mainTimerDelay) d3Config.profilehealingTime[iprofile] = mainTimerDelay;
 		if (d3Config.profileskill01Enable[iprofile] != 0) d3Config.profileskill01Enable[iprofile] = 1;
 		if (d3Config.profileskill02Enable[iprofile] != 0) d3Config.profileskill02Enable[iprofile] = 1;
 		if (d3Config.profileskill03Enable[iprofile] != 0) d3Config.profileskill03Enable[iprofile] = 1;
@@ -226,7 +226,7 @@ void		ValidateD3Config(void)
 	/************************************************************************/
 	/* Force                                                                */
 	/************************************************************************/
-	d3Config.healingTime = 50;
+	d3Config.healingTime = mainTimerDelay;
 }
 
 bool		IsEnableArchon(void)
@@ -1011,18 +1011,21 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 				/************************************************************************/
 				/* Auto press                                                           */
 				/************************************************************************/
-				if (d3GameStatus.flagSkill01IsReadyToAndNeedAutoPress && d3GameStatus.skill01Key && d3GameStatus.flagInAttackMode)
+				if (d3GameStatus.flagSkill01IsReadyToAndNeedAutoPress && d3GameStatus.skill01Key && (d3GameStatus.flagInAttackMode || d3GameStatus.flagInArchonMode))
 				{
 					SendD3Key(d3GameStatus.skill01Key);
 				}
-				else if (d3Config.profilemodeArchonEnable && d3GameStatus.flagSkill01IsReadyToAndNeedAutoPress && d3GameStatus.flagSkill01IsLightningBlast)
+				else if (d3Config.profilemodeArchonEnable && d3GameStatus.flagSkill01IsReadyToAndNeedAutoPress && d3GameStatus.flagInArchonMode)
 				{
 					SendD3Key(d3Config.keySKill01);
 				}
-				if (d3GameStatus.flagSkill02IsReadyToAndNeedAutoPress && d3GameStatus.skill02Key && d3GameStatus.flagInAttackMode)
+
+				if (d3GameStatus.flagSkill02IsReadyToAndNeedAutoPress && d3GameStatus.skill02Key && (d3GameStatus.flagInAttackMode || d3GameStatus.flagInArchonMode))
 				{
 					SendD3Key(d3GameStatus.skill02Key);
 				}
+
+
 				if (d3GameStatus.flagSkill03IsReadyToAndNeedAutoPress && d3GameStatus.skill03Key && d3GameStatus.flagInAttackMode)
 				{
 					SendD3Key(d3GameStatus.skill03Key);
@@ -1432,8 +1435,8 @@ void CDiabloIIISupportDlg::OnKillFocusLeftMouseTime()
 	GetDlgItem(IDC_LEFTMOUSETIME)->GetWindowTextW(bufferText, 999);
 	int newValue = 0;
 	swscanf(bufferText, L"%d", &newValue);
-	newValue = int(round(newValue / 50.0) * 50);
-	if (newValue < 50) newValue = 50;
+	newValue = int(round(newValue / (double)(mainTimerDelay)) * mainTimerDelay);
+	if (newValue < mainTimerDelay) newValue = mainTimerDelay;
 	swprintf(bufferText, L"%d", newValue);
 	GetDlgItem(IDC_LEFTMOUSETIME)->SetWindowTextW(bufferText);
 	if (newValue != d3Config.leftMouseTime)
@@ -1449,8 +1452,8 @@ void CDiabloIIISupportDlg::OnKillFocusRightMouseTime()
 	GetDlgItem(IDC_RIGHTMOUSETIME)->GetWindowTextW(bufferText, 999);
 	int newValue = 0;
 	swscanf(bufferText, L"%d", &newValue);
-	newValue = int(round(newValue / 50.0) * 50);
-	if (newValue < 50) newValue = 50;
+	newValue = int(round(newValue / (double)(mainTimerDelay)) * mainTimerDelay);
+	if (newValue < mainTimerDelay) newValue = mainTimerDelay;
 	swprintf(bufferText, L"%d", newValue);
 	GetDlgItem(IDC_RIGHTMOUSETIME)->SetWindowTextW(bufferText);
 	if (newValue != d3Config.rightMouseTime)
@@ -1466,8 +1469,8 @@ void CDiabloIIISupportDlg::OnKillFocusSkill01Time()
 	GetDlgItem(IDC_SKILL01TIME)->GetWindowTextW(bufferText, 999);
 	int newValue = 0;
 	swscanf(bufferText, L"%d", &newValue);
-	newValue = int(round(newValue / 50.0) * 50);
-	if (newValue < 50) newValue = 50;
+	newValue = int(round(newValue / (double)(mainTimerDelay)) * mainTimerDelay);
+	if (newValue < mainTimerDelay) newValue = mainTimerDelay;
 	swprintf(bufferText, L"%d", newValue);
 	GetDlgItem(IDC_SKILL01TIME)->SetWindowTextW(bufferText);
 	if (newValue != d3Config.skillSlot01Time)
@@ -1483,8 +1486,8 @@ void CDiabloIIISupportDlg::OnKillFocusSkill02Time()
 	GetDlgItem(IDC_SKILL02TIME)->GetWindowTextW(bufferText, 999);
 	int newValue = 0;
 	swscanf(bufferText, L"%d", &newValue);
-	newValue = int(round(newValue / 50.0) * 50);
-	if (newValue < 50) newValue = 50;
+	newValue = int(round(newValue / (double)(mainTimerDelay)) * mainTimerDelay);
+	if (newValue < mainTimerDelay) newValue = mainTimerDelay;
 	swprintf(bufferText, L"%d", newValue);
 	GetDlgItem(IDC_SKILL02TIME)->SetWindowTextW(bufferText);
 	if (newValue != d3Config.skillSlot02Time)
@@ -1500,8 +1503,8 @@ void CDiabloIIISupportDlg::OnKillFocusSkill03Time()
 	GetDlgItem(IDC_SKILL03TIME)->GetWindowTextW(bufferText, 999);
 	int newValue = 0;
 	swscanf(bufferText, L"%d", &newValue);
-	newValue = int(round(newValue / 50.0) * 50);
-	if (newValue < 50) newValue = 50;
+	newValue = int(round(newValue / (double)(mainTimerDelay)) * mainTimerDelay);
+	if (newValue < mainTimerDelay) newValue = mainTimerDelay;
 	swprintf(bufferText, L"%d", newValue);
 	GetDlgItem(IDC_SKILL03TIME)->SetWindowTextW(bufferText);
 	if (newValue != d3Config.skillSlot03Time)
@@ -1517,8 +1520,8 @@ void CDiabloIIISupportDlg::OnKillFocusSkill04Time()
 	GetDlgItem(IDC_SKILL04TIME)->GetWindowTextW(bufferText, 999);
 	int newValue = 0;
 	swscanf(bufferText, L"%d", &newValue);
-	newValue = int(round(newValue / 50.0) * 50);
-	if (newValue < 50) newValue = 50;
+	newValue = int(round(newValue / (double)(mainTimerDelay)) * mainTimerDelay);
+	if (newValue < mainTimerDelay) newValue = mainTimerDelay;
 	swprintf(bufferText, L"%d", newValue);
 	GetDlgItem(IDC_SKILL04TIME)->SetWindowTextW(bufferText);
 	if (newValue != d3Config.skillSlot04Time)
