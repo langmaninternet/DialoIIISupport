@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.28307.438
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DiabloIIISupport", "DiabloIIISupport.vcxproj", "{30CAAD5B-0A03-49AA-9F6E-D664D625FD6C}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StarPact", "..\StarPact\StarPact.vcxproj", "{78CD00F1-FEC9-4D3C-91D7-A934A8827C38}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StarPact", "StarPact\StarPact.vcxproj", "{78CD00F1-FEC9-4D3C-91D7-A934A8827C38}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

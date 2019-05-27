@@ -221,7 +221,7 @@
     <Image Include="res\DiabloIIISupport.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\StarPact\StarPact.vcxproj">
+    <ProjectReference Include="StarPact\StarPact.vcxproj">
       <Project>{78cd00f1-fec9-4d3c-91d7-a934a8827c38}</Project>
     </ProjectReference>
   </ItemGroup>

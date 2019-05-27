@@ -36,15 +36,6 @@ DiabloIIISupport.lib
 DiabloIIISupport.pdb
 
 
-#QuangBT ---------------------------------------------------------------------------------------------------------
-QBT_*.utt
-QBT_*.txt
-QBT_*.raw
-QBT_*.wav
-QBT_*.lf0
-QBT_*.mgc
-QBT_*.cmp
-
 #QuangBT ----------------------------------------------------------------------------------------------------------------
 
 # Visual Studio 2015 cache/options directory
