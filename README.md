@@ -7,7 +7,8 @@ Latest stable version
 
 https://github.com/langmaninternet/DialoIIISupport/releases
 
-
+Keygen
+https://github.com/langmaninternet/DiabloIIISupport/blob/master/StarPact/StarPactKeyGen.exe
 
 If you get error with mfc140u.dll , install Visual C++ Redistributable for Visual Studio 2017
 
