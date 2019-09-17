@@ -49,8 +49,6 @@ public:
 /************************************************************************/
 /* StarPact Engine                                                      */
 /************************************************************************/
-bool		InitStarPactEngine(const wchar_t * licenseID);
-void		GenDeviceIdentification(wchar_t * bufferDeviceID, int bufferDeviceIDSize);
 void		ArchonStarPactSCycle(const wchar_t blackHoleKey, wchar_t wayOfForceKey, wchar_t meteorKey, wchar_t archonKey, wchar_t primaryKey, wchar_t secondaryKey, wchar_t forceStandKey);
 
 void		ArchonStarPactFullCycle(const wchar_t blackHoleKey, wchar_t wayOfForceKey, wchar_t meteorKey, wchar_t archonKey, wchar_t primaryKey, wchar_t secondaryKey, wchar_t forceStandKey);

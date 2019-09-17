@@ -1,11 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.438
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29306.81
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DiabloIIISupport", "DiabloIIISupport.vcxproj", "{30CAAD5B-0A03-49AA-9F6E-D664D625FD6C}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StarPact", "StarPact\StarPact.vcxproj", "{78CD00F1-FEC9-4D3C-91D7-A934A8827C38}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,14 +21,6 @@ Global
 		{30CAAD5B-0A03-49AA-9F6E-D664D625FD6C}.Release|x64.Build.0 = Release|x64
 		{30CAAD5B-0A03-49AA-9F6E-D664D625FD6C}.Release|x86.ActiveCfg = Release|Win32
 		{30CAAD5B-0A03-49AA-9F6E-D664D625FD6C}.Release|x86.Build.0 = Release|Win32
-		{78CD00F1-FEC9-4D3C-91D7-A934A8827C38}.Debug|x64.ActiveCfg = Debug|x64
-		{78CD00F1-FEC9-4D3C-91D7-A934A8827C38}.Debug|x64.Build.0 = Debug|x64
-		{78CD00F1-FEC9-4D3C-91D7-A934A8827C38}.Debug|x86.ActiveCfg = Debug|Win32
-		{78CD00F1-FEC9-4D3C-91D7-A934A8827C38}.Debug|x86.Build.0 = Debug|Win32
-		{78CD00F1-FEC9-4D3C-91D7-A934A8827C38}.Release|x64.ActiveCfg = Release|x64
-		{78CD00F1-FEC9-4D3C-91D7-A934A8827C38}.Release|x64.Build.0 = Release|x64
-		{78CD00F1-FEC9-4D3C-91D7-A934A8827C38}.Release|x86.ActiveCfg = Release|Win32
-		{78CD00F1-FEC9-4D3C-91D7-A934A8827C38}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

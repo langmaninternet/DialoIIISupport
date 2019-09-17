@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "DirectX.h"
 #include <Windows.h>
 #include <iostream>

@@ -6,7 +6,7 @@
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
-#include "../StarPact/StarPact.h"
+#include "StarPact.h"
 
 
 
@@ -126,7 +126,7 @@ bool					startedArchonCyle = false;
 /************************************************************************/
 /* Process Function                                                     */
 /************************************************************************/
-void		ValidateD3Key(wchar_t & keyValue, const wchar_t defaultValue)
+void		ValidateD3Key(wchar_t& keyValue, const wchar_t defaultValue)
 {
 	if (keyValue == '`') keyValue = '~';
 	if (!((keyValue >= 'A' && keyValue <= 'Z')
@@ -774,19 +774,6 @@ BOOL		CDiabloIIISupportDlg::OnInitDialog()
 	((CButton*)GetDlgItem(IDC_WIZFIREBRIDCHECK))->SetCheck(d3Config.modeFireBirdEnable);
 	((CButton*)GetDlgItem(IDC_WIZARCHONCHECK))->SetCheck(d3Config.modeArchonEnable);
 
-	if (InitStarPactEngine(NULL) == false)
-	{
-		d3Config.modeArchonEnable = 0;
-		d3Config.modeFireBirdEnable = 0;
-		((CButton*)GetDlgItem(IDC_WIZFIREBRIDCHECK))->EnableWindow(FALSE);
-		((CButton*)GetDlgItem(IDC_WIZARCHONCHECK))->EnableWindow(FALSE);
-		GenDeviceIdentification(buffer, 999);
-
-
-		wchar_t bufferAbout[10000] = { 0 };
-		swprintf_s(bufferAbout, L"Create by Bùi Tấn Quang\r\nhttps://github.com/langmaninternet\r\nYour DeviceID is [%ls]", buffer);
-		GetDlgItem(IDC_ABOUT)->SetWindowTextW(bufferAbout);
-	}
 
 	d3Config.modeArchonEnable = !d3Config.modeArchonEnable;
 	OnBnClickedWizArchoncheck();
@@ -939,7 +926,7 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 			}
 			POINT point = { 0 };
 			GetCursorPos(&point);
-			const WCHAR * validToClick = L"";
+			const WCHAR* validToClick = L"";
 			if (ValidToSendD3Click())  validToClick = L"Vaild to click";
 			CString debugInfo;
 			debugInfo.AppendFormat(L"Diablo III: %ls\r\n	X: %04d     Y: %04d\r\n	W: %04d     H: %04d\r\nCursor: %ls\r\n	X : %04d     Y : %04d\r\n",
@@ -1011,34 +998,36 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 				/************************************************************************/
 				/* Auto press                                                           */
 				/************************************************************************/
-				if (d3GameStatus.flagSkill01IsReadyToAndNeedAutoPress && d3GameStatus.skill01Key && (d3GameStatus.flagInAttackMode || d3GameStatus.flagInArchonMode))
+				if (flagOnF1 || flagOnF2 || flagOnF3)
 				{
-					SendD3Key(d3GameStatus.skill01Key);
-				}
-				else if (d3Config.profilemodeArchonEnable && d3GameStatus.flagSkill01IsReadyToAndNeedAutoPress && d3GameStatus.flagInArchonMode)
-				{
-					SendD3Key(d3Config.keySKill01);
+					if (d3GameStatus.flagSkill01IsReadyToAndNeedAutoPress && d3GameStatus.skill01Key && (d3GameStatus.flagInAttackMode || d3GameStatus.flagInArchonMode))
+					{
+						SendD3Key(d3GameStatus.skill01Key);
+					}
+					else if (d3Config.profilemodeArchonEnable && d3GameStatus.flagSkill01IsReadyToAndNeedAutoPress && d3GameStatus.flagInArchonMode)
+					{
+						SendD3Key(d3Config.keySKill01);
+					}
+					if (d3GameStatus.flagSkill02IsReadyToAndNeedAutoPress && d3GameStatus.skill02Key && (d3GameStatus.flagInAttackMode || d3GameStatus.flagInArchonMode))
+					{
+						SendD3Key(d3GameStatus.skill02Key);
+					}
+					if (d3GameStatus.flagSkill03IsReadyToAndNeedAutoPress && d3GameStatus.skill03Key && d3GameStatus.flagInAttackMode)
+					{
+						SendD3Key(d3GameStatus.skill03Key);
+					}
+					if (d3GameStatus.flagSkill04IsReadyToAndNeedAutoPress && d3GameStatus.skill04Key && d3GameStatus.flagInAttackMode)
+					{
+						SendD3Key(d3GameStatus.skill04Key);
+					}
+					if ((d3GameStatus.flagIsDemonHunter || d3GameStatus.flagIsMonk) && d3Config.modeArchonEnable)
+					{
+						OnBnClickedWizArchoncheck();
+						((CButton*)GetDlgItem(IDC_WIZARCHONCHECK))->SetCheck(d3Config.modeArchonEnable);
+					}
 				}
 
-				if (d3GameStatus.flagSkill02IsReadyToAndNeedAutoPress && d3GameStatus.skill02Key && (d3GameStatus.flagInAttackMode || d3GameStatus.flagInArchonMode))
-				{
-					SendD3Key(d3GameStatus.skill02Key);
-				}
 
-
-				if (d3GameStatus.flagSkill03IsReadyToAndNeedAutoPress && d3GameStatus.skill03Key && d3GameStatus.flagInAttackMode)
-				{
-					SendD3Key(d3GameStatus.skill03Key);
-				}
-				if (d3GameStatus.flagSkill04IsReadyToAndNeedAutoPress && d3GameStatus.skill04Key && d3GameStatus.flagInAttackMode)
-				{
-					SendD3Key(d3GameStatus.skill04Key);
-				}
-				if ((d3GameStatus.flagIsDemonHunter || d3GameStatus.flagIsMonk) && d3Config.modeArchonEnable)
-				{
-					OnBnClickedWizArchoncheck();
-					((CButton*)GetDlgItem(IDC_WIZARCHONCHECK))->SetCheck(d3Config.modeArchonEnable);
-				}
 
 				/************************************************************************/
 				/* Use custom                                                           */
@@ -1546,7 +1535,7 @@ void CDiabloIIISupportDlg::OnShowSkillKey(int idW, wchar_t key)
 	else swprintf_s(buffer, L"%lc", key);
 	GetDlgItem(idW)->SetWindowText(buffer);
 }
-void CDiabloIIISupportDlg::OnKillFocusSkillKey(int changeID, wchar_t & keySkill)
+void CDiabloIIISupportDlg::OnKillFocusSkillKey(int changeID, wchar_t& keySkill)
 {
 	wchar_t bufferText[1001] = { 0 };
 	GetDlgItem(changeID)->GetWindowTextW(bufferText, 999);
@@ -1555,12 +1544,7 @@ void CDiabloIIISupportDlg::OnKillFocusSkillKey(int changeID, wchar_t & keySkill)
 	tempTrunc.Replace(L" ", L"");
 	tempTrunc.MakeUpper();
 	wcscpy(bufferText, tempTrunc.GetBuffer());
-	if (InitStarPactEngine(NULL) == false && InitStarPactEngine(bufferText))
-	{
-		GetDlgItem(IDC_ABOUT)->SetWindowTextW(L"Create by Bùi Tấn Quang\r\nhttps://github.com/langmaninternet\r\nhttps://www.facebook.com/langmaninternet");
-		OnShowSkillKey(changeID, keySkill);
-		return;
-	}
+
 
 
 	int newValue = bufferText[0];
