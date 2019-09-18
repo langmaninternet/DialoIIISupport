@@ -15,7 +15,6 @@
 
 Win32GDI					w32gdi;
 DiabloIIIStatusStruct		d3GameStatus;
-bool						flagValidateStarPact = false;
 bool						flagOnWizCycle;
 
 
@@ -39,7 +38,7 @@ void			StopStarPact(void)
 void			ArchonStarPactSCycle(wchar_t blackHoleKey, wchar_t wayOfForceKey, wchar_t meteorKey, wchar_t archonKey, wchar_t primaryKey, wchar_t secondaryKey, wchar_t forceStandKey)
 {
 	static int onProcress = false;
-	if (flagValidateStarPact && onProcress == false)
+	if (onProcress == false)
 	{
 		onProcress = true;
 		const int holdLparam = 0x20000000;
@@ -335,7 +334,7 @@ void			ArchonStarPactSCycle(wchar_t blackHoleKey, wchar_t wayOfForceKey, wchar_t
 void			ArchonStarPactFullCycle(wchar_t blackHoleKey, wchar_t wayOfForceKey, wchar_t meteorKey, wchar_t archonKey, wchar_t primaryKey, wchar_t secondaryKey, wchar_t forceStandKey)
 {
 	static int onProcress = false;
-	if (flagValidateStarPact && onProcress == false)
+	if ( onProcress == false)
 	{
 		onProcress = true;
 		const int holdLparam = 0x20000000;
