@@ -2,7 +2,7 @@
 // Microsoft Visual C++ generated include file.
 // Used by DiabloIIISupport.rc
 //
-#define IDD_DIABLOIIISUPPORT_DIALOG      102
+#define IDD_DIABLOIIISUPPORT_DIALOG     102
 #define IDR_MAINFRAME                   128
 #define IDC_ABOUT                       1000
 #define IDC_LEFTMOUSETIME               1006
@@ -22,6 +22,8 @@
 #define IDC_SKILL02TEXT                 1023
 #define IDC_SKILL03TEXT                 1024
 #define IDC_SKILL04TEXT                 1025
+#define IDC_HEALINGCHECK2               1026
+#define IDC_OVERLAY                     1026
 #define IDC_SKILL01TEXTMS               1027
 #define IDC_SKILL02TEXTMS               1028
 #define IDC_SKILL03TEXTMS               1029

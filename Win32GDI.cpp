@@ -14144,6 +14144,7 @@ bool				Win32GDI::D3Skill04IsVegeanceAndReady(void)
 
 	return true;
 }
+
 bool				Win32GDI::D3Skill04IsSweepingWindReady(void)
 {
 	if (GetPixel(834, 1003) != 0X566C6F) return false;

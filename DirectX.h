@@ -2,10 +2,9 @@
 #define DIRECTX_H
 
 
-
-
-void CreateOverlay(void);
-
+extern wchar_t		overlayStr[1000];
+void				CreateOverlay(void);
+void				DestroyOverlay(void);
 
 
 #endif

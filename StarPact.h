@@ -96,7 +96,7 @@ void		PreloadSalvageItem(int *preloadSalvageSlot, int preloadSalvageSlotSize);
 /************************************************************************/
 /*                                                                      */
 /************************************************************************/
-extern wchar_t			bufferShowArchon[1000];
+
 void					CreateOverlay(void);
 void					DestroyOverlay(void);
 #endif

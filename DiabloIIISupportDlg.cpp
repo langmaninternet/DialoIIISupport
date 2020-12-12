@@ -7,7 +7,7 @@
 #define new DEBUG_NEW
 #endif
 #include "StarPact.h"
-
+#include "DirectX.h"
 
 
 
@@ -88,6 +88,7 @@ struct DiabloIIISupportConfig
 
 
 	double	saveDiabloIIISupportVersion;
+	bool	flagShowOverlay;
 };
 
 
@@ -98,7 +99,7 @@ struct DiabloIIISupportConfig
 DiabloIIISupportConfig	d3Config;
 wchar_t					configSavePath[3000] = { 0 };
 
-const int				mainTimerDelay = 10/*ms*/;
+const int				mainTimerDelay = 30/*ms*/;
 bool					flagOnF1 = false;
 bool					flagOnF2 = false;
 bool					flagOnF3 = false;
@@ -312,7 +313,7 @@ bool		PointInRect(POINT point, int rLeft, int rRight, int rTop, int rBottom)
 	{
 		MessageBox(0, L"D3 Engine Error!!", L"(rLeft <= rRight || rTop <= rBottom)", MB_OK);
 	}
-	return (point.x > rLeft && point.x < rRight && point.y > rTop && point.y < rBottom);
+	return (point.x > rLeft && point.x < rRight&& point.y > rTop && point.y < rBottom);
 }
 bool		ValidToSendD3Click(void)
 {
@@ -621,7 +622,6 @@ BEGIN_MESSAGE_MAP(CDiabloIIISupportDlg, CDialogEx)
 	ON_EN_KILLFOCUS(IDC_SKILLKEY04, &CDiabloIIISupportDlg::OnKillFocusSkillKey04)
 	ON_EN_KILLFOCUS(IDC_HEALINGKEY, &CDiabloIIISupportDlg::OnKillfocusHealingKey)
 	ON_BN_CLICKED(IDC_WIZARCHONCHECK, &CDiabloIIISupportDlg::OnBnClickedWizArchoncheck)
-	//ON_EN_KILLFOCUS(IDC_CLOSEPOPUPKEY, &CDialoIIISupportDlg::OnKillFocusClosePopupKey)
 	ON_EN_KILLFOCUS(IDC_METEORKEY, &CDiabloIIISupportDlg::OnKillFocusMeteorKey)
 	ON_BN_CLICKED(IDC_WIZFIREBRIDCHECK, &CDiabloIIISupportDlg::OnBnClickedWizFireBridCheck)
 	ON_EN_KILLFOCUS(IDC_FORCESTANDKEY, &CDiabloIIISupportDlg::OnKillFocusForceStandKey)
@@ -633,6 +633,7 @@ BEGIN_MESSAGE_MAP(CDiabloIIISupportDlg, CDialogEx)
 	ON_EN_KILLFOCUS(IDC_SECONDARYSKILLKEY, &CDiabloIIISupportDlg::OnKillFocusSecondarySkillKey)
 	ON_BN_CLICKED(IDC_SINGLESHOTHOTCASTMETEORONLY, &CDiabloIIISupportDlg::OnBnClickedSingleshothotcastmeteoronly)
 	ON_BN_CLICKED(IDC_SINGLESHOTHOTCASTFULLCYCLE, &CDiabloIIISupportDlg::OnBnClickedSingleshothotcastfullcycle)
+	ON_BN_CLICKED(IDC_OVERLAY, &CDiabloIIISupportDlg::OnBnClickedOverlay)
 END_MESSAGE_MAP()
 
 BOOL		CDiabloIIISupportDlg::OnInitDialog()
@@ -775,12 +776,19 @@ BOOL		CDiabloIIISupportDlg::OnInitDialog()
 	((CButton*)GetDlgItem(IDC_WIZARCHONCHECK))->SetCheck(d3Config.modeArchonEnable);
 
 
+
+	
+
 	d3Config.modeArchonEnable = !d3Config.modeArchonEnable;
 	OnBnClickedWizArchoncheck();
 
 	hGlobalHook = SetWindowsHookEx(WH_KEYBOARD_LL, HookProc, GetModuleHandle(NULL), 0);
 
-
+	if (d3Config.flagShowOverlay)
+	{
+		CreateOverlay();
+		((CButton*)GetDlgItem(IDC_OVERLAY))->SetCheck(TRUE);
+	}
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -892,12 +900,12 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 						buffer.AppendFormat(L"Auto cast in %0.3lfs (Press 0 to skip)", archonShootCoolDown / 1000.0);
 					}
 					if (buffer.GetLength() == 0) buffer.AppendFormat(L"Press %ls to cast new cycle rotation", bufferWizKey);
-					wcscpy_s(bufferShowArchon, 999, buffer.GetBuffer());
+					wcscpy_s(overlayStr, 999, buffer.GetBuffer());
 				}
 			}
 			else
 			{
-				bufferShowArchon[0] = NULL;
+				overlayStr[0] = NULL;
 			}
 
 
@@ -998,27 +1006,33 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 				/************************************************************************/
 				/* Auto press                                                           */
 				/************************************************************************/
+				CString overlayString;
 				if (flagOnF1 || flagOnF2 || flagOnF3)
 				{
 					if (d3GameStatus.flagSkill01IsReadyToAndNeedAutoPress && d3GameStatus.skill01Key && (d3GameStatus.flagInAttackMode || d3GameStatus.flagInArchonMode))
 					{
 						SendD3Key(d3GameStatus.skill01Key);
+						overlayString += L"Auto press skill 1\n";
 					}
 					else if (d3Config.profilemodeArchonEnable && d3GameStatus.flagSkill01IsReadyToAndNeedAutoPress && d3GameStatus.flagInArchonMode)
 					{
 						SendD3Key(d3Config.keySKill01);
+						overlayString += L"Auto press skill 1\n";
 					}
 					if (d3GameStatus.flagSkill02IsReadyToAndNeedAutoPress && d3GameStatus.skill02Key && (d3GameStatus.flagInAttackMode || d3GameStatus.flagInArchonMode))
 					{
 						SendD3Key(d3GameStatus.skill02Key);
+						overlayString += L"Auto press skill 2\n";
 					}
 					if (d3GameStatus.flagSkill03IsReadyToAndNeedAutoPress && d3GameStatus.skill03Key && d3GameStatus.flagInAttackMode)
 					{
 						SendD3Key(d3GameStatus.skill03Key);
+						overlayString += L"Auto press skill 4\n";
 					}
 					if (d3GameStatus.flagSkill04IsReadyToAndNeedAutoPress && d3GameStatus.skill04Key && d3GameStatus.flagInAttackMode)
 					{
 						SendD3Key(d3GameStatus.skill04Key);
+						overlayString += L"Auto press skill 4\n";
 					}
 					if ((d3GameStatus.flagIsDemonHunter || d3GameStatus.flagIsMonk) && d3Config.modeArchonEnable)
 					{
@@ -1033,7 +1047,7 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 				/* Use custom                                                           */
 				/************************************************************************/
 				if (flagOnF2) GetDlgItem(IDC_F2BIGFRAME)->SetWindowTextW(L"Skill (Hotkey F2) - Running");
-				if (flagOnF2 && d3GameStatus.flagIsOpenKadala == false && d3GameStatus.flagIsOpenStash == false)
+				if (flagOnF2 && d3GameStatus.flagIsOpenKadala == false)
 				{
 					GetDlgItem(IDC_SKILL01TIME)->EnableWindow(FALSE);
 					GetDlgItem(IDC_SKILL02TIME)->EnableWindow(FALSE);
@@ -1044,6 +1058,14 @@ void CDiabloIIISupportDlg::OnTimer(UINT_PTR nIdEvent)
 					GetDlgItem(IDC_SKILL03CHECK)->EnableWindow(FALSE);
 					GetDlgItem(IDC_SKILL04CHECK)->EnableWindow(FALSE);
 					GetDlgItem(IDC_HEALINGCHECK)->EnableWindow(FALSE);
+
+
+					if (d3Config.skill01Enable && d3Wnd != 0) overlayString.AppendFormat(L"Skill 01: %dms\n", skillSlot01Cooldown);
+					if (d3Config.skill02Enable && d3Wnd != 0) overlayString.AppendFormat(L"Skill 02: %dms\n", skillSlot01Cooldown);
+					if (d3Config.skill03Enable && d3Wnd != 0) overlayString.AppendFormat(L"Skill 03: %dms\n", skillSlot01Cooldown);
+					if (d3Config.skill04Enable && d3Wnd != 0) overlayString.AppendFormat(L"Skill 04: %dms\n", skillSlot01Cooldown);
+					if (d3Config.healingEnable && d3GameStatus.flagPotionReady)  overlayString.AppendFormat(L"Healing!\n");
+					wcscpy_s(overlayStr, 999, overlayString.GetBuffer());
 
 					if (d3Wnd != 0)
 					{
@@ -1743,15 +1765,6 @@ void CDiabloIIISupportDlg::OnBnClickedWizArchoncheck()
 	GetDlgItem(IDC_SINGLESHOTHOTCASTFULLCYCLE)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
 	GetDlgItem(IDC_SINGLESHOTHOTKEY)->EnableWindow(d3Config.modeFireBirdEnable || d3Config.modeArchonEnable);
 	OnSaveConfig();
-
-	if (d3Config.modeArchonEnable)
-	{
-		CreateOverlay();
-	}
-	else
-	{
-		DestroyOverlay();
-	}
 }
 void CDiabloIIISupportDlg::OnBnClickedWizFireBridCheck()
 {
@@ -1965,4 +1978,11 @@ void CDiabloIIISupportDlg::OnBnClickedProfile10()
 	d3Config.currentProfile = 9;
 	OnBnClickedProfile();
 }
-
+void CDiabloIIISupportDlg::OnBnClickedOverlay()
+{
+	// TODO: Add your control notification handler code here
+	d3Config.flagShowOverlay = !d3Config.flagShowOverlay;
+	if (d3Config.flagShowOverlay) CreateOverlay();
+	else DestroyOverlay();
+	OnSaveConfig();
+}

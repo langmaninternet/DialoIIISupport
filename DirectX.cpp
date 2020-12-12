@@ -13,16 +13,16 @@
 
 
 
-wchar_t bufferShowArchon[1000] = L"";
+wchar_t overlayStr[1000] = L"";
 extern  bool				flagOnWizCycle;
-IDirect3DDevice9Ex *		p_Device = 0;
+IDirect3DDevice9Ex* p_Device = 0;
 ID3DXFont* pFont;
 //ID3DXLine* p_Line;
 HWND overlayhWnd = NULL;
 
 
 bool				IsD3WindowActive(void);
-void				DrawString(const wchar_t * String, int x, int y, int a, int r, int g, int b, ID3DXFont* font)
+void				DrawString(const wchar_t* String, int x, int y, int a, int r, int g, int b, ID3DXFont* font)
 {
 	RECT FontPos;
 	FontPos.left = x;
@@ -36,13 +36,13 @@ HWND				GetTargetWindows(void)
 void				Render(HWND targetWnd)
 {
 
-	if (bufferShowArchon[0] != NULL)
+	if (overlayStr[0] != NULL)
 	{
 		p_Device->Clear(0, 0, D3DCLEAR_TARGET, 0, 1.0f, 0);
 		p_Device->BeginScene();
 
 		//Drawing Stuff
-		DrawString(bufferShowArchon, 0, 10, 255, 255, 255, 0, pFont);
+		DrawString(overlayStr, 0, 10, 255, 255, 255, 0, pFont);
 
 
 		p_Device->EndScene();
@@ -71,7 +71,7 @@ int desktopWidth = GetSystemMetrics(SM_CXSCREEN);
 int desktopHeight = GetSystemMetrics(SM_CYSCREEN);
 void					DirectXInit(HWND hWnd)
 {
-	IDirect3D9Ex *				p_Object = 0;
+	IDirect3D9Ex* p_Object = 0;
 	if (Direct3DCreate9Ex(D3D_SDK_VERSION, &p_Object) == S_OK)
 	{
 		D3DPRESENT_PARAMETERS	p_Params;
@@ -86,7 +86,7 @@ void					DirectXInit(HWND hWnd)
 		p_Params.EnableAutoDepthStencil = TRUE;
 		p_Params.AutoDepthStencilFormat = D3DFMT_D16;
 		p_Object->CreateDeviceEx(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, hWnd, D3DCREATE_HARDWARE_VERTEXPROCESSING, &p_Params, 0, &p_Device);
-		D3DXCreateFont(p_Device, 30, 0, FW_NORMAL, 1, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, L"Arial", &pFont);
+		D3DXCreateFontW(p_Device, 14, 0, FW_NORMAL, 1, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, L"Arial", &pFont);
 
 		//if (!p_Line) D3DXCreateLine(p_Device, &p_Line);
 	}
@@ -114,7 +114,7 @@ LRESULT CALLBACK		OverlayWindowProc(HWND hWnd, UINT Message, WPARAM wParam, LPAR
 	}
 	return 0;
 }
-void					SetWindowToTarget(HWND * hWnd)
+void					SetWindowToTarget(HWND* hWnd)
 {
 	bool		IsEnableArchon(void);
 	while (true)
@@ -123,7 +123,7 @@ void					SetWindowToTarget(HWND * hWnd)
 		{
 
 			HWND targetWnd = GetTargetWindows();
-			if (targetWnd && targetWnd == GetForegroundWindow() && IsEnableArchon() && flagOnWizCycle == false)
+			if (targetWnd && targetWnd == GetForegroundWindow() /*&& IsEnableArchon() && flagOnWizCycle == false*/)
 			{
 				ShowWindow(/*overlayhWnd*/ *hWnd, SW_SHOW);
 				RECT targetSize;
@@ -178,7 +178,7 @@ void					InitOverlayWindows(void)
 			SetLayeredWindowAttributes(overlayhWnd, 0, RGB(0, 0, 0), LWA_COLORKEY);
 			ShowWindow(overlayhWnd, SW_SHOW);
 			DirectXInit(overlayhWnd);
-			
+
 
 			for (;;)
 			{
@@ -199,7 +199,7 @@ void					CreateOverlay(void)
 	{
 		CreateThread(0, 0, (LPTHREAD_START_ROUTINE)InitOverlayWindows, 0, 0, 0);
 		static bool startedAim = false;
-		if (startedAim==false)
+		if (startedAim == false)
 		{
 			CreateThread(0, 0, (LPTHREAD_START_ROUTINE)SetWindowToTarget, (LPVOID)&overlayhWnd, 0, 0);
 			startedAim = true;
